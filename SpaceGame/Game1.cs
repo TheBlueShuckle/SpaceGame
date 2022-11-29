@@ -8,8 +8,8 @@ namespace SpaceGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D myShip;
-        Vector2 myShipPos;
+        Texture2D myShip, planet;
+        Vector2 myShipPos, planetPos;
         Vector2 myShipSpeed;
 
         public Game1()
@@ -28,6 +28,9 @@ namespace SpaceGame
             myShipSpeed.X = 2.5f;
             myShipSpeed.Y = 2.5f;
 
+            planetPos.X = 200;
+            planetPos.Y = 200;
+
             base.Initialize();
         }
 
@@ -37,6 +40,7 @@ namespace SpaceGame
 
             // TODO: use this.Content to load your game content here
             myShip = Content.Load<Texture2D>("Sprites/myShip");
+            planet = Content.Load<Texture2D>("Sprites/planet");
         }
 
         protected override void Update(GameTime gameTime)
@@ -61,6 +65,7 @@ namespace SpaceGame
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(myShip, myShipPos, Color.White);
+            _spriteBatch.Draw(planet, planetPos, Color.Red);
 
             _spriteBatch.End();
 
