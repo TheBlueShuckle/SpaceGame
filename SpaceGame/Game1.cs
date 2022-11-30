@@ -23,8 +23,8 @@ namespace SpaceGame
         {
             // TODO: Add your initialization logic here
 
-            myShipPos.X = 100;
-            myShipPos.Y = 100;
+            myShipPos.X = (Window.ClientBounds.Width - 45) / 2;
+            myShipPos.Y = (Window.ClientBounds.Height - 48) / 2;
             myShipSpeed.X = 2.5f;
             myShipSpeed.Y = 2.5f;
 
@@ -125,16 +125,16 @@ namespace SpaceGame
 
         public void CheckBoundsY()
         {
-            if ((myShipPos.Y >= ((Window.ClientBounds.Height - 100) - myShip.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W)))
+            if ((myShipPos.Y >= (Window.ClientBounds.Height - 100 - myShip.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W)))
             {
-                if (myShipPos.Y < 0)
+                if (myShipPos.Y < 100)
                 {
-                    myShipPos.Y = 0;
+                    myShipPos.Y = 100;
                 }
 
-                if (myShipPos.Y >= Window.ClientBounds.Height - myShip.Height)
+                if (myShipPos.Y >= Window.ClientBounds.Height - 100 - myShip.Height)
                 {
-                    myShipPos.Y = Window.ClientBounds.Height - myShip.Height;
+                    myShipPos.Y = Window.ClientBounds.Height - 100 - myShip.Height;
                 }
 
                 myShipSpeed.Y = 0;
