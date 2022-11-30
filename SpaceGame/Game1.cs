@@ -55,8 +55,7 @@ namespace SpaceGame
             // TODO: Add your update logic here
 
             CheckMove();
-            CheckBoundsX();
-            CheckBoundsY();
+            CheckBounds();
 
             base.Update(gameTime);
         }
@@ -68,8 +67,8 @@ namespace SpaceGame
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(bigPlanet, bigPlanetPos, Color.Red);
-            _spriteBatch.Draw(smallPlanet, smallPlanetPos, Color.Blue);
+            _spriteBatch.Draw(bigPlanet, bigPlanetPos, Color.Coral);
+            _spriteBatch.Draw(smallPlanet, smallPlanetPos, Color.LimeGreen);
             _spriteBatch.Draw(myShip, myShipPos, Color.White);
 
             _spriteBatch.End();
@@ -100,7 +99,7 @@ namespace SpaceGame
             }
         }
 
-        public void CheckBoundsX()
+        public void CheckBounds()
         {
             if ((myShipPos.X >= (Window.ClientBounds.Width - myShip.Width) && Keyboard.GetState().IsKeyDown(Keys.D)) || (myShipPos.X <= 0 && Keyboard.GetState().IsKeyDown(Keys.A)))
             {
@@ -121,10 +120,7 @@ namespace SpaceGame
             {
                 myShipSpeed.X = 2.5f;
             }
-        }
 
-        public void CheckBoundsY()
-        {
             if ((myShipPos.Y >= (Window.ClientBounds.Height - 100 - myShip.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W)))
             {
                 if (myShipPos.Y < 100)

@@ -16,6 +16,7 @@ namespace SpaceGame
         Texture2D size;
         Color planetColor;
         Vector2 location;
+        Vector2 planetSpeed;
 
         public Planet(Texture2D bigPlanet, Texture2D smallPlanet, int windowHeight, int windowWidth)
         {
@@ -54,6 +55,14 @@ namespace SpaceGame
             location.X = randomWidth;
         }
 
+        private void GeneratePlanetSpeed()
+        {
+            Random rnd = new Random();
+            int randomY = rnd.Next(1, 3);
+
+            planetSpeed.Y = randomY;
+        }
+
         public Texture2D GetPlanetSize()
         {
             return size;
@@ -67,6 +76,11 @@ namespace SpaceGame
         public Vector2 GetPlanetLocation()
         {
             return location;
+        }
+
+        public Vector2 GetPlanetSpeed()
+        {
+            return planetSpeed;
         }
     }
 }
