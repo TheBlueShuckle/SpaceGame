@@ -22,7 +22,7 @@ namespace SpaceGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+          
             myShipPos.X = (Window.ClientBounds.Width - 45) / 2;
             myShipPos.Y = (Window.ClientBounds.Height - 48) / 2;
             myShipSpeed.X = 2.5f;
