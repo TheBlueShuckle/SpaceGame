@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.XAudio2;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms.VisualStyles;
 
 namespace SpaceGame
 {
@@ -11,6 +16,10 @@ namespace SpaceGame
         Texture2D myShip, bigPlanet, smallPlanet;
         Vector2 myShipPos, bigPlanetPos, smallPlanetPos;
         Vector2 myShipSpeed;
+        List<Planet> space = new List<Planet>();
+        System.DateTime nextPlanetTimeStamp;
+        Random rnd = new Random();
+        int randomNumber;
 
         public Game1()
         {
@@ -22,7 +31,10 @@ namespace SpaceGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-          
+
+            nextPlanetTimeStamp = DateTime.Now;
+            nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new System.TimeSpan(0, 0, 5));
+
             myShipPos.X = (Window.ClientBounds.Width - 45) / 2;
             myShipPos.Y = (Window.ClientBounds.Height - 48) / 2;
             myShipSpeed.X = 2.5f;
@@ -54,6 +66,9 @@ namespace SpaceGame
 
             // TODO: Add your update logic here
 
+            SpawnPlanet();
+            DeletePlanet();
+
             CheckMove();
             CheckBounds();
 
@@ -67,8 +82,12 @@ namespace SpaceGame
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(bigPlanet, bigPlanetPos, Color.Coral);
-            _spriteBatch.Draw(smallPlanet, smallPlanetPos, Color.LimeGreen);
+            foreach(Planet planet in space)
+            {
+                planet.UpdatePlanetLocation();
+                _spriteBatch.Draw(planet.GetPlanetSize(), planet.GetPlanetLocation(), planet.GetPlanetColor());
+            }
+
             _spriteBatch.Draw(myShip, myShipPos, Color.White);
 
             _spriteBatch.End();
@@ -138,6 +157,29 @@ namespace SpaceGame
             else
             {
                 myShipSpeed.Y = 2.5f;
+            }
+        }
+
+        public void SpawnPlanet()
+        {
+            if (nextPlanetTimeStamp < DateTime.Now && space.Count < 5)
+            {
+                space.Add(new Planet(bigPlanet, smallPlanet, Window.ClientBounds.Height, Window.ClientBounds.Width));
+
+                randomNumber = rnd.Next(5, 30);
+                nextPlanetTimeStamp = DateTime.Now;
+                nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new System.TimeSpan(0, 0, randomNumber));
+            }
+        }
+
+        public void DeletePlanet()
+        {
+            foreach (Planet planet in space.ToList())
+            {
+                if (planet.GetPlanetLocation().Y == Window.ClientBounds.Height)
+                {
+                    space.Remove(planet);
+                }
             }
         }
     }

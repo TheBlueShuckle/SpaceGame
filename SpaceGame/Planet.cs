@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace SpaceGame
             GeneratePlanetColor();
             GeneratePlanetLocation(windowHeight, windowWidth);
             GeneratePlanetSize();
+            GeneratePlanetSpeed();
         }
 
         private void GeneratePlanetSize()
@@ -51,16 +53,21 @@ namespace SpaceGame
             Random rnd = new Random();
             int randomHeight = rnd.Next(0, height), randomWidth = rnd.Next(0, width);
 
-            location.Y = randomHeight;
+            location.Y = -randomHeight;
             location.X = randomWidth;
+        }
+
+        public void UpdatePlanetLocation()
+        {
+            location += planetSpeed;
         }
 
         private void GeneratePlanetSpeed()
         {
             Random rnd = new Random();
-            int randomY = rnd.Next(1, 3);
+            int randomY = rnd.Next(10, 35);
 
-            planetSpeed.Y = randomY;
+            planetSpeed.Y = randomY/10;
         }
 
         public Texture2D GetPlanetSize()
