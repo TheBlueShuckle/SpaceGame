@@ -25,8 +25,8 @@ namespace SpaceGame
             this.smallPlanet = smallPlanet;
 
             GeneratePlanetColor();
-            GeneratePlanetLocation(windowHeight, windowWidth);
             GeneratePlanetSize();
+            GeneratePlanetLocation(windowHeight, windowWidth);
             GeneratePlanetSpeed();
         }
 
@@ -51,7 +51,7 @@ namespace SpaceGame
         private void GeneratePlanetLocation(int height, int width)
         {
             Random rnd = new Random();
-            int randomHeight = rnd.Next(0, height), randomWidth = rnd.Next(0, width);
+            int randomHeight = rnd.Next(size.Height, height), randomWidth = rnd.Next(0, width);
 
             location.Y = -randomHeight;
             location.X = randomWidth;
@@ -65,7 +65,7 @@ namespace SpaceGame
         private void GeneratePlanetSpeed()
         {
             Random rnd = new Random();
-            int randomY = rnd.Next(10, 35);
+            int randomY = rnd.Next(10, 45);
 
             planetSpeed.Y = randomY/10;
         }

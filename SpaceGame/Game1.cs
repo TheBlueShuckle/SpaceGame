@@ -99,22 +99,22 @@ namespace SpaceGame
         {
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                myShipPos.X = myShipPos.X - myShipSpeed.X;
+                myShipPos.X -= myShipSpeed.X;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                myShipPos.X = myShipPos.X + myShipSpeed.X;
+                myShipPos.X += myShipSpeed.X;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                myShipPos.Y = myShipPos.Y - myShipSpeed.Y;
+                myShipPos.Y -= myShipSpeed.Y;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                myShipPos.Y = myShipPos.Y + myShipSpeed.Y;
+                myShipPos.Y += myShipSpeed.Y;
             }
         }
 
