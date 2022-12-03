@@ -8,10 +8,11 @@ using System.Reflection.Metadata;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame
 {
-    internal class Planet
+    public class Planet
     {
         Texture2D bigPlanet, smallPlanet;
         Texture2D size;

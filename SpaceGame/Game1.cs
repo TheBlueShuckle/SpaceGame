@@ -1,25 +1,32 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct2D1;
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms.VisualStyles;
+using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame
 {
     public class Game1 : Game
     {
+        const bool InSpace = true, OnPlanet = false;
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D myShip, bigPlanet, smallPlanet;
-        Vector2 myShipPos, bigPlanetPos, smallPlanetPos;
+        Vector2 myShipPos;
         Vector2 myShipSpeed;
+        Color planetColor;
+        Rectangle myShipHitBox, planetHitBox;
         List<Planet> space = new List<Planet>();
         System.DateTime nextPlanetTimeStamp;
         Random rnd = new Random();
         int randomNumber;
+        bool isInSpace = InSpace;
 
         public Game1()
         {
@@ -32,19 +39,16 @@ namespace SpaceGame
         {
             // TODO: Add your initialization logic here
 
-            nextPlanetTimeStamp = DateTime.Now;
-            nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new System.TimeSpan(0, 0, 5));
+            if (isInSpace)
+            {
+                nextPlanetTimeStamp = DateTime.Now;
+                nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new System.TimeSpan(0, 0, 5));
 
-            myShipPos.X = (Window.ClientBounds.Width - 45) / 2;
-            myShipPos.Y = (Window.ClientBounds.Height - 48) / 2;
-            myShipSpeed.X = 2.5f;
-            myShipSpeed.Y = 2.5f;
-
-            bigPlanetPos.X = 200;
-            bigPlanetPos.Y = 200;
-
-            smallPlanetPos.X = 300;
-            smallPlanetPos.Y = 300;
+                myShipPos.X = (Window.ClientBounds.Width - 45) / 2;
+                myShipPos.Y = (Window.ClientBounds.Height - 48) / 2;
+                myShipSpeed.X = 2.5f;
+                myShipSpeed.Y = 2.5f;
+            }
 
             base.Initialize();
         }
@@ -66,34 +70,48 @@ namespace SpaceGame
 
             // TODO: Add your update logic here
 
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
+            if (isInSpace)
             {
+                SpawnPlanet();
+                DeletePlanet();
 
+                CheckMove();
+                CheckBounds();
+                
+                if (CheckPlanetCollision())
+                {
+                    isInSpace = OnPlanet;
+                }
             }
-
-            SpawnPlanet();
-            DeletePlanet();
-
-            CheckMove();
-            CheckBounds();
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            if (isInSpace)
+            {
+                GraphicsDevice.Clear(Color.Black);
+            }
+
+            else
+            {
+                GraphicsDevice.Clear(planetColor);
+            }
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            foreach(Planet planet in space)
+            if (isInSpace)
             {
-                planet.UpdatePlanetLocation();
-                _spriteBatch.Draw(planet.GetPlanetSize(), planet.GetPlanetLocation(), planet.GetPlanetColor());
-            }
+                foreach (Planet planet in space)
+                {
+                    planet.UpdatePlanetLocation();
+                    _spriteBatch.Draw(planet.GetPlanetSize(), planet.GetPlanetLocation(), planet.GetPlanetColor());
+                }
 
-            _spriteBatch.Draw(myShip, myShipPos, Color.White);
+                _spriteBatch.Draw(myShip, myShipPos, Color.White);
+            }
 
             _spriteBatch.End();
 
@@ -186,6 +204,23 @@ namespace SpaceGame
                     space.Remove(planet);
                 }
             }
+        }
+
+        public bool CheckPlanetCollision()
+        {
+            foreach (Planet planet in space.ToList())
+            {
+                myShipHitBox = new Rectangle(Convert.ToInt32(myShipPos.X), Convert.ToInt32(myShipPos.Y), myShip.Width, myShip.Height);
+                planetHitBox = new Rectangle(Convert.ToInt32(planet.GetPlanetLocation().X + myShip.Width), Convert.ToInt32(planet.GetPlanetLocation().Y + myShip.Height), planet.GetPlanetSize().Width - myShip.Width, planet.GetPlanetSize().Height - myShip.Height);
+
+                if (myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E))
+                {
+                    planetColor = planet.GetPlanetColor();
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
