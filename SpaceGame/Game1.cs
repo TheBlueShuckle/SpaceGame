@@ -66,6 +66,11 @@ namespace SpaceGame
 
             // TODO: Add your update logic here
 
+            if (Keyboard.GetState().IsKeyDown(Keys.E))
+            {
+
+            }
+
             SpawnPlanet();
             DeletePlanet();
 
