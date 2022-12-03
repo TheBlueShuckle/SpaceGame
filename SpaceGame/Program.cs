@@ -1,3 +1,3 @@
 ﻿
-using var game = new SpaceGame.Game1();
+using var game = new SpaceGame.Main();
 game.Run();

@@ -11,7 +11,7 @@ using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame
 {
-    public class Game1 : Game
+    public class Main : Game
     {
         const bool InSpace = true, OnPlanet = false;
 
@@ -28,7 +28,7 @@ namespace SpaceGame
         int randomNumber;
         bool isInSpace = InSpace;
 
-        public Game1()
+        public Main()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
