@@ -11,7 +11,7 @@ namespace SpaceGame
     {
         int windowHeight, windowWidth;
 
-        ScenePlanet(int windowHeight, int windowWidth)
+        public ScenePlanet(int windowHeight, int windowWidth)
         {
             this.windowHeight = windowHeight;
             this.windowWidth = windowWidth;

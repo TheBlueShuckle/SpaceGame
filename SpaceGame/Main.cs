@@ -36,7 +36,7 @@ namespace SpaceGame
         {
             // TODO: Add your initialization logic here
 
-            scenePlanet = new ScenePlanet();
+            scenePlanet = new ScenePlanet(Window.ClientBounds.Height, Window.ClientBounds.Width);
             sceneSpace = new SceneSpace(Window.ClientBounds.Height, Window.ClientBounds.Width);
 
             switch (isInSpace)
