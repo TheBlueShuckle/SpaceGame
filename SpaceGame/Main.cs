@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using SharpDX.Direct2D1;
 using SharpDX.XAudio2;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms.VisualStyles;
@@ -13,13 +14,13 @@ namespace SpaceGame
 {
     public class Main : Game
     {
-        const bool InSpace = true, OnPlanet = false;
+        const int InSpace = 1, OnPlanet = 2;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D myShip, bigPlanet, smallPlanet;
         Color planetColor;
-        bool isInSpace = InSpace;
+        int isInSpace = 1;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
 
@@ -38,9 +39,18 @@ namespace SpaceGame
             scenePlanet = new ScenePlanet();
             sceneSpace = new SceneSpace(Window.ClientBounds.Height, Window.ClientBounds.Width);
 
-            if (isInSpace)
+            switch (isInSpace)
             {
-                sceneSpace.Initialize();
+                case InSpace:
+                    sceneSpace.Initialize();
+                    break;
+
+                case OnPlanet:
+                    scenePlanet.Initialize();
+                    break;
+
+                default:
+                    break;
             }
 
             base.Initialize();
@@ -65,9 +75,18 @@ namespace SpaceGame
 
             // TODO: Add your update logic here
 
-            if (isInSpace)
+            switch (isInSpace)
             {
-                isInSpace = sceneSpace.Update();
+                case InSpace:
+                    isInSpace = sceneSpace.Update();
+                    break;
+
+                case OnPlanet :
+                    isInSpace = scenePlanet.Update();
+                    break;
+
+                default:
+                    break;
             }
 
             base.Update(gameTime);
@@ -75,28 +94,34 @@ namespace SpaceGame
 
         protected override void Draw(GameTime gameTime)
         {
-            if (isInSpace)
+            switch (isInSpace)
             {
-                GraphicsDevice.Clear(Color.Black);
-            }
+                case InSpace:
+                    GraphicsDevice.Clear(Color.Black);
+                    break;
 
-            else
-            {
-                GraphicsDevice.Clear(sceneSpace.GetCollidedPlanetColor());
+                case OnPlanet:
+                    GraphicsDevice.Clear(sceneSpace.GetCollidedPlanet().GetPlanetColor());
+                    break;
+
+                default :
+                    break;
             }
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            if (isInSpace)
+            switch (isInSpace)
             {
-                foreach (Planet planet in sceneSpace.GetPlanets())
-                {
-                    planet.UpdatePlanetLocation();
-                    _spriteBatch.Draw(planet.GetPlanetSize(), planet.GetPlanetLocation(), planet.GetPlanetColor());
-                }
+                case InSpace:
+                    sceneSpace.Draw(_spriteBatch);
+                    break;
 
-                _spriteBatch.Draw(myShip, sceneSpace.GetMyShipPos(), Color.White);
+                case OnPlanet:
+                    break;
+
+                default:
+                    break;
             }
 
             _spriteBatch.End();

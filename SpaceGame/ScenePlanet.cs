@@ -8,6 +8,14 @@ namespace SpaceGame
 {
     internal class ScenePlanet
     {
+        public void Initialize()
+        {
 
+        }
+
+        public int Update()
+        {
+            return 2;
+        }
     }
 }

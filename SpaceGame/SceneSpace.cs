@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame
 {
@@ -21,7 +22,7 @@ namespace SpaceGame
         DateTime nextPlanetTimeStamp;
         int randomNumber, windowHeight, windowWidth;
         Rectangle myShipHitBox, planetHitBox;
-        Color planetColor;
+        Planet collidedPlanet;
 
         public SceneSpace(int windowHeight, int windowWidth)
         {
@@ -47,7 +48,7 @@ namespace SpaceGame
             myShipSpeed.Y = 2.5f;
         }
 
-        public bool Update()
+        public int Update()
         {
             SpawnPlanet();
             DeletePlanet();
@@ -55,15 +56,18 @@ namespace SpaceGame
             CheckMove();
             CheckBounds();
 
-            if (CheckPlanetCollision())
+            return CheckPlanetCollision();
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (Planet planet in space)
             {
-                return false;
+                planet.UpdatePlanetLocation();
+                spriteBatch.Draw(planet.GetPlanetSize(), planet.GetPlanetLocation(), planet.GetPlanetColor());
             }
 
-            else
-            {
-                return true;
-            }
+            spriteBatch.Draw(myShip, myShipPos, Color.White);
         }
 
         public void CheckMove()
@@ -154,7 +158,7 @@ namespace SpaceGame
             }
         }
 
-        private bool CheckPlanetCollision()
+        private int CheckPlanetCollision()
         {
             foreach (Planet planet in space.ToList())
             {
@@ -163,27 +167,17 @@ namespace SpaceGame
 
                 if (myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E))
                 {
-                    planetColor = planet.GetPlanetColor();
-                    return true;
+                    collidedPlanet = planet;
+                    return 2;
                 }
             }
 
-            return false;
+            return 1;
         }
 
-        public List<Planet> GetPlanets()
+        public Planet GetCollidedPlanet()
         {
-            return space.ToList();
-        }
-
-        public Vector2 GetMyShipPos()
-        {
-            return myShipPos;
-        }
-
-        public Color GetCollidedPlanetColor()
-        {
-            return planetColor;
+            return collidedPlanet;
         }
     }
 }
