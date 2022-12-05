@@ -12,51 +12,33 @@ namespace SpaceGame
 {
     internal class ScenePlanet
     {
-        int windowHeight, windowWidth, isInSpace = 2;
-        bool checkKeyDown;
+        const int InSpace = 1, OnPlanet = 2;
+        int windowHeight, windowWidth, scene = OnPlanet;
         DateTime leavePlanetCooldown;
 
         public ScenePlanet(int windowHeight, int windowWidth)
         {
             this.windowHeight = windowHeight;
             this.windowWidth = windowWidth;
+
+            leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, 5));
         }
 
         public void Initialize()
         {
-            checkKeyDown = false;
-            leavePlanetCooldown = DateTime.Now;
-            leavePlanetCooldown = leavePlanetCooldown.Add(new TimeSpan(0, 0, 5));
+
         }
 
         public int Update()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.E) && leavePlanetCooldown < DateTime.Now)
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.E) && DateTime.Now > leavePlanetCooldown)
             {
-                switch (checkKeyDown)
-                {
-                    case true:
-                        checkKeyDown = false;
-                        break;
-
-                    case false:
-                        checkKeyDown = true;
-                        break;
-                }
-
-                switch (checkKeyDown)
-                {
-                    case true:
-                        isInSpace = 1;
-                        break;
-
-                    case false:
-                        isInSpace = 2;
-                        break;
-                }
+                scene = InSpace;
             }
+            
 
-            return isInSpace;
+            return scene;
         }
 
         public void Draw(SpriteBatch spriteBatch)

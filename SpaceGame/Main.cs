@@ -21,7 +21,7 @@ namespace SpaceGame
         private SpriteBatch _spriteBatch;
         Texture2D myShip, bigPlanet, smallPlanet;
         Color planetColor;
-        int isInSpace = 1;
+        int scene = 1;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
         bool enteringPlanet;
@@ -40,7 +40,7 @@ namespace SpaceGame
 
             sceneSpace = new SceneSpace(Window.ClientBounds.Height, Window.ClientBounds.Width);
 
-            switch (isInSpace)
+            switch (scene)
             {
                 case InSpace:
                     sceneSpace.Initialize();
@@ -76,10 +76,10 @@ namespace SpaceGame
 
             // TODO: Add your update logic here
 
-            switch (isInSpace)
+            switch (scene)
             {
                 case InSpace:
-                    isInSpace = sceneSpace.Update();
+                    scene = sceneSpace.Update();
 
                     if (sceneSpace.GetEnteringPlanet())
                     {
@@ -88,8 +88,8 @@ namespace SpaceGame
 
                     break;
 
-                case OnPlanet :
-                    isInSpace = scenePlanet.Update();
+                case OnPlanet:
+                    scene = scenePlanet.Update();
                     break;
 
                 default:
@@ -101,7 +101,7 @@ namespace SpaceGame
 
         protected override void Draw(GameTime gameTime)
         {
-            switch (isInSpace)
+            switch (scene)
             {
                 case InSpace:
                     GraphicsDevice.Clear(Color.Black);
@@ -118,13 +118,14 @@ namespace SpaceGame
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            switch (isInSpace)
+            switch (scene)
             {
                 case InSpace:
                     sceneSpace.Draw(_spriteBatch);
                     break;
 
                 case OnPlanet:
+                    scenePlanet.Draw(_spriteBatch);
                     break;
 
                 default:
