@@ -8,6 +8,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms.VisualStyles;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame

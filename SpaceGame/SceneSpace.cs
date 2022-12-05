@@ -40,7 +40,7 @@ namespace SpaceGame
         public void Initialize()
         {
             nextPlanetTimeStamp = DateTime.Now;
-            nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new System.TimeSpan(0, 0, 5));
+            nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new TimeSpan(0, 0, 5));
 
             myShipPos.X = (windowWidth - 45) / 2;
             myShipPos.Y = (windowHeight - 48) / 2;
@@ -143,7 +143,7 @@ namespace SpaceGame
 
                 randomNumber = rnd.Next(5, 30);
                 nextPlanetTimeStamp = DateTime.Now;
-                nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new System.TimeSpan(0, 0, randomNumber));
+                nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new TimeSpan(0, 0, randomNumber));
             }
         }
 
@@ -165,7 +165,7 @@ namespace SpaceGame
                 myShipHitBox = new Rectangle(Convert.ToInt32(myShipPos.X), Convert.ToInt32(myShipPos.Y), myShip.Width, myShip.Height);
                 planetHitBox = new Rectangle(Convert.ToInt32(planet.GetPlanetLocation().X + myShip.Width), Convert.ToInt32(planet.GetPlanetLocation().Y + myShip.Height), planet.GetPlanetSize().Width - myShip.Width, planet.GetPlanetSize().Height - myShip.Height);
 
-                if (myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E))
+                if ((myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E)) && collidedPlanet != planet)
                 {
                     collidedPlanet = planet;
                     return 2;

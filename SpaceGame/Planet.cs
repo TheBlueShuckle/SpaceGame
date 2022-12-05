@@ -52,7 +52,7 @@ namespace SpaceGame
         private void GeneratePlanetLocation(int height, int width)
         {
             Random rnd = new Random();
-            int randomHeight = rnd.Next(size.Height, height), randomWidth = rnd.Next(0, width);
+            int randomHeight = rnd.Next(size.Height, height), randomWidth = rnd.Next(0 - (GetPlanetSize().Width / 2), width - (GetPlanetSize().Width / 2));
 
             location.Y = -randomHeight;
             location.X = randomWidth;
