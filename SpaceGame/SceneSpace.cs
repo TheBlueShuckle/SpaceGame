@@ -45,8 +45,8 @@ namespace SpaceGame
 
             myShipPos.X = (windowWidth - 45) / 2;
             myShipPos.Y = (windowHeight - 48) / 2;
-            myShipSpeed.X = 2.5f;
-            myShipSpeed.Y = 2.5f;
+            myShipSpeed.X = 5f;
+            myShipSpeed.Y = 5f;
         }
 
         public int Update()

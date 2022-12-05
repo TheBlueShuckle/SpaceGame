@@ -25,16 +25,12 @@ namespace SpaceGame
         public void Initialize()
         {
             checkKeyDown = false;
+            leavePlanetCooldown = DateTime.Now;
+            leavePlanetCooldown = leavePlanetCooldown.Add(new TimeSpan(0, 0, 5));
         }
 
-        public int Update(bool enteringPlanet)
+        public int Update()
         {
-            if (enteringPlanet)
-            {
-                leavePlanetCooldown = DateTime.Now;
-                leavePlanetCooldown = leavePlanetCooldown.Add(new TimeSpan(0, 0, 5));
-            }
-
             if (Keyboard.GetState().IsKeyDown(Keys.E) && leavePlanetCooldown < DateTime.Now)
             {
                 switch (checkKeyDown)
@@ -58,9 +54,6 @@ namespace SpaceGame
                         isInSpace = 2;
                         break;
                 }
-
-                leavePlanetCooldown = DateTime.Now;
-                leavePlanetCooldown = leavePlanetCooldown.Add(new TimeSpan(0, 0, 5));
             }
 
             return isInSpace;

@@ -38,7 +38,6 @@ namespace SpaceGame
         {
             // TODO: Add your initialization logic here
 
-            scenePlanet = new ScenePlanet(Window.ClientBounds.Height, Window.ClientBounds.Width);
             sceneSpace = new SceneSpace(Window.ClientBounds.Height, Window.ClientBounds.Width);
 
             switch (isInSpace)
@@ -81,11 +80,16 @@ namespace SpaceGame
             {
                 case InSpace:
                     isInSpace = sceneSpace.Update();
-                    enteringPlanet = sceneSpace.GetEnteringPlanet();
+
+                    if (sceneSpace.GetEnteringPlanet())
+                    {
+                        scenePlanet = new ScenePlanet(Window.ClientBounds.Height, Window.ClientBounds.Width);
+                    }
+
                     break;
 
                 case OnPlanet :
-                    isInSpace = scenePlanet.Update(enteringPlanet);
+                    isInSpace = scenePlanet.Update();
                     break;
 
                 default:
