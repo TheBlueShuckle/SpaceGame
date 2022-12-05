@@ -23,6 +23,7 @@ namespace SpaceGame
         int randomNumber, windowHeight, windowWidth;
         Rectangle myShipHitBox, planetHitBox;
         Planet collidedPlanet;
+        bool enteringPlanet = false;
 
         public SceneSpace(int windowHeight, int windowWidth)
         {
@@ -50,6 +51,8 @@ namespace SpaceGame
 
         public int Update()
         {
+            enteringPlanet = false;
+
             SpawnPlanet();
             DeletePlanet();
 
@@ -167,6 +170,7 @@ namespace SpaceGame
 
                 if ((myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E)) && collidedPlanet != planet)
                 {
+                    enteringPlanet = true;
                     collidedPlanet = planet;
                     return 2;
                 }
@@ -178,6 +182,11 @@ namespace SpaceGame
         public Planet GetCollidedPlanet()
         {
             return collidedPlanet;
+        }
+
+        public bool GetEnteringPlanet()
+        {
+            return enteringPlanet;
         }
     }
 }

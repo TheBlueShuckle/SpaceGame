@@ -24,6 +24,7 @@ namespace SpaceGame
         int isInSpace = 1;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
+        bool enteringPlanet;
 
         public Main()
         {
@@ -80,10 +81,11 @@ namespace SpaceGame
             {
                 case InSpace:
                     isInSpace = sceneSpace.Update();
+                    enteringPlanet = sceneSpace.GetEnteringPlanet();
                     break;
 
                 case OnPlanet :
-                    isInSpace = scenePlanet.Update();
+                    isInSpace = scenePlanet.Update(enteringPlanet);
                     break;
 
                 default:
