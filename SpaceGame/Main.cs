@@ -19,12 +19,10 @@ namespace SpaceGame
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D myShip, bigPlanet, smallPlanet;
-        Color planetColor;
+        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
         int scene = 1;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
-        bool enteringPlanet;
 
         public Main()
         {
@@ -62,11 +60,12 @@ namespace SpaceGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            myShip = Content.Load<Texture2D>("Sprites/myShip");
+            myShipFrame1 = Content.Load<Texture2D>("Sprites/myShipFrame1");
+            myShipFrame2 = Content.Load<Texture2D>("Sprites/myShipFrame2");
             bigPlanet = Content.Load<Texture2D>("Sprites/bigPlanet");
             smallPlanet = Content.Load<Texture2D>("Sprites/smallPlanet");
 
-            sceneSpace.SetTextures(myShip, bigPlanet, smallPlanet); 
+            sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet); 
         }
 
         protected override void Update(GameTime gameTime)
