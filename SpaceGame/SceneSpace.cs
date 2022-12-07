@@ -1,25 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame
 {
     internal class SceneSpace
     {
-        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
+        Texture2D myShip, myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
         Vector2 myShipPos;
         Vector2 myShipSpeed;
         Random rnd = new Random();
         List<Planet> space = new List<Planet>();
-        DateTime nextPlanetTimeStamp;
+        DateTime nextPlanetTimeStamp, nextShipFrame;
         int randomNumber, windowHeight, windowWidth;
         Rectangle myShipHitBox, planetHitBox;
         Planet collidedPlanet;
@@ -29,6 +25,7 @@ namespace SpaceGame
         {
             this.windowHeight = windowHeight;
             this.windowWidth = windowWidth;
+            nextShipFrame = DateTime.Now.AddSeconds(0.5);
         }
 
         public void SetTextures(Texture2D myShipFrame1, Texture2D myShipFrame2, Texture2D bigPlanet, Texture2D smallPlanet)
@@ -37,6 +34,7 @@ namespace SpaceGame
             this.myShipFrame2 = myShipFrame2;
             this.bigPlanet = bigPlanet;
             this.smallPlanet = smallPlanet;
+            this.myShip = myShipFrame1;
         }
 
         public void Initialize()
@@ -52,6 +50,12 @@ namespace SpaceGame
         public int Update()
         {
             enteringPlanet = false;
+
+            if (DateTime.Now > nextShipFrame)
+            {
+                myShip = myShip == myShipFrame1 ? myShipFrame2 : myShipFrame1;
+                nextShipFrame = DateTime.Now.AddSeconds(0.5);
+            }
 
             SpawnPlanet();
             DeletePlanet();
@@ -70,7 +74,7 @@ namespace SpaceGame
                 spriteBatch.Draw(planet.GetPlanetSize(), planet.GetPlanetLocation(), planet.GetPlanetColor());
             }
 
-            spriteBatch.Draw(myShipFrame1, myShipPos, Color.White);
+            spriteBatch.Draw(myShip, myShipPos, Color.White);
         }
 
         public void CheckMove()

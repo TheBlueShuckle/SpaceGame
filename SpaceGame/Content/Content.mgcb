@@ -25,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/bigPlanet.png
 
-#begin Sprites/myShip.png
+#begin Sprites/myShipFrame1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,9 +35,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/myShip.png;Sprites/myShipFrame1.png
+/build:Sprites/myShipFrame1.png
 
-#begin Sprites/pixil-frame-1.png
+#begin Sprites/myShipFrame2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,7 +47,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/pixil-frame-1.png;Sprites/myShipFrame2.png
+/build:Sprites/myShipFrame2.png
 
 #begin Sprites/smallPlanet.png
 /importer:TextureImporter
