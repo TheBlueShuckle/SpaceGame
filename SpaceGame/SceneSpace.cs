@@ -25,7 +25,6 @@ namespace SpaceGame
         {
             this.windowHeight = windowHeight;
             this.windowWidth = windowWidth;
-            nextShipFrame = DateTime.Now.AddSeconds(0.5);
         }
 
         public void SetTextures(Texture2D myShipFrame1, Texture2D myShipFrame2, Texture2D bigPlanet, Texture2D smallPlanet)
@@ -34,7 +33,6 @@ namespace SpaceGame
             this.myShipFrame2 = myShipFrame2;
             this.bigPlanet = bigPlanet;
             this.smallPlanet = smallPlanet;
-            this.myShip = myShipFrame1;
         }
 
         public void Initialize()
@@ -51,11 +49,7 @@ namespace SpaceGame
         {
             enteringPlanet = false;
 
-            if (DateTime.Now > nextShipFrame)
-            {
-                myShip = myShip == myShipFrame1 ? myShipFrame2 : myShipFrame1;
-                nextShipFrame = DateTime.Now.AddSeconds(0.5);
-            }
+            AnimateMyShip();
 
             SpawnPlanet();
             DeletePlanet();
@@ -157,7 +151,7 @@ namespace SpaceGame
         {
             foreach (Planet planet in space.ToList())
             {
-                if (planet.GetPlanetLocation().Y == windowHeight)
+                if (planet.GetPlanetLocation().Y >= windowHeight)
                 {
                     space.Remove(planet);
                 }
@@ -180,6 +174,15 @@ namespace SpaceGame
             }
 
             return 1;
+        }
+
+        private void AnimateMyShip()
+        {
+            if (DateTime.Now > nextShipFrame)
+            {
+                myShip = myShip == myShipFrame1 ? myShipFrame2 : myShipFrame1;
+                nextShipFrame = DateTime.Now.AddSeconds(0.5);
+            }
         }
 
         public Planet GetCollidedPlanet()
