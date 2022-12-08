@@ -66,7 +66,7 @@ namespace SpaceGame
         private void GeneratePlanetSpeed()
         {
             Random rnd = new Random();
-            int randomY = rnd.Next(10, 45);
+            int randomY = rnd.Next(Constants.PlanetMinSpeed, Constants.PlanetMaxSpeed);
 
             planetSpeed.Y = randomY/10;
         }

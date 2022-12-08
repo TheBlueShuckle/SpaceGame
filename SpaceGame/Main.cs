@@ -15,8 +15,6 @@ namespace SpaceGame
 {
     public class Main : Game
     {
-        const int InSpace = 1, OnPlanet = 2;
-
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
@@ -41,11 +39,11 @@ namespace SpaceGame
 
             switch (scene)
             {
-                case InSpace:
+                case Constants.InSpace:
                     sceneSpace.Initialize();
                     break;
 
-                case OnPlanet:
+                case Constants.OnPlanet:
                     scenePlanet.Initialize();
                     break;
 
@@ -82,7 +80,7 @@ namespace SpaceGame
 
             switch (scene)
             {
-                case InSpace:
+                case Constants.InSpace:
                     scene = sceneSpace.Update();
 
                     if (sceneSpace.GetEnteringPlanet())
@@ -92,7 +90,7 @@ namespace SpaceGame
 
                     break;
 
-                case OnPlanet:
+                case Constants.OnPlanet:
                     scene = scenePlanet.Update();
                     break;
 
@@ -107,11 +105,11 @@ namespace SpaceGame
         {
             switch (scene)
             {
-                case InSpace:
+                case Constants.InSpace:
                     GraphicsDevice.Clear(Color.Black);
                     break;
 
-                case OnPlanet:
+                case Constants.OnPlanet:
                     GraphicsDevice.Clear(sceneSpace.GetCollidedPlanet().GetPlanetColor());
                     break;
 
@@ -124,11 +122,11 @@ namespace SpaceGame
 
             switch (scene)
             {
-                case InSpace:
+                case Constants.InSpace:
                     sceneSpace.Draw(_spriteBatch);
                     break;
 
-                case OnPlanet:
+                case Constants.OnPlanet:
                     scenePlanet.Draw(_spriteBatch);
                     break;
 
