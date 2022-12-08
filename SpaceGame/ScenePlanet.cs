@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
+using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 
 namespace SpaceGame
 {
@@ -20,6 +21,7 @@ namespace SpaceGame
         Vector2 protagonistPos;
         Vector2 protagonistSpeed;
         Rectangle protagonistHitBox;
+        MouseState mouseState;
 
         public ScenePlanet(int windowHeight, int windowWidth, Texture2D[] protagonistSprites)
         {
@@ -34,7 +36,7 @@ namespace SpaceGame
             protagonistSpeed.X = Constants.ProtagonistSpeedConst;
             protagonistSpeed.Y = Constants.ProtagonistSpeedConst;
 
-            leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, 5));
+            leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetMinWait));
         }
 
         public void Initialize()
@@ -50,8 +52,33 @@ namespace SpaceGame
                 scene = Constants.InSpace;
             }
 
+            MouseState mouseState = Mouse.GetState();
+
             CheckMove();
             CheckBounds();
+
+            if(mouseState.X >= (protagonistPos.X + (protagonist.Width / 2)))
+            {
+                if(protagonist == protagonistSprites[2] || protagonist == protagonistSprites[3])
+                {
+                    protagonist = protagonistSprites[2];
+                }
+
+                else
+                {
+                    protagonist = protagonistSprites[1];
+                }
+            }
+
+            else if (protagonist == protagonistSprites[2] || protagonist == protagonistSprites[3])
+            {
+                protagonist = protagonistSprites[3];
+            }
+
+            else
+            {
+                protagonist = protagonistSprites[0];
+            }
 
             return scene;
         }
@@ -77,11 +104,31 @@ namespace SpaceGame
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 protagonistPos.Y -= protagonistSpeed.Y;
+
+                if (protagonist == protagonistSprites[2] ||protagonist == protagonistSprites[1])
+                {
+                    protagonist = protagonistSprites[2];
+                }
+
+                else
+                {
+                    protagonist = protagonistSprites[3];
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 protagonistPos.Y += protagonistSpeed.Y;
+
+                if (protagonist == protagonistSprites[2] || protagonist == protagonistSprites[1])
+                {
+                    protagonist = protagonistSprites[1];
+                }
+
+                else
+                {
+                    protagonist = protagonistSprites[0];
+                }
             }
         }
 
