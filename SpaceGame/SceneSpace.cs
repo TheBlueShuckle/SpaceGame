@@ -31,18 +31,21 @@ namespace SpaceGame
         {
             this.myShipFrame1 = myShipFrame1;
             this.myShipFrame2 = myShipFrame2;
+            myShip = myShipFrame1;
+
+            myShipPos.X = (windowWidth - myShip.Width) / 2;
+            myShipPos.Y = (windowHeight - myShip.Height) / 2;
+
             this.bigPlanet = bigPlanet;
             this.smallPlanet = smallPlanet;
         }
 
         public void Initialize()
         {
-            nextPlanetTimeStamp = DateTime.Now.Add(new TimeSpan(0, 0, 3));
+            nextPlanetTimeStamp = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetMinWait));
 
-            myShipPos.X = (windowWidth - 45) / 2;
-            myShipPos.Y = (windowHeight - 48) / 2;
-            myShipSpeed.X = 5f;
-            myShipSpeed.Y = 5f;
+            myShipSpeed.X = Constants.MyShipSpeedConst;
+            myShipSpeed.Y = Constants.MyShipSpeedConst;
         }
 
         public int Update()
@@ -75,22 +78,22 @@ namespace SpaceGame
         {
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                myShipPos.X -= myShipSpeed.X;
+                myShipPos.X -= Constants.MyShipSpeedConst;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                myShipPos.X += myShipSpeed.X;
+                myShipPos.X += Constants.MyShipSpeedConst;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                myShipPos.Y -= myShipSpeed.Y;
+                myShipPos.Y -= Constants.MyShipSpeedConst;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                myShipPos.Y += myShipSpeed.Y;
+                myShipPos.Y += Constants.MyShipSpeedConst;
             }
         }
 
@@ -113,7 +116,7 @@ namespace SpaceGame
 
             else
             {
-                myShipSpeed.X = 2.5f;
+                myShipSpeed.X = Constants.MyShipSpeedConst;
             }
 
             if ((myShipPos.Y >= (windowHeight - 100 - myShipFrame1.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W)))
@@ -132,7 +135,7 @@ namespace SpaceGame
             }
             else
             {
-                myShipSpeed.Y = 2.5f;
+                myShipSpeed.Y = Constants.MyShipSpeedConst;
             }
         }
 
@@ -142,7 +145,7 @@ namespace SpaceGame
             {
                 space.Add(new Planet(bigPlanet, smallPlanet, windowHeight, windowWidth));
 
-                randomNumber = rnd.Next(5, 20);
+                randomNumber = rnd.Next(Constants.PlanetMinWait, Constants.PlanetMaxWait);
                 nextPlanetTimeStamp = DateTime.Now.Add(new TimeSpan(0, 0, randomNumber));
             }
         }
@@ -169,11 +172,11 @@ namespace SpaceGame
                 {
                     enteringPlanet = true;
                     collidedPlanet = planet;
-                    return 2;
+                    return Constants.OnPlanet;
                 }
             }
 
-            return 1;
+            return Constants.InSpace;
         }
 
         private void AnimateMyShip()

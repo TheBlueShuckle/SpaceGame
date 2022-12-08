@@ -20,6 +20,7 @@ namespace SpaceGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
+        Texture2D[] protagonistSprites = new Texture2D[4];
         int scene = 1;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
@@ -64,6 +65,10 @@ namespace SpaceGame
             myShipFrame2 = Content.Load<Texture2D>("Sprites/myShipFrame2");
             bigPlanet = Content.Load<Texture2D>("Sprites/bigPlanet");
             smallPlanet = Content.Load<Texture2D>("Sprites/smallPlanet");
+            protagonistSprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
+            protagonistSprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
+            protagonistSprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
+            protagonistSprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
 
             sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet); 
         }
@@ -82,7 +87,7 @@ namespace SpaceGame
 
                     if (sceneSpace.GetEnteringPlanet())
                     {
-                        scenePlanet = new ScenePlanet(Window.ClientBounds.Height, Window.ClientBounds.Width);
+                        scenePlanet = new ScenePlanet(Window.ClientBounds.Height, Window.ClientBounds.Width, protagonistSprites);
                     }
 
                     break;
