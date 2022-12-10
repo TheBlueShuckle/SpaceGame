@@ -28,20 +28,7 @@ namespace SpaceGame
             // TODO: Add your initialization logic here
 
             sceneSpace = new SceneSpace(Window.ClientBounds.Height, Window.ClientBounds.Width);
-
-            switch (scene)
-            {
-                case Constants.InSpace:
-                    sceneSpace.Initialize();
-                    break;
-
-                case Constants.OnPlanet:
-                    scenePlanet.Initialize();
-                    break;
-
-                default:
-                    break;
-            }
+            sceneSpace.Initialize();
 
             base.Initialize();
         }
