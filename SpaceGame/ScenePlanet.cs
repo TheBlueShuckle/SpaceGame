@@ -33,10 +33,10 @@ namespace SpaceGame
             protagonistPos.Y = (windowHeight - protagonist.Height) / 2;
             protagonistPos.X = (windowWidth - protagonist.Width) / 2;
 
-            protagonistSpeed.X = Constants.ProtagonistSpeedConst;
-            protagonistSpeed.Y = Constants.ProtagonistSpeedConst;
+            protagonistSpeed.X = Constants.ProtagonistSpeed;
+            protagonistSpeed.Y = Constants.ProtagonistSpeed;
 
-            leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetMinWait));
+            leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetWaitSecondsMin));
         }
 
         public void Initialize()
@@ -151,7 +151,7 @@ namespace SpaceGame
 
             else
             {
-                protagonistSpeed.X = Constants.ProtagonistSpeedConst;
+                protagonistSpeed.X = Constants.ProtagonistSpeed;
             }
 
             if ((protagonistPos.Y >= (windowHeight - protagonist.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (protagonistPos.Y <= 0 && Keyboard.GetState().IsKeyDown(Keys.W)))
@@ -170,7 +170,7 @@ namespace SpaceGame
             }
             else
             {
-                protagonistSpeed.Y = Constants.ProtagonistSpeedConst;
+                protagonistSpeed.Y = Constants.ProtagonistSpeed;
             }
         }
     }

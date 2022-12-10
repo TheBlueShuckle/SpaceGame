@@ -42,10 +42,10 @@ namespace SpaceGame
 
         public void Initialize()
         {
-            nextPlanetTimeStamp = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetMinWait));
+            nextPlanetTimeStamp = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetWaitSecondsMin));
 
-            myShipSpeed.X = Constants.MyShipSpeedConst;
-            myShipSpeed.Y = Constants.MyShipSpeedConst;
+            myShipSpeed.X = Constants.MyShipSpeed;
+            myShipSpeed.Y = Constants.MyShipSpeed;
         }
 
         public int Update()
@@ -78,22 +78,22 @@ namespace SpaceGame
         {
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                myShipPos.X -= Constants.MyShipSpeedConst;
+                myShipPos.X -= Constants.MyShipSpeed;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                myShipPos.X += Constants.MyShipSpeedConst;
+                myShipPos.X += Constants.MyShipSpeed;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                myShipPos.Y -= Constants.MyShipSpeedConst;
+                myShipPos.Y -= Constants.MyShipSpeed;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                myShipPos.Y += Constants.MyShipSpeedConst;
+                myShipPos.Y += Constants.MyShipSpeed;
             }
         }
 
@@ -116,7 +116,7 @@ namespace SpaceGame
 
             else
             {
-                myShipSpeed.X = Constants.MyShipSpeedConst;
+                myShipSpeed.X = Constants.MyShipSpeed;
             }
 
             if ((myShipPos.Y >= (windowHeight - 100 - myShipFrame1.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W)))
@@ -135,7 +135,7 @@ namespace SpaceGame
             }
             else
             {
-                myShipSpeed.Y = Constants.MyShipSpeedConst;
+                myShipSpeed.Y = Constants.MyShipSpeed;
             }
         }
 
@@ -145,7 +145,7 @@ namespace SpaceGame
             {
                 space.Add(new Planet(bigPlanet, smallPlanet, windowHeight, windowWidth));
 
-                randomNumber = rnd.Next(Constants.PlanetMinWait, Constants.PlanetMaxWait);
+                randomNumber = rnd.Next(Constants.PlanetWaitSecondsMin, Constants.PlanetWaitSecondsMax);
                 nextPlanetTimeStamp = DateTime.Now.Add(new TimeSpan(0, 0, randomNumber));
             }
         }

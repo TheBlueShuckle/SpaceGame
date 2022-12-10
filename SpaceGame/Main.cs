@@ -11,7 +11,7 @@ namespace SpaceGame
         private SpriteBatch _spriteBatch;
         Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
         Texture2D[] protagonistSprites = new Texture2D[4];
-        int scene = 1;
+        int scene = Constants.InSpace;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
 
