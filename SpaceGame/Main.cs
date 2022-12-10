@@ -1,14 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using SharpDX.Direct2D1;
-using SharpDX.XAudio2;
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms.VisualStyles;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame
@@ -39,19 +31,7 @@ namespace SpaceGame
 
             sceneSpace = new SceneSpace(Window.ClientBounds.Height, Window.ClientBounds.Width);
 
-            switch (scene)
-            {
-                case InSpace:
-                    sceneSpace.Initialize();
-                    break;
-
-                case OnPlanet:
-                    scenePlanet.Initialize();
-                    break;
-
-                default:
-                    break;
-            }
+            sceneSpace.Initialize();
 
             base.Initialize();
         }
@@ -70,7 +50,7 @@ namespace SpaceGame
             protagonistSprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
             protagonistSprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
 
-            sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet); 
+            sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
         }
 
         protected override void Update(GameTime gameTime)
@@ -115,7 +95,7 @@ namespace SpaceGame
                     GraphicsDevice.Clear(sceneSpace.GetCollidedPlanet().GetPlanetColor());
                     break;
 
-                default :
+                default:
                     break;
             }
 
