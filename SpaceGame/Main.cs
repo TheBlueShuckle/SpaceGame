@@ -31,11 +31,11 @@ namespace SpaceGame
 
             switch (scene)
             {
-                case InSpace:
+                case Constants.InSpace:
                     sceneSpace.Initialize();
                     break;
 
-                case OnPlanet:
+                case Constants.OnPlanet:
                     scenePlanet.Initialize();
                     break;
 
