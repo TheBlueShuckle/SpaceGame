@@ -1,12 +1,9 @@
-﻿using Microsoft.VisualBasic.Devices;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 
@@ -16,14 +13,16 @@ namespace SpaceGame
     {
         int windowHeight, windowWidth, scene = Constants.OnPlanet;
         DateTime leavePlanetCooldown;
-        Texture2D protagonist;
-        Texture2D[] protagonistSprites;
-        Vector2 protagonistPos;
-        Vector2 protagonistSpeed;
-        Rectangle protagonistHitBox;
+        Texture2D protagonist, enemy;
+        Texture2D[] protagonistSprites, enemySprites;
+        Vector2 protagonistPos, enemyPos;
+        Vector2 protagonistSpeed, enemySpeed;
+        Rectangle protagonistHitBox, enemyHitBox;
         MouseState mouseState;
+        List<Vector2> enemyPosList = new List<Vector2>();
+        Random rnd = new Random();
 
-        public ScenePlanet(int windowHeight, int windowWidth, Texture2D[] protagonistSprites)
+        public ScenePlanet(int windowHeight, int windowWidth, Texture2D[] protagonistSprites, Texture2D[] enemySprites)
         {
             this.windowHeight = windowHeight;
             this.windowWidth = windowWidth;
@@ -36,44 +35,64 @@ namespace SpaceGame
             protagonistSpeed.X = Constants.ProtagonistSpeed;
             protagonistSpeed.Y = Constants.ProtagonistSpeed;
 
+
+
             leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetWaitSecondsMin));
         }
 
         public int Update()
         {
-            
             if (Keyboard.GetState().IsKeyDown(Keys.E) && DateTime.Now > leavePlanetCooldown)
             {
                 scene = Constants.InSpace;
             }
 
-            MouseState mouseState = Mouse.GetState();
+            while (enemyPosList.Count <= 5)
+            {
+                enemyPos.X = rnd.Next(0, windowWidth);
+                enemyPos.Y = rnd.Next(0, windowHeight);
+                enemyPosList.Add(enemyPos);
+            }
+
+            foreach (Vector2 enemy in enemyPosList.ToList())
+            {
+                if(enemy.X > protagonistPos.X)
+                {
+                    enemySpeed.X = 1.5f;
+                    enemySpeed.Y = 0;
+
+                    enemyPosList[enemyPosList.IndexOf(enemy)] -= enemySpeed;
+                }
+
+                if (protagonistPos.X > enemy.X)
+                {
+                    enemySpeed.X = 1.5f;
+                    enemySpeed.Y = 0;
+
+                    enemyPosList[enemyPosList.IndexOf(enemy)] += enemySpeed;
+                }
+
+                if (enemy.Y > protagonistPos.Y)
+                {
+                    enemySpeed.X = 0;
+                    enemySpeed.Y = 1.5f;
+
+                    enemyPosList[enemyPosList.IndexOf(enemy)] -= enemySpeed;
+                }
+
+                if (protagonistPos.X > enemy.X)
+                {
+                    enemySpeed.X = 0;
+                    enemySpeed.Y = 1.5f;
+
+                    enemyPosList[enemyPosList.IndexOf(enemy)] += enemySpeed;
+                }
+            }
 
             CheckMove();
             CheckBounds();
 
-            if(mouseState.X >= (protagonistPos.X + (protagonist.Width / 2)))
-            {
-                if(protagonist == protagonistSprites[2] || protagonist == protagonistSprites[3])
-                {
-                    protagonist = protagonistSprites[2];
-                }
-
-                else
-                {
-                    protagonist = protagonistSprites[1];
-                }
-            }
-
-            else if (protagonist == protagonistSprites[2] || protagonist == protagonistSprites[3])
-            {
-                protagonist = protagonistSprites[3];
-            }
-
-            else
-            {
-                protagonist = protagonistSprites[0];
-            }
+            ChangeProtagonistSprite();
 
             return scene;
         }
@@ -81,6 +100,11 @@ namespace SpaceGame
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(protagonist, protagonistPos, Color.White);
+
+            foreach (Vector2 enemy in enemyPosList)
+            {
+                spriteBatch.Draw(this.enemy, enemy, Color.Green);
+            }
         }
 
         public void CheckMove()
@@ -100,7 +124,7 @@ namespace SpaceGame
             {
                 protagonistPos.Y -= protagonistSpeed.Y;
 
-                if (protagonist == protagonistSprites[2] ||protagonist == protagonistSprites[1])
+                if (protagonist == protagonistSprites[2] || protagonist == protagonistSprites[1])
                 {
                     protagonist = protagonistSprites[2];
                 }
@@ -166,6 +190,34 @@ namespace SpaceGame
             else
             {
                 protagonistSpeed.Y = Constants.ProtagonistSpeed;
+            }
+        }
+
+        private void ChangeProtagonistSprite()
+        {
+            MouseState mouseState = Mouse.GetState();
+
+            if (mouseState.X >= (protagonistPos.X + (protagonist.Width / 2)))
+            {
+                if (protagonist == protagonistSprites[2] || protagonist == protagonistSprites[3])
+                {
+                    protagonist = protagonistSprites[2];
+                }
+
+                else
+                {
+                    protagonist = protagonistSprites[1];
+                }
+            }
+
+            else if (protagonist == protagonistSprites[2] || protagonist == protagonistSprites[3])
+            {
+                protagonist = protagonistSprites[3];
+            }
+
+            else
+            {
+                protagonist = protagonistSprites[0];
             }
         }
     }
