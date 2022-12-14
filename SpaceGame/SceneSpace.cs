@@ -16,15 +16,14 @@ namespace SpaceGame
         Random rnd = new Random();
         List<Planet> space = new List<Planet>();
         DateTime nextPlanetTimeStamp, nextShipFrame;
-        int randomNumber, windowHeight, windowWidth;
+        int randomNumber;
         Rectangle myShipHitBox, planetHitBox;
         Planet collidedPlanet;
         bool enteringPlanet = false;
 
-        public SceneSpace(int windowHeight, int windowWidth)
+        public SceneSpace()
         {
-            this.windowHeight = windowHeight;
-            this.windowWidth = windowWidth;
+
         }
 
         public void SetTextures(Texture2D myShipFrame1, Texture2D myShipFrame2, Texture2D bigPlanet, Texture2D smallPlanet)
@@ -33,8 +32,8 @@ namespace SpaceGame
             this.myShipFrame2 = myShipFrame2;
             myShip = myShipFrame1;
 
-            myShipPos.X = (windowWidth - myShip.Width) / 2;
-            myShipPos.Y = (windowHeight - myShip.Height) / 2;
+            myShipPos.X = (GlobalConstants.ScreenWidth - myShip.Width) / 2;
+            myShipPos.Y = (GlobalConstants.ScreenHeight - myShip.Height) / 2;
 
             this.bigPlanet = bigPlanet;
             this.smallPlanet = smallPlanet;
@@ -42,10 +41,10 @@ namespace SpaceGame
 
         public void Initialize()
         {
-            nextPlanetTimeStamp = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetWaitSecondsMin));
+            nextPlanetTimeStamp = DateTime.Now.Add(new TimeSpan(0, 0, GlobalConstants.PlanetWaitSecondsMin));
 
-            myShipSpeed.X = Constants.MyShipSpeed;
-            myShipSpeed.Y = Constants.MyShipSpeed;
+            myShipSpeed.X = GlobalConstants.MyShipSpeed;
+            myShipSpeed.Y = GlobalConstants.MyShipSpeed;
         }
 
         public int Update()
@@ -78,37 +77,37 @@ namespace SpaceGame
         {
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                myShipPos.X -= Constants.MyShipSpeed;
+                myShipPos.X -= GlobalConstants.MyShipSpeed;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                myShipPos.X += Constants.MyShipSpeed;
+                myShipPos.X += GlobalConstants.MyShipSpeed;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                myShipPos.Y -= Constants.MyShipSpeed;
+                myShipPos.Y -= GlobalConstants.MyShipSpeed;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                myShipPos.Y += Constants.MyShipSpeed;
+                myShipPos.Y += GlobalConstants.MyShipSpeed;
             }
         }
 
         public void CheckBounds()
         {
-            if ((myShipPos.X >= (windowWidth - myShipFrame1.Width) && Keyboard.GetState().IsKeyDown(Keys.D)) || (myShipPos.X <= 0 && Keyboard.GetState().IsKeyDown(Keys.A)))
+            if ((myShipPos.X >= (GlobalConstants.ScreenWidth - myShipFrame1.Width) && Keyboard.GetState().IsKeyDown(Keys.D)) || (myShipPos.X <= 0 && Keyboard.GetState().IsKeyDown(Keys.A)))
             {
                 if (myShipPos.X < 0)
                 {
                     myShipPos.X = 0;
                 }
 
-                if (myShipPos.X >= windowWidth - myShipFrame1.Width)
+                if (myShipPos.X >= GlobalConstants.ScreenWidth - myShipFrame1.Width)
                 {
-                    myShipPos.X = windowWidth - myShipFrame1.Width;
+                    myShipPos.X = GlobalConstants.ScreenWidth - myShipFrame1.Width;
                 }
 
                 myShipSpeed.X = 0;
@@ -116,26 +115,26 @@ namespace SpaceGame
 
             else
             {
-                myShipSpeed.X = Constants.MyShipSpeed;
+                myShipSpeed.X = GlobalConstants.MyShipSpeed;
             }
 
-            if ((myShipPos.Y >= (windowHeight - 100 - myShipFrame1.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W)))
+            if ((myShipPos.Y >= (GlobalConstants.ScreenHeight - 100 - myShipFrame1.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W)))
             {
                 if (myShipPos.Y < 100)
                 {
                     myShipPos.Y = 100;
                 }
 
-                if (myShipPos.Y >= windowHeight - 100 - myShipFrame1.Height)
+                if (myShipPos.Y >= GlobalConstants.ScreenHeight - 100 - myShipFrame1.Height)
                 {
-                    myShipPos.Y = windowHeight - 100 - myShipFrame1.Height;
+                    myShipPos.Y = GlobalConstants.ScreenHeight - 100 - myShipFrame1.Height;
                 }
 
                 myShipSpeed.Y = 0;
             }
             else
             {
-                myShipSpeed.Y = Constants.MyShipSpeed;
+                myShipSpeed.Y = GlobalConstants.MyShipSpeed;
             }
         }
 
@@ -143,9 +142,9 @@ namespace SpaceGame
         {
             if (nextPlanetTimeStamp < DateTime.Now && space.Count < 5)
             {
-                space.Add(new Planet(bigPlanet, smallPlanet, windowHeight, windowWidth));
+                space.Add(new Planet(bigPlanet, smallPlanet));
 
-                randomNumber = rnd.Next(Constants.PlanetWaitSecondsMin, Constants.PlanetWaitSecondsMax);
+                randomNumber = rnd.Next(GlobalConstants.PlanetWaitSecondsMin, GlobalConstants.PlanetWaitSecondsMax);
                 nextPlanetTimeStamp = DateTime.Now.Add(new TimeSpan(0, 0, randomNumber));
             }
         }
@@ -154,7 +153,7 @@ namespace SpaceGame
         {
             foreach (Planet planet in space.ToList())
             {
-                if (planet.GetPlanetLocation().Y >= windowHeight)
+                if (planet.GetPlanetLocation().Y >= GlobalConstants.ScreenHeight)
                 {
                     space.Remove(planet);
                 }
@@ -172,11 +171,11 @@ namespace SpaceGame
                 {
                     enteringPlanet = true;
                     collidedPlanet = planet;
-                    return Constants.OnPlanet;
+                    return GlobalConstants.OnPlanet;
                 }
             }
 
-            return Constants.InSpace;
+            return GlobalConstants.InSpace;
         }
 
         private void AnimateMyShip()

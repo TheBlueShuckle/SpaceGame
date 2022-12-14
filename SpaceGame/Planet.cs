@@ -20,14 +20,14 @@ namespace SpaceGame
         Vector2 location;
         Vector2 planetSpeed;
 
-        public Planet(Texture2D bigPlanet, Texture2D smallPlanet, int windowHeight, int windowWidth)
+        public Planet(Texture2D bigPlanet, Texture2D smallPlanet)
         {
             this.bigPlanet = bigPlanet;
             this.smallPlanet = smallPlanet;
 
             GeneratePlanetColor();
             GeneratePlanetSize();
-            GeneratePlanetLocation(windowHeight, windowWidth);
+            GeneratePlanetLocation();
             GeneratePlanetSpeed();
         }
 
@@ -49,10 +49,11 @@ namespace SpaceGame
             planetColor = colors[randomColor];
         }
 
-        private void GeneratePlanetLocation(int height, int width)
+        private void GeneratePlanetLocation()
         {
             Random rnd = new Random();
-            int randomHeight = rnd.Next(size.Height, height), randomWidth = rnd.Next(0 - (GetPlanetSize().Width / 2), width - (GetPlanetSize().Width / 2));
+            int randomHeight = rnd.Next(size.Height, (int) Math.Round(GlobalConstants.ScreenHeight));
+            int randomWidth = rnd.Next(0 - (GetPlanetSize().Width / 2), (int) Math.Round(GlobalConstants.ScreenWidth) - (GetPlanetSize().Width / 2));
 
             location.Y = -randomHeight;
             location.X = randomWidth;
@@ -66,7 +67,7 @@ namespace SpaceGame
         private void GeneratePlanetSpeed()
         {
             Random rnd = new Random();
-            int randomY = rnd.Next(Constants.PlanetMinSpeed, Constants.PlanetMaxSpeed);
+            int randomY = rnd.Next(GlobalConstants.PlanetMinSpeed, GlobalConstants.PlanetMaxSpeed);
 
             planetSpeed.Y = randomY/10;
         }

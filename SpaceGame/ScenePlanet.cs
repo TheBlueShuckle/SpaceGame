@@ -11,15 +11,15 @@ namespace SpaceGame
 {
     internal class ScenePlanet
     {
-        int windowHeight, windowWidth, scene = Constants.OnPlanet;
+        int windowHeight, windowWidth, scene = GlobalConstants.OnPlanet;
         DateTime leavePlanetCooldown;
-        Texture2D protagonist, enemy;
+        Texture2D protagonist;
         Texture2D[] protagonistSprites, enemySprites;
         Vector2 protagonistPos, enemyPos;
-        Vector2 protagonistSpeed, enemySpeed;
-        Rectangle protagonistHitBox, enemyHitBox;
+        Vector2 protagonistSpeed;
+        Rectangle protagonistHitBox;
         MouseState mouseState;
-        List<Vector2> enemyPosList = new List<Vector2>();
+        List<Enemy> enemies = new List<Enemy>();
         Random rnd = new Random();
 
         public ScenePlanet(int windowHeight, int windowWidth, Texture2D[] protagonistSprites, Texture2D[] enemySprites)
@@ -27,66 +27,35 @@ namespace SpaceGame
             this.windowHeight = windowHeight;
             this.windowWidth = windowWidth;
             this.protagonistSprites = protagonistSprites;
+            this.enemySprites = enemySprites;
             protagonist = protagonistSprites[0];
 
             protagonistPos.Y = (windowHeight - protagonist.Height) / 2;
             protagonistPos.X = (windowWidth - protagonist.Width) / 2;
 
-            protagonistSpeed.X = Constants.ProtagonistSpeed;
-            protagonistSpeed.Y = Constants.ProtagonistSpeed;
+            protagonistSpeed.X = GlobalConstants.ProtagonistSpeed;
+            protagonistSpeed.Y = GlobalConstants.ProtagonistSpeed;
 
 
 
-            leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetWaitSecondsMin));
+            leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, GlobalConstants.PlanetWaitSecondsMin));
         }
 
         public int Update()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.E) && DateTime.Now > leavePlanetCooldown)
             {
-                scene = Constants.InSpace;
+                scene = GlobalConstants.InSpace;
             }
 
-            while (enemyPosList.Count <= 5)
+            while (enemies.Count < 5)
             {
-                enemyPos.X = rnd.Next(0, windowWidth);
-                enemyPos.Y = rnd.Next(0, windowHeight);
-                enemyPosList.Add(enemyPos);
+                enemies.Add(new Enemy(enemySprites));
             }
 
-            foreach (Vector2 enemy in enemyPosList.ToList())
+            foreach (Enemy enemy in enemies.ToList())
             {
-                if(enemy.X > protagonistPos.X)
-                {
-                    enemySpeed.X = 1.5f;
-                    enemySpeed.Y = 0;
-
-                    enemyPosList[enemyPosList.IndexOf(enemy)] -= enemySpeed;
-                }
-
-                if (protagonistPos.X > enemy.X)
-                {
-                    enemySpeed.X = 1.5f;
-                    enemySpeed.Y = 0;
-
-                    enemyPosList[enemyPosList.IndexOf(enemy)] += enemySpeed;
-                }
-
-                if (enemy.Y > protagonistPos.Y)
-                {
-                    enemySpeed.X = 0;
-                    enemySpeed.Y = 1.5f;
-
-                    enemyPosList[enemyPosList.IndexOf(enemy)] -= enemySpeed;
-                }
-
-                if (protagonistPos.X > enemy.X)
-                {
-                    enemySpeed.X = 0;
-                    enemySpeed.Y = 1.5f;
-
-                    enemyPosList[enemyPosList.IndexOf(enemy)] += enemySpeed;
-                }
+                
             }
 
             CheckMove();
@@ -101,9 +70,9 @@ namespace SpaceGame
         {
             spriteBatch.Draw(protagonist, protagonistPos, Color.White);
 
-            foreach (Vector2 enemy in enemyPosList)
+            foreach (Enemy enemy in enemies)
             {
-                spriteBatch.Draw(this.enemy, enemy, Color.Green);
+                spriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
             }
         }
 
@@ -170,7 +139,7 @@ namespace SpaceGame
 
             else
             {
-                protagonistSpeed.X = Constants.ProtagonistSpeed;
+                protagonistSpeed.X = GlobalConstants.ProtagonistSpeed;
             }
 
             if ((protagonistPos.Y >= (windowHeight - protagonist.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (protagonistPos.Y <= 0 && Keyboard.GetState().IsKeyDown(Keys.W)))
@@ -189,7 +158,7 @@ namespace SpaceGame
             }
             else
             {
-                protagonistSpeed.Y = Constants.ProtagonistSpeed;
+                protagonistSpeed.Y = GlobalConstants.ProtagonistSpeed;
             }
         }
 

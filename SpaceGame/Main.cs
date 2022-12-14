@@ -11,7 +11,7 @@ namespace SpaceGame
         private SpriteBatch _spriteBatch;
         Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
         Texture2D[] protagonistSprites = new Texture2D[4], enemySprites = new Texture2D[4];
-        int scene = Constants.InSpace;
+        int scene = GlobalConstants.InSpace;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
 
@@ -27,7 +27,10 @@ namespace SpaceGame
         {
             // TODO: Add your initialization logic here
 
-            sceneSpace = new SceneSpace(Window.ClientBounds.Height, Window.ClientBounds.Width);
+            GlobalConstants.ScreenWidth = Window.ClientBounds.Width;
+            GlobalConstants.ScreenHeight = Window.ClientBounds.Height;
+
+            sceneSpace = new SceneSpace();
             sceneSpace.Initialize();
 
             base.Initialize();
@@ -64,7 +67,7 @@ namespace SpaceGame
 
             switch (scene)
             {
-                case Constants.InSpace:
+                case GlobalConstants.InSpace:
                     scene = sceneSpace.Update();
 
                     if (sceneSpace.GetEnteringPlanet())
@@ -74,7 +77,7 @@ namespace SpaceGame
 
                     break;
 
-                case Constants.OnPlanet:
+                case GlobalConstants.OnPlanet:
                     scene = scenePlanet.Update();
                     break;
 
@@ -89,11 +92,11 @@ namespace SpaceGame
         {
             switch (scene)
             {
-                case Constants.InSpace:
+                case GlobalConstants.InSpace:
                     GraphicsDevice.Clear(Color.Black);
                     break;
 
-                case Constants.OnPlanet:
+                case GlobalConstants.OnPlanet:
                     GraphicsDevice.Clear(sceneSpace.GetCollidedPlanet().GetPlanetColor());
                     break;
 
@@ -106,11 +109,11 @@ namespace SpaceGame
 
             switch (scene)
             {
-                case Constants.InSpace:
+                case GlobalConstants.InSpace:
                     sceneSpace.Draw(_spriteBatch);
                     break;
 
-                case Constants.OnPlanet:
+                case GlobalConstants.OnPlanet:
                     scenePlanet.Draw(_spriteBatch);
                     break;
 
