@@ -73,7 +73,6 @@ namespace SpaceGame
 
         public void CheckMove()
         {
-
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 protagonistPos.X -= protagonistSpeed.X;

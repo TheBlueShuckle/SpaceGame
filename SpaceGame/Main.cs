@@ -42,8 +42,10 @@ namespace SpaceGame
             // TODO: use this.Content to load your game content here
             myShipFrame1 = Content.Load<Texture2D>("Sprites/myShipFrame1");
             myShipFrame2 = Content.Load<Texture2D>("Sprites/myShipFrame2");
+
             bigPlanet = Content.Load<Texture2D>("Sprites/bigPlanet");
             smallPlanet = Content.Load<Texture2D>("Sprites/smallPlanet");
+
             protagonistSprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
             protagonistSprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
             protagonistSprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");

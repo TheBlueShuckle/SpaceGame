@@ -69,7 +69,7 @@ namespace SpaceGame
             Random rnd = new Random();
             int randomY = rnd.Next(GlobalConstants.PlanetMinSpeed, GlobalConstants.PlanetMaxSpeed);
 
-            planetSpeed.Y = randomY/10;
+            planetSpeed.Y = randomY / 10;
         }
 
         public Texture2D GetPlanetSize()
