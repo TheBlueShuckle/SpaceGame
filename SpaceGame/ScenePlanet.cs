@@ -39,11 +39,6 @@ namespace SpaceGame
             leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, Constants.PlanetWaitSecondsMin));
         }
 
-        public void Initialize()
-        {
-
-        }
-
         public int Update()
         {
             
