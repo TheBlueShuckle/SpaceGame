@@ -15,7 +15,7 @@ namespace SpaceGame
         DateTime leavePlanetCooldown;
         Texture2D protagonist;
         Texture2D[] protagonistSprites, enemySprites;
-        Vector2 protagonistPos, enemyPos;
+        Vector2 protagonistPos;
         Vector2 protagonistSpeed;
         Rectangle protagonistHitBox;
         MouseState mouseState;
@@ -51,11 +51,6 @@ namespace SpaceGame
             while (enemies.Count < 5)
             {
                 enemies.Add(new Enemy(enemySprites));
-            }
-
-            foreach (Enemy enemy in enemies.ToList())
-            {
-                
             }
 
             CheckMove();

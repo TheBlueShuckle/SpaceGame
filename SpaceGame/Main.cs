@@ -22,7 +22,6 @@ namespace SpaceGame
             IsMouseVisible = true;
         }
 
-
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
