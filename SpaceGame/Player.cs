@@ -14,9 +14,11 @@ namespace SpaceGame
     {
         Texture2D[] playerSprites = GlobalConstants.PlayerSprites;
         Texture2D player = GlobalConstants.PlayerSprites[0];
-        public Vector2 playerPos;
         Vector2 playerSpeed;
         Rectangle playerHitBox;
+
+        public Vector2 playerPos;
+
 
         public Player()
         {
