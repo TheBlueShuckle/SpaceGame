@@ -76,7 +76,7 @@ namespace SpaceGame
 
                     if (sceneSpace.GetEnteringPlanet())
                     {
-                        scenePlanet = new ScenePlanet(Window.ClientBounds.Height, Window.ClientBounds.Width);
+                        scenePlanet = new ScenePlanet();
                     }
 
                     break;
