@@ -20,9 +20,9 @@ namespace SpaceGame
 
         // Lägg till health, damage mm.
 
-        public Enemy(Texture2D[] enemySprites)
+        public Enemy()
         {
-            this.enemySprites = enemySprites;
+            this.enemySprites = GlobalConstants.EnemySprites;
             this.currentEnemySprite = enemySprites[0];
             enemyPos.X = rnd.Next(0, (int) Math.Round(GlobalConstants.ScreenWidth));
             enemyPos.Y = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenHeight));

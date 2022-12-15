@@ -10,7 +10,7 @@ namespace SpaceGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
-        Texture2D[] protagonistSprites = new Texture2D[4], enemySprites = new Texture2D[4];
+        Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
         int scene = GlobalConstants.InSpace;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
@@ -46,15 +46,18 @@ namespace SpaceGame
             bigPlanet = Content.Load<Texture2D>("Sprites/bigPlanet");
             smallPlanet = Content.Load<Texture2D>("Sprites/smallPlanet");
 
-            protagonistSprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
-            protagonistSprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
-            protagonistSprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
-            protagonistSprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
+            playerSprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
+            playerSprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
+            playerSprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
+            playerSprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
 
             enemySprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
             enemySprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
             enemySprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
             enemySprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
+
+            GlobalConstants.PlayerSprites = playerSprites;
+            GlobalConstants.EnemySprites = enemySprites;
 
             sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
         }
@@ -73,7 +76,7 @@ namespace SpaceGame
 
                     if (sceneSpace.GetEnteringPlanet())
                     {
-                        scenePlanet = new ScenePlanet(Window.ClientBounds.Height, Window.ClientBounds.Width, protagonistSprites, enemySprites);
+                        scenePlanet = new ScenePlanet(Window.ClientBounds.Height, Window.ClientBounds.Width);
                     }
 
                     break;
