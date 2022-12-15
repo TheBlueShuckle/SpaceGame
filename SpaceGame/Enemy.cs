@@ -28,9 +28,11 @@ namespace SpaceGame
             enemyPos.Y = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenHeight));
         }
 
-        public void ChangeEnemyPosition()
+        public void MoveEnemy(Vector2 protagonistPos)
         {
+            
 
+            Math.Atan(1);
         }
 
         public Vector2 GetEnemyPosition()
