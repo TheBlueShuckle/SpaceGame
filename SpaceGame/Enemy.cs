@@ -36,9 +36,41 @@ namespace SpaceGame
 
             angle = Math.Atan((protagonistPos.Y - enemyPos.Y) / (protagonistPos.X - enemyPos.X));
 
-            SetEnemySpeed(angle, enemyTotalSpeed);
+            if(enemyPos.X > protagonistPos.X)
+            {
+                SetEnemySpeed(angle + Math.PI, enemyTotalSpeed);
+            }
+            else
+            {
+                SetEnemySpeed(angle, enemyTotalSpeed);
+            }
+
+            if(enemyPos.X == protagonistPos.X)
+            {
+                enemySpeed.X = 0;
+
+                if(enemyPos.Y > protagonistPos.Y)
+                {
+                    enemySpeed.Y = 2.5f;
+                }
+
+                if (enemyPos.Y > protagonistPos.Y)
+                {
+                    enemySpeed.Y = -2.5f;
+                }
+
+                else
+                {
+                    enemySpeed = new Vector2(0, 0);
+                }
+            }
 
             enemyPos += enemySpeed;
+        }
+        private void SetEnemySpeed(double angle, double movementInDir)
+        {
+            enemySpeed.X = (float)Math.Round(Math.Cos(angle) * movementInDir);
+            enemySpeed.Y = (float)Math.Round(Math.Tan(angle) * enemySpeed.X);
         }
 
         public Vector2 GetEnemyPosition()
@@ -49,12 +81,6 @@ namespace SpaceGame
         public Texture2D GetCurrentEnemySprite()
         {
             return currentEnemySprite;
-        }
-
-        private void SetEnemySpeed(double angle, double movementInDir)
-        {
-            enemySpeed.X = (float) Math.Round(Math.Cos(angle + Math.PI) * movementInDir);
-            enemySpeed.Y = (float) Math.Round(Math.Tan(angle + Math.PI) * enemySpeed.X);
         }
     }
 }
