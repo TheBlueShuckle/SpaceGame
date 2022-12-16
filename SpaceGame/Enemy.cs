@@ -13,6 +13,7 @@ namespace SpaceGame
     {
         Vector2 enemyPos;
         Vector2 enemySpeed;
+        double enemyTotalSpeed = 2.5;
         Rectangle enemyHitBox;
         Texture2D[] enemySprites;
         Texture2D currentEnemySprite;
@@ -31,31 +32,11 @@ namespace SpaceGame
 
         public void MoveEnemy(Vector2 protagonistPos)
         {
-            double angle, movementInDir = 2.5;
+            double angle;
 
             angle = Math.Atan((protagonistPos.Y - enemyPos.Y) / (protagonistPos.X - enemyPos.X));
 
-            if (enemyPos.X < protagonistPos.X)
-            {
-                enemySpeed.X = (float)Math.Round(Math.Cos(Math.PI - angle) * movementInDir);
-                enemySpeed.Y = (float)Math.Round(Math.Tan(Math.PI - angle) * enemySpeed.X);
-            }
-
-            else
-            {
-                SetEnemySpeed(angle, movementInDir);
-            }
-
-            if (enemyPos.Y < protagonistPos.Y)
-            {
-                enemySpeed.X = (float)Math.Round(Math.Cos(angle - Math.PI) * movementInDir);
-                enemySpeed.Y = (float)Math.Round(Math.Tan(angle - Math.PI) * enemySpeed.X);
-            }
-
-            else
-            {
-                SetEnemySpeed(angle, movementInDir);
-            }
+            SetEnemySpeed(angle, enemyTotalSpeed);
 
             enemyPos += enemySpeed;
         }
@@ -72,8 +53,8 @@ namespace SpaceGame
 
         private void SetEnemySpeed(double angle, double movementInDir)
         {
-            enemySpeed.X = (float)Math.Round(Math.Cos(angle + Math.PI) * movementInDir);
-            enemySpeed.Y = (float)Math.Round(Math.Tan(angle + Math.PI) * enemySpeed.X);
+            enemySpeed.X = (float) Math.Round(Math.Cos(angle + Math.PI) * movementInDir);
+            enemySpeed.Y = (float) Math.Round(Math.Tan(angle + Math.PI) * enemySpeed.X);
         }
     }
 }
