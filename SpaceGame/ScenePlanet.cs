@@ -32,6 +32,12 @@ namespace SpaceGame
                 enemies.Add(new Enemy());
 
             player.CheckMove();
+            
+            foreach(Enemy enemy in enemies)
+            {
+                enemy.MoveEnemy(player.playerPos);
+            }
+
             player.ChangeProtagonistSprite();
             player.CheckBounds();
 
