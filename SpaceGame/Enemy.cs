@@ -19,6 +19,8 @@ namespace SpaceGame
         Texture2D currentEnemySprite;
         Random rnd = new Random();
         int health;
+        float desiredDuration = 3f, elapsedTime = 0;
+        Vector2 startPos;
 
         // Lägg till health, damage mm.
 
@@ -28,15 +30,22 @@ namespace SpaceGame
             this.currentEnemySprite = enemySprites[0];
             enemyPos.X = rnd.Next(0, (int) Math.Round(GlobalConstants.ScreenWidth));
             enemyPos.Y = rnd.Next(0, (int) Math.Round(GlobalConstants.ScreenHeight));
+            startPos = enemyPos;
         }
 
-        public void MoveEnemy(Vector2 protagonistPos)
+        public void MoveEnemy(Vector2 playerPos, GameTime gameTime)
         {
             double angle;
+            float percentageComplete;
 
-            angle = Math.Atan((protagonistPos.Y - enemyPos.Y) / (protagonistPos.X - enemyPos.X));
+            elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            percentageComplete = elapsedTime / desiredDuration;
 
-            if(enemyPos.X > protagonistPos.X)
+            enemyPos = Vector2.Lerp(startPos, playerPos, percentageComplete);
+            /*
+            angle = Math.Atan((playerPos.Y - enemyPos.Y) / (playerPos.X - enemyPos.X));
+            
+            if(enemyPos.X > playerPos.X)
             {
                 SetEnemySpeed(angle + Math.PI, enemyTotalSpeed);
             }
@@ -45,18 +54,18 @@ namespace SpaceGame
                 SetEnemySpeed(angle, enemyTotalSpeed);
             }
 
-            if(enemyPos.X == protagonistPos.X)
+            if(enemyPos.X == playerPos.X)
             {
                 enemySpeed.X = 0;
 
-                if(enemyPos.Y > protagonistPos.Y)
+                if(enemyPos.Y > playerPos.Y)
                 {
                     enemySpeed.Y = 2.5f;
                 }
 
-                if (enemyPos.Y > protagonistPos.Y)
+                if (enemyPos.Y < playerPos.Y)
                 {
-                    enemySpeed.Y = -2.5f;
+                    enemySpeed.Y = 2.5f;
                 }
 
                 else
@@ -64,8 +73,7 @@ namespace SpaceGame
                     enemySpeed = new Vector2(0, 0);
                 }
             }
-
-            enemyPos += enemySpeed;
+            */
         }
         private void SetEnemySpeed(double angle, double movementInDir)
         {

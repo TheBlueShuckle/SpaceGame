@@ -23,7 +23,7 @@ namespace SpaceGame
             leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, GlobalConstants.PlanetWaitSecondsMin));
         }
 
-        public int Update()
+        public int Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.E) && DateTime.Now > leavePlanetCooldown)
                 scene = GlobalConstants.InSpace;
@@ -35,7 +35,7 @@ namespace SpaceGame
             
             foreach(Enemy enemy in enemies)
             {
-                enemy.MoveEnemy(player.playerPos);
+                enemy.MoveEnemy(player.playerPos, gameTime);
             }
 
             player.ChangeProtagonistSprite();
