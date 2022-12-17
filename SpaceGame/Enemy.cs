@@ -10,7 +10,6 @@ namespace SpaceGame
         Vector2 enemySpeed;
         double enemyTotalSpeed = 2.5;
         Rectangle enemyHitBox;
-        Texture2D[] enemySprites;
         Texture2D currentEnemySprite;
         Random rnd = new Random();
         int health;
@@ -19,8 +18,8 @@ namespace SpaceGame
 
         public Enemy()
         {
-            this.enemySprites = GlobalConstants.EnemySprites;
-            this.currentEnemySprite = enemySprites[0];
+            this.currentEnemySprite = GlobalConstants.EnemySprites[0];
+
             enemyPos.X = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenWidth));
             enemyPos.Y = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenHeight));
         }
@@ -46,8 +45,8 @@ namespace SpaceGame
 
         private void SetEnemySpeed(double angle, double movementInDir)
         {
-            enemySpeed.X = (float) Math.Round(Math.Cos(angle) * movementInDir);
-            enemySpeed.Y = (float) Math.Round(Math.Sin(angle) * movementInDir);
+            enemySpeed.X = (float)Math.Round(Math.Cos(angle) * movementInDir);
+            enemySpeed.Y = (float)Math.Round(Math.Sin(angle) * movementInDir);
         }
 
         public Vector2 GetEnemyPosition()
