@@ -82,7 +82,7 @@ namespace SpaceGame
                     break;
 
                 case GlobalConstants.OnPlanet:
-                    scene = scenePlanet.Update(gameTime);
+                    scene = scenePlanet.Update();
                     break;
 
                 default:

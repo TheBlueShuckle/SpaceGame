@@ -14,7 +14,6 @@ namespace SpaceGame
         Player player = new Player();
         int scene = GlobalConstants.OnPlanet;
         DateTime leavePlanetCooldown;
-        MouseState mouseState;
         List<Enemy> enemies = new List<Enemy>();
         Random rnd = new Random();
 
@@ -23,19 +22,23 @@ namespace SpaceGame
             leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, GlobalConstants.PlanetWaitSecondsMin));
         }
 
-        public int Update(GameTime gameTime)
+        public int Update()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.E) && DateTime.Now > leavePlanetCooldown)
+            {
                 scene = GlobalConstants.InSpace;
+            }
 
             while (enemies.Count < 5)
+            {
                 enemies.Add(new Enemy());
+            }
 
             player.CheckMove();
             
             foreach(Enemy enemy in enemies)
             {
-                enemy.MoveEnemy(player.playerPos, gameTime);
+                enemy.MoveEnemy(player.playerPos);
             }
 
             player.ChangeProtagonistSprite();
@@ -49,7 +52,9 @@ namespace SpaceGame
             spriteBatch.Draw(player.GetPlayerSprite(), player.playerPos, Color.White);
 
             foreach (Enemy enemy in enemies)
+            {
                 spriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
+            }
         }
     }
 }

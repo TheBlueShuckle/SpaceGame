@@ -16,6 +16,7 @@ namespace SpaceGame
         Texture2D player = GlobalConstants.PlayerSprites[0];
         Vector2 playerSpeed;
         Rectangle playerHitBox;
+        MouseState mouseState;
 
         public Vector2 playerPos;
 
@@ -31,7 +32,7 @@ namespace SpaceGame
 
         public void ChangeProtagonistSprite()
         {
-            MouseState mouseState = Mouse.GetState();
+            mouseState = Mouse.GetState();
 
             if (mouseState.X >= (playerPos.X + (player.Width / 2)))
             {
