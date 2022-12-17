@@ -14,12 +14,12 @@ namespace SpaceGame
     {
         Player player = new Player();
         int scene = GlobalConstants.OnPlanet;
-        DateTime leavePlanetCooldown;
+        DateTime leavePlanetCooldown, bulletCooldown;
         Random rnd = new Random();
         List<Enemy> enemies = new List<Enemy>();
         MouseState mouseState;
         Gun gun = new Gun();
-        List<Vector2> bullets;
+        List<Bullet> bullets = new List<Bullet>();
 
         public ScenePlanet()
         {
@@ -36,9 +36,12 @@ namespace SpaceGame
             SpawnEnemies();
 
             player.CheckMove();
-
             CheckShooting();
 
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.MoveBullet();
+            }
             MoveEnemies();
 
             player.ChangeProtagonistSprite();
@@ -58,9 +61,9 @@ namespace SpaceGame
 
             if(bullets != null)
             {
-                foreach (Vector2 bullet in bullets)
+                foreach (Bullet bullet in bullets)
                 {
-                    spriteBatch.Draw(GlobalConstants.Bullet, bullet, Color.White);
+                    spriteBatch.Draw(GlobalConstants.Bullet, bullet.GetBulletPos(), Color.White);
                 }
             }
         }
@@ -85,9 +88,10 @@ namespace SpaceGame
         {
             mouseState = Mouse.GetState();
 
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (mouseState.LeftButton == ButtonState.Pressed && bulletCooldown < DateTime.Now)
             {
-                bullets.Add(gun.SpawnBullet(player.playerPos));
+                bullets.Add(new Bullet(player.playerPos));
+                bulletCooldown = DateTime.Now.AddMilliseconds(500);
             }
         }
     }
