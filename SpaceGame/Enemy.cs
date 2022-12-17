@@ -20,7 +20,7 @@ namespace SpaceGame
         Random rnd = new Random();
         int health;
         float desiredDuration = 3f, elapsedTime = 0;
-        Vector2 startPos;
+        Vector2 startPos, lastPlayerPos;
 
         // Lägg till health, damage mm.
 
@@ -41,7 +41,15 @@ namespace SpaceGame
             elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             percentageComplete = elapsedTime / desiredDuration;
 
+            if (lastPlayerPos != playerPos)
+            {
+                startPos = enemyPos;
+                lastPlayerPos = playerPos;
+                elapsedTime = 0;
+            }
+            
             enemyPos = Vector2.Lerp(startPos, playerPos, percentageComplete);
+
             /*
             angle = Math.Atan((playerPos.Y - enemyPos.Y) / (playerPos.X - enemyPos.X));
             
