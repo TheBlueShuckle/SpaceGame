@@ -29,17 +29,11 @@ namespace SpaceGame
                 scene = GlobalConstants.InSpace;
             }
 
-            while (enemies.Count < 5)
-            {
-                enemies.Add(new Enemy());
-            }
+            SpawnEnemies();
 
             player.CheckMove();
-            
-            foreach(Enemy enemy in enemies)
-            {
-                enemy.MoveEnemy(player.playerPos);
-            }
+
+            MoveEnemies();
 
             player.ChangeProtagonistSprite();
             player.CheckBounds();
@@ -54,6 +48,22 @@ namespace SpaceGame
             foreach (Enemy enemy in enemies)
             {
                 spriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
+            }
+        }
+
+        private void SpawnEnemies()
+        {
+            while (enemies.Count < 5)
+            {
+                enemies.Add(new Enemy());
+            }
+        }
+
+        private void MoveEnemies()
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.MoveEnemy(player.playerPos);
             }
         }
     }

@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.WIC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame
@@ -15,10 +18,10 @@ namespace SpaceGame
         Vector2 myShipSpeed;
         Random rnd = new Random();
         List<Planet> space = new List<Planet>();
+        List<Planet> visitedPlanets = new List<Planet>();
         DateTime nextPlanetTimeStamp, nextShipFrame;
         int randomNumber;
         Rectangle myShipHitBox, planetHitBox;
-        Planet collidedPlanet;
         bool enteringPlanet = false;
 
         public SceneSpace()
@@ -55,6 +58,7 @@ namespace SpaceGame
 
             SpawnPlanet();
             DeletePlanet();
+            CheckIfPlanetDespawned();
 
             CheckMove();
             CheckBounds();
@@ -164,13 +168,13 @@ namespace SpaceGame
         {
             foreach (Planet planet in space.ToList())
             {
-                myShipHitBox = new Rectangle(Convert.ToInt32(myShipPos.X), Convert.ToInt32(myShipPos.Y), myShipFrame1.Width, myShipFrame1.Height);
-                planetHitBox = new Rectangle(Convert.ToInt32(planet.GetPlanetLocation().X + myShipFrame1.Width), Convert.ToInt32(planet.GetPlanetLocation().Y + myShipFrame1.Height), planet.GetPlanetSize().Width - myShipFrame1.Width, planet.GetPlanetSize().Height - myShipFrame1.Height);
+                myShipHitBox = new Rectangle(Convert.ToInt32(myShipPos.X), Convert.ToInt32(myShipPos.Y), (int) Math.Round(myShipPos.X + myShipFrame1.Width), (int)Math.Round(myShipPos.Y + myShipFrame1.Height));
+                planetHitBox = new Rectangle(Convert.ToInt32(planet.GetPlanetLocation().X + myShipFrame1.Width), Convert.ToInt32(planet.GetPlanetLocation().Y + myShipFrame1.Height), (int) Math.Round(planet.GetPlanetLocation().X + planet.GetPlanetSize().Width - myShipFrame1.Width), (int) Math.Round(planet.GetPlanetLocation().Y + planet.GetPlanetSize().Height - myShipFrame1.Height));
 
-                if (myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E) && collidedPlanet != planet)
+                if (myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E) && visitedPlanets.Contains(planet) == false)
                 {
                     enteringPlanet = true;
-                    collidedPlanet = planet;
+                    visitedPlanets.Add(planet);
                     return GlobalConstants.OnPlanet;
                 }
             }
@@ -187,9 +191,20 @@ namespace SpaceGame
             }
         }
 
+        private void CheckIfPlanetDespawned()
+        {
+            foreach (Planet planet in visitedPlanets)
+            {
+                if (space.Contains(planet) == false)
+                {
+                    visitedPlanets.Remove(planet);
+                }
+            }
+        }
+
         public Planet GetCollidedPlanet()
         {
-            return collidedPlanet;
+            return visitedPlanets.Last();
         }
 
         public bool GetEnteringPlanet()

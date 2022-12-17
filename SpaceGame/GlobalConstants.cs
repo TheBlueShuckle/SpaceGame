@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace SpaceGame
 
         private static float screenWidth, screenHeight;
         private static Texture2D[] playerSprites, enemySprites;
+        private static Texture2D bullet;
 
         public static float ScreenWidth
         {
@@ -41,6 +43,12 @@ namespace SpaceGame
         {
             get { return enemySprites; }
             set { enemySprites = value; }
+        }
+
+        public static Texture2D Bullet
+        {
+            get { return bullet }
+            set { bullet = value }
         }
     }
 }

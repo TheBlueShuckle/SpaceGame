@@ -9,7 +9,7 @@ namespace SpaceGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
+        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet, bullet;
         Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
         int scene = GlobalConstants.InSpace;
         ScenePlanet scenePlanet;
@@ -56,8 +56,11 @@ namespace SpaceGame
             enemySprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
             enemySprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
 
+            bullet = Content.Load<Texture2D>("Sprites/bullet");
+
             GlobalConstants.PlayerSprites = playerSprites;
             GlobalConstants.EnemySprites = enemySprites;
+            GlobalConstants.Bullet = bullet;
 
             sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
         }
@@ -65,7 +68,9 @@ namespace SpaceGame
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
+            }
 
             // TODO: Add your update logic here
 

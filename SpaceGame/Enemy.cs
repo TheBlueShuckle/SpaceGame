@@ -32,21 +32,21 @@ namespace SpaceGame
 
             if (enemyPos.X > playerPos.X)
             {
-                SetEnemySpeed(angle + Math.PI, enemyTotalSpeed);
+                SetEnemySpeed(angle + Math.PI);
             }
 
             else
             {
-                SetEnemySpeed(angle, enemyTotalSpeed);
+                SetEnemySpeed(angle);
             }
 
             enemyPos += enemySpeed;
         }
 
-        private void SetEnemySpeed(double angle, double movementInDir)
+        private void SetEnemySpeed(double angle)
         {
-            enemySpeed.X = (float)Math.Round(Math.Cos(angle) * movementInDir);
-            enemySpeed.Y = (float)Math.Round(Math.Sin(angle) * movementInDir);
+            enemySpeed.X = (float)Math.Round(Math.Cos(angle) * enemyTotalSpeed);
+            enemySpeed.Y = (float)Math.Round(Math.Sin(angle) * enemyTotalSpeed);
         }
 
         public Vector2 GetEnemyPosition()

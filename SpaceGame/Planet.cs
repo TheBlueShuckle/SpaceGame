@@ -86,10 +86,5 @@ namespace SpaceGame
         {
             return location;
         }
-
-        public Vector2 GetPlanetSpeed()
-        {
-            return planetSpeed;
-        }
     }
 }
