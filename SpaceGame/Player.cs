@@ -18,7 +18,6 @@ namespace SpaceGame
         Vector2 playerSpeed;
         Rectangle playerHitBox;
         MouseState mouseState;
-
         public Vector2 playerPos;
 
 
@@ -142,32 +141,6 @@ namespace SpaceGame
             {
                 playerSpeed.Y = GlobalConstants.PlayerSpeed;
             }
-        }
-
-        public void Shoot(List<Enemy> enemies)
-        {
-            mouseState = Mouse.GetState();
-            Vector2 bulletSpeed;
-            Vector2 bulletPos;
-            double angle, bulletTotalSpeed = 10;
-            List<Vector2> bulletPosList;
-
-            bulletPos = playerPos;
-            angle = Math.Atan((bulletPos.Y - mouseState.Y) / (bulletPos.X - mouseState.X));
-
-            if (mouseState.X > playerPos.X)
-            {
-                bulletSpeed.X = (float)Math.Round(Math.Cos(angle + Math.PI) * bulletTotalSpeed);
-                bulletSpeed.Y = (float)Math.Round(Math.Sin(angle + Math.PI) * bulletTotalSpeed);
-            }
-
-            else
-            {
-                bulletSpeed.X = (float)Math.Round(Math.Cos(angle) * bulletTotalSpeed);
-                bulletSpeed.Y = (float)Math.Round(Math.Sin(angle) * bulletTotalSpeed);
-            }
-
-            bulletPos += bulletSpeed;
         }
 
         public Texture2D GetPlayerSprite()

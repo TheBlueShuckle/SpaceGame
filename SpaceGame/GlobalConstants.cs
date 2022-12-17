@@ -47,8 +47,8 @@ namespace SpaceGame
 
         public static Texture2D Bullet
         {
-            get { return bullet }
-            set { bullet = value }
+            get { return bullet; }
+            set { bullet = value; }
         }
     }
 }

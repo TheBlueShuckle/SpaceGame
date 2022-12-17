@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
@@ -14,8 +15,11 @@ namespace SpaceGame
         Player player = new Player();
         int scene = GlobalConstants.OnPlanet;
         DateTime leavePlanetCooldown;
-        List<Enemy> enemies = new List<Enemy>();
         Random rnd = new Random();
+        List<Enemy> enemies = new List<Enemy>();
+        MouseState mouseState;
+        Gun gun = new Gun();
+        List<Vector2> bullets;
 
         public ScenePlanet()
         {
@@ -33,6 +37,8 @@ namespace SpaceGame
 
             player.CheckMove();
 
+            CheckShooting();
+
             MoveEnemies();
 
             player.ChangeProtagonistSprite();
@@ -49,6 +55,14 @@ namespace SpaceGame
             {
                 spriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
             }
+
+            if(bullets != null)
+            {
+                foreach (Vector2 bullet in bullets)
+                {
+                    spriteBatch.Draw(GlobalConstants.Bullet, bullet, Color.White);
+                }
+            }
         }
 
         private void SpawnEnemies()
@@ -64,6 +78,16 @@ namespace SpaceGame
             foreach (Enemy enemy in enemies)
             {
                 enemy.MoveEnemy(player.playerPos);
+            }
+        }
+
+        private void CheckShooting()
+        {
+            mouseState = Mouse.GetState();
+
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                bullets.Add(gun.SpawnBullet(player.playerPos));
             }
         }
     }
