@@ -61,5 +61,10 @@ namespace SpaceGame
         {
             GlobalConstants.SpriteBatch.Draw(GlobalConstants.Bullet, bulletPos, null, Color.White, (float) angle + (float) (Math.PI / 2), bulletOrigin, 1f, SpriteEffects.None, 0);
         }
+
+        public Rectangle GetRectangle()
+        {
+            return bulletRectangle;
+        }
     }
 }

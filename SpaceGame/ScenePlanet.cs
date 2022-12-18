@@ -43,6 +43,18 @@ namespace SpaceGame
             MoveBullets();
             MoveEnemies();
 
+            foreach (Bullet bullet in bullets.ToList())
+            {
+                foreach (Enemy enemy in enemies.ToList())
+                {
+                    if (bullet.GetRectangle().Intersects(enemy.GetRectangle()))
+                    {
+                        bullets.Remove(bullet);
+                        enemies.Remove(enemy);
+                    }
+                }
+            }
+
             player.ChangeProtagonistSprite();
             player.CheckBounds();
 

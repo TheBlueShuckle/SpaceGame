@@ -58,5 +58,10 @@ namespace SpaceGame
         {
             return currentEnemySprite;
         }
+
+        public Rectangle GetRectangle()
+        {
+            return new Rectangle((int)enemyPos.X, (int)enemyPos.Y, currentEnemySprite.Width, currentEnemySprite.Height);
+        }
     }
 }
