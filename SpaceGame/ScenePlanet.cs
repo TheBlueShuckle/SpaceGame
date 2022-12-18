@@ -1,12 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
+using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame
 {
@@ -54,18 +56,8 @@ namespace SpaceGame
         {
             spriteBatch.Draw(player.GetPlayerSprite(), player.playerPos, Color.White);
 
-            foreach (Enemy enemy in enemies)
-            {
-                spriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
-            }
-
-            if(bullets != null)
-            {
-                foreach (Bullet bullet in bullets)
-                {
-                    spriteBatch.Draw(GlobalConstants.Bullet, bullet.GetBulletPos(), Color.White);
-                }
-            }
+            DrawEnemies(spriteBatch);
+            DrawBullets(spriteBatch);
         }
 
         private void SpawnEnemies()
@@ -92,6 +84,22 @@ namespace SpaceGame
             {
                 bullets.Add(new Bullet(player.playerPos, new Vector2(mouseState.X, mouseState.Y)));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
+            }
+        }
+
+        private void DrawEnemies(SpriteBatch spriteBatch)
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                spriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
+            }
+        }
+
+        private void DrawBullets(SpriteBatch spriteBatch)
+        {
+            foreach (Bullet bullet in bullets)
+            {
+                spriteBatch.Draw(GlobalConstants.Bullet, bullet.GetBulletPos(), Color.White);
             }
         }
     }
