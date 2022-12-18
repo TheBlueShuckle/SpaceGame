@@ -42,18 +42,7 @@ namespace SpaceGame
 
             MoveBullets();
             MoveEnemies();
-
-            foreach (Bullet bullet in bullets.ToList())
-            {
-                foreach (Enemy enemy in enemies.ToList())
-                {
-                    if (bullet.GetRectangle().Intersects(enemy.GetRectangle()))
-                    {
-                        bullets.Remove(bullet);
-                        enemies.Remove(enemy);
-                    }
-                }
-            }
+            CheckBulletHits();
 
             player.ChangeProtagonistSprite();
             player.CheckBounds();
@@ -101,6 +90,26 @@ namespace SpaceGame
             {
                 bullets.Add(new Bullet(new Vector2(player.playerPos.X + (player.GetPlayerSprite().Width / 2), player.playerPos.Y + (player.GetPlayerSprite().Height / 2)), new Vector2(mouseState.X, mouseState.Y)));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
+            }
+        }
+
+        private void CheckBulletHits()
+        {
+            foreach (Bullet bullet in bullets.ToList())
+            {
+                RemoveBulletAndEnemy(bullet);
+            }
+        }
+
+        private void RemoveBulletAndEnemy(Bullet bullet)
+        {
+            foreach (Enemy enemy in enemies.ToList())
+            {
+                if (bullet.GetRectangle().Intersects(enemy.GetRectangle()))
+                {
+                    bullets.Remove(bullet);
+                    enemies.Remove(enemy);
+                }
             }
         }
 
