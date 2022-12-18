@@ -45,8 +45,8 @@ namespace SpaceGame
 
         private void SetEnemySpeed(double angle)
         {
-            enemySpeed.X = (float)Math.Round(Math.Cos(angle) * enemyTotalSpeed);
-            enemySpeed.Y = (float)Math.Round(Math.Sin(angle) * enemyTotalSpeed);
+            enemySpeed.X = (float)Math.Round(Math.Cos(angle) * enemyTotalSpeed, 7);
+            enemySpeed.Y = (float)Math.Round(Math.Sin(angle) * enemyTotalSpeed, 7);
         }
 
         public Vector2 GetEnemyPosition()

@@ -87,7 +87,7 @@ namespace SpaceGame
 
             if (mouseState.LeftButton == ButtonState.Pressed && bulletCooldown < DateTime.Now)
             {
-                bullets.Add(new Bullet(player.playerPos, new Vector2(mouseState.X, mouseState.Y)));
+                bullets.Add(new Bullet(new Vector2(player.playerPos.X + (player.GetPlayerSprite().Width / 2), player.playerPos.Y + (player.GetPlayerSprite().Height / 2)), new Vector2(mouseState.X, mouseState.Y)));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
             }
         }
