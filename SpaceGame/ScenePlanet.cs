@@ -12,13 +12,13 @@ namespace SpaceGame
 {
     internal class ScenePlanet
     {
-        Player player = new Player();
         int scene = GlobalConstants.OnPlanet;
-        DateTime leavePlanetCooldown, bulletCooldown;
-        Random rnd = new Random();
-        List<Enemy> enemies = new List<Enemy>();
         MouseState mouseState;
-        Gun gun = new Gun();
+
+        Player player = new Player();        
+
+        List<Enemy> enemies = new List<Enemy>();
+        DateTime leavePlanetCooldown, bulletCooldown;
         List<Bullet> bullets = new List<Bullet>();
 
         public ScenePlanet()
@@ -90,7 +90,7 @@ namespace SpaceGame
 
             if (mouseState.LeftButton == ButtonState.Pressed && bulletCooldown < DateTime.Now)
             {
-                bullets.Add(new Bullet(player.playerPos));
+                bullets.Add(new Bullet(player.playerPos, new Vector2(mouseState.X, mouseState.Y)));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
             }
         }

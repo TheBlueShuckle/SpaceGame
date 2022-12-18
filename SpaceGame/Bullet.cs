@@ -14,11 +14,11 @@ namespace SpaceGame
         Vector2 bulletSpeed, bulletPos;
         double bulletTotalSpeed = 10;
 
-        public Bullet(Vector2 bulletStartPos)
+        public Bullet(Vector2 bulletStartPos, Vector2 bulletGoal)
         {
             mouseState = Mouse.GetState();
             bulletPos = bulletStartPos;
-            SetBulletTrajectory(bulletStartPos);
+            SetBulletTrajectory(bulletStartPos, bulletGoal);
         }
 
         public void MoveBullet()
@@ -31,13 +31,13 @@ namespace SpaceGame
             return bulletPos;
         }
 
-        private Vector2 SetBulletTrajectory(Vector2 bulletStartPos)
+        private Vector2 SetBulletTrajectory(Vector2 bulletStartPos, Vector2 bulletGoal)
         {
             double angle;
 
-            angle = Math.Atan((bulletStartPos.Y - mouseState.Y) / (bulletStartPos.X - mouseState.X));
+            angle = Math.Atan((bulletStartPos.Y - bulletGoal.Y) / (bulletStartPos.X - bulletGoal.X));
 
-            if (mouseState.X > bulletStartPos.X)
+            if (bulletGoal.X > bulletStartPos.X)
             {
                 bulletSpeed.X = (float)Math.Round(Math.Cos(angle) * bulletTotalSpeed);
                 bulletSpeed.Y = (float)Math.Round(Math.Sin(angle) * bulletTotalSpeed);
