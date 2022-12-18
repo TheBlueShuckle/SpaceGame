@@ -38,6 +38,8 @@ namespace SpaceGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            GlobalConstants.SpriteBatch = _spriteBatch;
+
 
             // TODO: use this.Content to load your game content here
             myShipFrame1 = Content.Load<Texture2D>("Sprites/myShipFrame1");
@@ -119,11 +121,11 @@ namespace SpaceGame
             switch (scene)
             {
                 case GlobalConstants.InSpace:
-                    sceneSpace.Draw(_spriteBatch);
+                    sceneSpace.Draw();
                     break;
 
                 case GlobalConstants.OnPlanet:
-                    scenePlanet.Draw(_spriteBatch);
+                    scenePlanet.Draw();
                     break;
 
                 default:

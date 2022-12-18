@@ -49,12 +49,12 @@ namespace SpaceGame
             return scene;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            spriteBatch.Draw(player.GetPlayerSprite(), player.playerPos, Color.White);
+            GlobalConstants.SpriteBatch.Draw(player.GetPlayerSprite(), player.playerPos, Color.White);
 
-            DrawEnemies(spriteBatch);
-            DrawBullets(spriteBatch);
+            DrawEnemies();
+            DrawBullets();
         }
 
         private void SpawnEnemies()
@@ -92,19 +92,19 @@ namespace SpaceGame
             }
         }
 
-        private void DrawEnemies(SpriteBatch spriteBatch)
+        private void DrawEnemies()
         {
             foreach (Enemy enemy in enemies)
             {
-                spriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
+                GlobalConstants.SpriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
             }
         }
 
-        private void DrawBullets(SpriteBatch spriteBatch)
+        private void DrawBullets()
         {
             foreach (Bullet bullet in bullets)
             {
-                spriteBatch.Draw(GlobalConstants.Bullet, bullet.GetBulletPos(), Color.White);
+                bullet.DrawBullet();
             }
         }
     }

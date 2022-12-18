@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,11 @@ namespace SpaceGame
             }
 
             return bulletSpeed;
+        }
+
+        public void DrawBullet()
+        {
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.Bullet, bulletPos, Color.White);
         }
     }
 }

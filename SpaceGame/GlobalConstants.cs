@@ -20,6 +20,7 @@ namespace SpaceGame
         private static float screenWidth, screenHeight;
         private static Texture2D[] playerSprites, enemySprites;
         private static Texture2D bullet;
+        private static SpriteBatch spriteBatch;
 
         public static float ScreenWidth
         {
@@ -49,6 +50,12 @@ namespace SpaceGame
         {
             get { return bullet; }
             set { bullet = value; }
+        }
+
+        public static SpriteBatch SpriteBatch
+        {
+            get { return spriteBatch; }
+            set { spriteBatch = value; }
         }
     }
 }

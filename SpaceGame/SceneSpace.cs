@@ -66,15 +66,15 @@ namespace SpaceGame
             return CheckPlanetCollision();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
             foreach (Planet planet in space)
             {
                 planet.UpdatePlanetLocation();
-                spriteBatch.Draw(planet.GetPlanetSize(), planet.GetPlanetLocation(), planet.GetPlanetColor());
+                GlobalConstants.SpriteBatch.Draw(planet.GetPlanetSize(), planet.GetPlanetLocation(), planet.GetPlanetColor());
             }
 
-            spriteBatch.Draw(myShip, myShipPos, Color.White);
+            GlobalConstants.SpriteBatch.Draw(myShip, myShipPos, Color.White);
         }
 
         public void CheckMove()
