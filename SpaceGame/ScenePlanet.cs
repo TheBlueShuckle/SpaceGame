@@ -40,10 +40,7 @@ namespace SpaceGame
             player.CheckMove();
             CheckShooting();
 
-            foreach (Bullet bullet in bullets)
-            {
-                bullet.MoveBullet();
-            }
+            MoveBullets();
             MoveEnemies();
 
             player.ChangeProtagonistSprite();
@@ -73,6 +70,14 @@ namespace SpaceGame
             foreach (Enemy enemy in enemies)
             {
                 enemy.MoveEnemy(player.playerPos);
+            }
+        }
+
+        private void MoveBullets()
+        {
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.MoveBullet();
             }
         }
 
