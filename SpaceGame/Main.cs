@@ -39,6 +39,7 @@ namespace SpaceGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             GlobalConstants.SpriteBatch = _spriteBatch;
+            GlobalConstants.GraphicsDevice = GraphicsDevice;
 
 
             // TODO: use this.Content to load your game content here

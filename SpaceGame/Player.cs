@@ -16,7 +16,7 @@ namespace SpaceGame
         Texture2D[] playerSprites = GlobalConstants.PlayerSprites;
         Texture2D player = GlobalConstants.PlayerSprites[0];
         Vector2 playerSpeed;
-        Rectangle playerHitBox;
+        Rectangle playerHitbox;
         MouseState mouseState;
         public Vector2 playerPos;
 
@@ -146,6 +146,11 @@ namespace SpaceGame
         public Texture2D GetPlayerSprite()
         {
             return player;
+        }
+
+        public Rectangle GetPlayerHitbox()
+        {
+            return playerHitbox = new Rectangle((int)playerPos.X, (int)playerPos.Y, player.Width, player.Height);
         }
     }
 }

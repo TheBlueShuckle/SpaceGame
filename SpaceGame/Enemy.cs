@@ -9,7 +9,7 @@ namespace SpaceGame
         Vector2 enemyPos;
         Vector2 enemySpeed;
         double enemyTotalSpeed = 2.5;
-        Rectangle enemyHitBox;
+        Rectangle enemyHitBox, enemyMeleeRange;
         Texture2D currentEnemySprite;
         Random rnd = new Random();
         int health;
@@ -59,9 +59,14 @@ namespace SpaceGame
             return currentEnemySprite;
         }
 
-        public Rectangle GetRectangle()
+        public Rectangle GetHitbox()
         {
-            return new Rectangle((int)enemyPos.X, (int)enemyPos.Y, currentEnemySprite.Width, currentEnemySprite.Height);
+            return enemyHitBox = new Rectangle((int)enemyPos.X, (int)enemyPos.Y, currentEnemySprite.Width, currentEnemySprite.Height);
+        }
+
+        public Rectangle EnemyMeleeRange()
+        {
+            return enemyMeleeRange = new Rectangle((int)GetEnemyPosition().X - 50, (int)GetEnemyPosition().Y - 50, GetCurrentEnemySprite().Width + 100, GetCurrentEnemySprite().Height + 100);
         }
     }
 }

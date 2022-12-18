@@ -16,11 +16,12 @@ namespace SpaceGame
     {
         int scene = GlobalConstants.OnPlanet;
         MouseState mouseState;
+        Rectangle enemyMeleeRange;
 
-        Player player = new Player();        
+        Player player = new Player();
 
-        List<Enemy> enemies = new List<Enemy>();
         DateTime leavePlanetCooldown, bulletCooldown;
+        List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
 
         public ScenePlanet()
@@ -52,6 +53,8 @@ namespace SpaceGame
 
         public void Draw()
         {
+            DrawEnemyMeleeRange();
+
             GlobalConstants.SpriteBatch.Draw(player.GetPlayerSprite(), player.playerPos, Color.White);
 
             DrawEnemies();
@@ -66,19 +69,22 @@ namespace SpaceGame
             }
         }
 
-        private void MoveEnemies()
-        {
-            foreach (Enemy enemy in enemies)
-            {
-                enemy.MoveEnemy(player.playerPos);
-            }
-        }
-
         private void MoveBullets()
         {
             foreach (Bullet bullet in bullets)
             {
                 bullet.MoveBullet();
+            }
+        }
+
+        private void MoveEnemies()
+        {            
+            foreach (Enemy enemy in enemies)
+            {
+                if (player.GetPlayerHitbox().Intersects(enemy.EnemyMeleeRange()))
+                {
+                    enemy.MoveEnemy(player.playerPos);
+                }
             }
         }
 
@@ -97,18 +103,13 @@ namespace SpaceGame
         {
             foreach (Bullet bullet in bullets.ToList())
             {
-                RemoveBulletAndEnemy(bullet);
-            }
-        }
-
-        private void RemoveBulletAndEnemy(Bullet bullet)
-        {
-            foreach (Enemy enemy in enemies.ToList())
-            {
-                if (bullet.GetRectangle().Intersects(enemy.GetRectangle()))
+                foreach (Enemy enemy in enemies.ToList())
                 {
-                    bullets.Remove(bullet);
-                    enemies.Remove(enemy);
+                    if (bullet.GetRectangle().Intersects(enemy.GetHitbox()))
+                    {
+                        bullets.Remove(bullet);
+                        enemies.Remove(enemy);
+                    }
                 }
             }
         }
@@ -118,6 +119,19 @@ namespace SpaceGame
             foreach (Enemy enemy in enemies)
             {
                 GlobalConstants.SpriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
+            }
+        }
+
+        private void DrawEnemyMeleeRange()
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                Texture2D _texture;
+
+                _texture = new Texture2D(GlobalConstants.GraphicsDevice, 1, 1);
+                _texture.SetData(new Color[] { Color.DarkSlateGray });
+
+                GlobalConstants.SpriteBatch.Draw(_texture, enemy.EnemyMeleeRange(), Color.White);
             }
         }
 
