@@ -16,13 +16,13 @@ namespace SpaceGame
     {
         int scene = GlobalConstants.OnPlanet;
         MouseState mouseState;
-        Rectangle enemyMeleeRange;
 
         Player player = new Player();
 
         DateTime leavePlanetCooldown, bulletCooldown;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
+        List<Bullet> enemyBullets = new List<Bullet>();
 
         public ScenePlanet()
         {
@@ -43,6 +43,12 @@ namespace SpaceGame
 
             MoveBullets();
             MoveEnemies();
+            
+            foreach (Enemy enemy in enemies)
+            {
+                enemyBullets.Add(enemy.Shoot(player.playerPos));
+            }
+
             CheckBulletHits();
 
             player.ChangeProtagonistSprite();
@@ -58,7 +64,8 @@ namespace SpaceGame
             GlobalConstants.SpriteBatch.Draw(player.GetPlayerSprite(), player.playerPos, Color.White);
 
             DrawEnemies();
-            DrawBullets();
+            DrawBullets(bullets);
+            DrawBullets(enemyBullets);
         }
 
         private void SpawnEnemies()
@@ -135,7 +142,7 @@ namespace SpaceGame
             }
         }
 
-        private void DrawBullets()
+        private void DrawBullets(List<Bullet> bullets)
         {
             foreach (Bullet bullet in bullets)
             {

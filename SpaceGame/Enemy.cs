@@ -68,5 +68,10 @@ namespace SpaceGame
         {
             return enemyMeleeRange = new Rectangle((int)GetEnemyPosition().X - 50, (int)GetEnemyPosition().Y - 50, GetCurrentEnemySprite().Width + 100, GetCurrentEnemySprite().Height + 100);
         }
+
+        public Bullet Shoot(Vector2 playerPos)
+        {
+            return new Bullet(enemyPos, playerPos);
+        }
     }
 }
