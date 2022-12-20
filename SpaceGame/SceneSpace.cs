@@ -13,6 +13,8 @@ namespace SpaceGame
 {
     internal class SceneSpace
     {
+        #region Variables
+
         Texture2D myShip, myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
         Vector2 myShipPos;
         Vector2 myShipSpeed;
@@ -23,6 +25,10 @@ namespace SpaceGame
         int randomNumber;
         Rectangle myShipHitBox, planetHitBox;
         bool enteringPlanet = false;
+
+        #endregion
+
+        #region MainMethods
 
         public SceneSpace()
         {
@@ -76,6 +82,10 @@ namespace SpaceGame
 
             GlobalConstants.SpriteBatch.Draw(myShip, myShipPos, Color.White);
         }
+
+        #endregion
+
+        #region Methods
 
         public void CheckMove()
         {
@@ -211,5 +221,7 @@ namespace SpaceGame
         {
             return enteringPlanet;
         }
+
+        #endregion
     }
 }

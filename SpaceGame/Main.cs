@@ -7,6 +7,8 @@ namespace SpaceGame
 {
     public class Main : Game
     {
+        #region Variables
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet, bullet;
@@ -14,6 +16,10 @@ namespace SpaceGame
         int scene = GlobalConstants.InSpace;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
+
+        #endregion
+
+        #region MainMethods
 
         public Main()
         {
@@ -141,5 +147,7 @@ namespace SpaceGame
 
             base.Draw(gameTime);
         }
+
+        #endregion
     }
 }

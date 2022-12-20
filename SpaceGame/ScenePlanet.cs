@@ -14,6 +14,8 @@ namespace SpaceGame
 {
     internal class ScenePlanet
     {
+        #region Variables
+
         int scene = GlobalConstants.OnPlanet;
         MouseState mouseState;
 
@@ -23,6 +25,10 @@ namespace SpaceGame
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
+
+        #endregion
+
+        #region MainMethods
 
         public ScenePlanet()
         {
@@ -75,6 +81,10 @@ namespace SpaceGame
             DrawBullets(bullets);
             DrawBullets(enemyBullets);
         }
+
+        #endregion
+
+        #region Methods
 
         private void SpawnEnemies()
         {
@@ -177,5 +187,7 @@ namespace SpaceGame
                 bullet.DrawBullet();
             }
         }
+
+        #endregion
     }
 }

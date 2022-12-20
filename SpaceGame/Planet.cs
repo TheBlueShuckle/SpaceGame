@@ -14,11 +14,17 @@ namespace SpaceGame
 {
     public class Planet
     {
+        #region Variables
+
         Texture2D bigPlanet, smallPlanet;
         Texture2D size;
         Color planetColor;
         Vector2 location;
         Vector2 planetSpeed;
+
+        #endregion
+
+        #region Methods
 
         public Planet(Texture2D bigPlanet, Texture2D smallPlanet)
         {
@@ -86,5 +92,7 @@ namespace SpaceGame
         {
             return location;
         }
+
+        #endregion
     }
 }

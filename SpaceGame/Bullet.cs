@@ -12,11 +12,17 @@ namespace SpaceGame
 {
     internal class Bullet
     {
+        #region Variables
+
         MouseState mouseState;
         Vector2 bulletSpeed, bulletPos;
         double bulletTotalSpeed = 10, angle;
         Rectangle bulletRectangle;
         Vector2 bulletOrigin;
+
+        #endregion
+
+        #region Methods
 
         public Bullet(Vector2 bulletStartPos, Vector2 bulletGoal)
         {
@@ -66,5 +72,7 @@ namespace SpaceGame
         {
             return bulletRectangle;
         }
+
+        #endregion
     }
 }

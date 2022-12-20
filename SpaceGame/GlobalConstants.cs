@@ -12,10 +12,16 @@ namespace SpaceGame
 {
     public static class GlobalConstants
     {
+        #region Constants
+
         public const int InSpace = 1, OnPlanet = 2;
         public const int PlanetWaitSecondsMin = 5, PlanetWaitSecondsMax = 20, PlanetMinSpeed = 10, PlanetMaxSpeed = 45;
         public const int PlayerSpeed = 5;
         public const float MyShipSpeed = 2.5f;
+
+        #endregion
+
+        #region GettersSetters
 
         private static float screenWidth, screenHeight;
         private static Texture2D[] playerSprites, enemySprites;
@@ -64,5 +70,7 @@ namespace SpaceGame
             get { return spriteBatch; }
             set { spriteBatch = value; }
         }
+
+        #endregion
     }
 }

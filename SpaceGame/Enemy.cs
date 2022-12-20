@@ -6,6 +6,8 @@ namespace SpaceGame
 {
     internal class Enemy
     {
+        #region Variables
+
         Vector2 enemyPos;
         Vector2 enemySpeed;
         double enemyTotalSpeed = 2.5;
@@ -14,7 +16,11 @@ namespace SpaceGame
         Random rnd = new Random();
         int health;
 
+        #endregion
+
         // Lägg till health, damage mm.
+
+        #region Methods
 
         public Enemy()
         {
@@ -73,5 +79,7 @@ namespace SpaceGame
         {
             return new Bullet(enemyPos, playerPos);
         }
+
+        #endregion
     }
 }

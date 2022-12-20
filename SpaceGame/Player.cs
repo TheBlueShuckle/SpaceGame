@@ -13,6 +13,8 @@ namespace SpaceGame
 
     internal class Player
     {
+        #region Variables
+
         Texture2D[] playerSprites = GlobalConstants.PlayerSprites;
         Texture2D player = GlobalConstants.PlayerSprites[0];
         Vector2 playerSpeed;
@@ -20,6 +22,9 @@ namespace SpaceGame
         MouseState mouseState;
         public Vector2 playerPos;
 
+        #endregion
+
+        #region Methods
 
         public Player()
         {
@@ -152,5 +157,7 @@ namespace SpaceGame
         {
             return playerHitbox = new Rectangle((int)playerPos.X, (int)playerPos.Y, player.Width, player.Height);
         }
+
+        #endregion
     }
 }
