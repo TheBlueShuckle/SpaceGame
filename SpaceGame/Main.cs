@@ -39,8 +39,6 @@ namespace SpaceGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             GlobalConstants.SpriteBatch = _spriteBatch;
-            GlobalConstants.GraphicsDevice = GraphicsDevice;
-
 
             // TODO: use this.Content to load your game content here
             myShipFrame1 = Content.Load<Texture2D>("Sprites/myShipFrame1");
@@ -61,9 +59,15 @@ namespace SpaceGame
 
             bullet = Content.Load<Texture2D>("Sprites/bullet");
 
+            Texture2D enemyMeleeRange;
+
+            enemyMeleeRange = new Texture2D(GraphicsDevice, 1, 1);
+            enemyMeleeRange.SetData(new Color[] { Color.DarkSlateGray });
+
             GlobalConstants.PlayerSprites = playerSprites;
             GlobalConstants.EnemySprites = enemySprites;
             GlobalConstants.Bullet = bullet;
+            GlobalConstants.EnemyMeleeRange = enemyMeleeRange;
 
             sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
         }

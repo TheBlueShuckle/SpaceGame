@@ -19,7 +19,7 @@ namespace SpaceGame
 
         Player player = new Player();
 
-        DateTime leavePlanetCooldown, bulletCooldown;
+        DateTime leavePlanetCooldown, bulletCooldown, enemyBulletCooldown;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
@@ -41,18 +41,26 @@ namespace SpaceGame
             player.CheckMove();
             CheckShooting();
 
-            MoveBullets();
+            MoveBullets(bullets);
+            MoveBullets(enemyBullets);
             MoveEnemies();
-            
-            foreach (Enemy enemy in enemies)
+
+            if(enemyBulletCooldown < DateTime.Now)
             {
-                enemyBullets.Add(enemy.Shoot(player.playerPos));
+                foreach (Enemy enemy in enemies)
+                {
+                    enemyBullets.Add(enemy.Shoot(player.playerPos));
+                }
+
+                enemyBulletCooldown = DateTime.Now.AddMilliseconds(1000);
             }
 
             CheckBulletHits();
 
             player.ChangeProtagonistSprite();
             player.CheckBounds();
+
+            CheckBulletBounds();
 
             return scene;
         }
@@ -76,7 +84,7 @@ namespace SpaceGame
             }
         }
 
-        private void MoveBullets()
+        private void MoveBullets(List<Bullet> bullets)
         {
             foreach (Bullet bullet in bullets)
             {
@@ -121,6 +129,31 @@ namespace SpaceGame
             }
         }
 
+        private void CheckBulletBounds()
+        {
+            foreach (Bullet bullet in bullets.ToList())
+            {
+                if(bullet.GetBulletPos().X <= 10 || 
+                   bullet.GetBulletPos().Y <= 10 ||
+                   bullet.GetBulletPos().X >= GlobalConstants.ScreenWidth || 
+                   bullet.GetBulletPos().Y >= GlobalConstants.ScreenHeight)
+                {
+                    bullets.Remove(bullet);
+                }
+            }
+
+            foreach (Bullet bullet in enemyBullets.ToList())
+            {
+                if (bullet.GetBulletPos().X <= 10 ||
+                   bullet.GetBulletPos().Y <= 10 ||
+                   bullet.GetBulletPos().X >= GlobalConstants.ScreenWidth - 10 ||
+                   bullet.GetBulletPos().Y >= GlobalConstants.ScreenHeight - 10)
+                {
+                    enemyBullets.Remove(bullet);
+                }
+            }
+        }
+
         private void DrawEnemies()
         {
             foreach (Enemy enemy in enemies)
@@ -133,12 +166,7 @@ namespace SpaceGame
         {
             foreach (Enemy enemy in enemies)
             {
-                Texture2D _texture;
-
-                _texture = new Texture2D(GlobalConstants.GraphicsDevice, 1, 1);
-                _texture.SetData(new Color[] { Color.DarkSlateGray });
-
-                GlobalConstants.SpriteBatch.Draw(_texture, enemy.EnemyMeleeRange(), Color.White);
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, enemy.EnemyMeleeRange(), Color.White);
             }
         }
 
