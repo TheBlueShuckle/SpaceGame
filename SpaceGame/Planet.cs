@@ -14,20 +14,26 @@ namespace SpaceGame
 {
     public class Planet
     {
+        #region Variables
+
         Texture2D bigPlanet, smallPlanet;
         Texture2D size;
         Color planetColor;
         Vector2 location;
         Vector2 planetSpeed;
 
-        public Planet(Texture2D bigPlanet, Texture2D smallPlanet, int windowHeight, int windowWidth)
+        #endregion
+
+        #region Methods
+
+        public Planet(Texture2D bigPlanet, Texture2D smallPlanet)
         {
             this.bigPlanet = bigPlanet;
             this.smallPlanet = smallPlanet;
 
             GeneratePlanetColor();
             GeneratePlanetSize();
-            GeneratePlanetLocation(windowHeight, windowWidth);
+            GeneratePlanetLocation();
             GeneratePlanetSpeed();
         }
 
@@ -49,10 +55,11 @@ namespace SpaceGame
             planetColor = colors[randomColor];
         }
 
-        private void GeneratePlanetLocation(int height, int width)
+        private void GeneratePlanetLocation()
         {
             Random rnd = new Random();
-            int randomHeight = rnd.Next(size.Height, height), randomWidth = rnd.Next(0, width);
+            int randomHeight = rnd.Next(size.Height, (int) Math.Round(GlobalConstants.ScreenHeight));
+            int randomWidth = rnd.Next(0 - (GetPlanetSize().Width / 2), (int) Math.Round(GlobalConstants.ScreenWidth) - (GetPlanetSize().Width / 2));
 
             location.Y = -randomHeight;
             location.X = randomWidth;
@@ -66,9 +73,9 @@ namespace SpaceGame
         private void GeneratePlanetSpeed()
         {
             Random rnd = new Random();
-            int randomY = rnd.Next(10, 45);
+            int randomY = rnd.Next(GlobalConstants.PlanetMinSpeed, GlobalConstants.PlanetMaxSpeed);
 
-            planetSpeed.Y = randomY/10;
+            planetSpeed.Y = randomY / 10;
         }
 
         public Texture2D GetPlanetSize()
@@ -86,9 +93,6 @@ namespace SpaceGame
             return location;
         }
 
-        public Vector2 GetPlanetSpeed()
-        {
-            return planetSpeed;
-        }
+        #endregion
     }
 }

@@ -1,32 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using SharpDX.Direct2D1;
-using SharpDX.XAudio2;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms.VisualStyles;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame
 {
     public class Main : Game
     {
-        const bool InSpace = true, OnPlanet = false;
+        #region Variables
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D myShip, bigPlanet, smallPlanet;
-        Vector2 myShipPos;
-        Vector2 myShipSpeed;
-        Color planetColor;
-        Rectangle myShipHitBox, planetHitBox;
-        List<Planet> space = new List<Planet>();
-        System.DateTime nextPlanetTimeStamp;
-        Random rnd = new Random();
-        int randomNumber;
-        bool isInSpace = InSpace;
+        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet, bullet;
+        Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
+        int scene = GlobalConstants.InSpace;
+        ScenePlanet scenePlanet;
+        SceneSpace sceneSpace;
+
+        #endregion
+
+        #region MainMethods
 
         public Main()
         {
@@ -39,16 +32,11 @@ namespace SpaceGame
         {
             // TODO: Add your initialization logic here
 
-            if (isInSpace)
-            {
-                nextPlanetTimeStamp = DateTime.Now;
-                nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new System.TimeSpan(0, 0, 5));
+            GlobalConstants.ScreenWidth = Window.ClientBounds.Width;
+            GlobalConstants.ScreenHeight = Window.ClientBounds.Height;
 
-                myShipPos.X = (Window.ClientBounds.Width - 45) / 2;
-                myShipPos.Y = (Window.ClientBounds.Height - 48) / 2;
-                myShipSpeed.X = 2.5f;
-                myShipSpeed.Y = 2.5f;
-            }
+            sceneSpace = new SceneSpace();
+            sceneSpace.Initialize();
 
             base.Initialize();
         }
@@ -56,32 +44,67 @@ namespace SpaceGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            GlobalConstants.SpriteBatch = _spriteBatch;
 
             // TODO: use this.Content to load your game content here
-            myShip = Content.Load<Texture2D>("Sprites/myShip");
+            myShipFrame1 = Content.Load<Texture2D>("Sprites/myShipFrame1");
+            myShipFrame2 = Content.Load<Texture2D>("Sprites/myShipFrame2");
+
             bigPlanet = Content.Load<Texture2D>("Sprites/bigPlanet");
             smallPlanet = Content.Load<Texture2D>("Sprites/smallPlanet");
+
+            playerSprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
+            playerSprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
+            playerSprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
+            playerSprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
+
+            enemySprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
+            enemySprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
+            enemySprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
+            enemySprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
+
+            bullet = Content.Load<Texture2D>("Sprites/bullet");
+
+            Texture2D enemyMeleeRange;
+
+            enemyMeleeRange = new Texture2D(GraphicsDevice, 1, 1);
+            enemyMeleeRange.SetData(new Color[] { Color.DarkSlateGray });
+
+            GlobalConstants.PlayerSprites = playerSprites;
+            GlobalConstants.EnemySprites = enemySprites;
+            GlobalConstants.Bullet = bullet;
+            GlobalConstants.EnemyMeleeRange = enemyMeleeRange;
+
+            sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
+            }
 
             // TODO: Add your update logic here
 
-            if (isInSpace)
+            switch (scene)
             {
-                SpawnPlanet();
-                DeletePlanet();
+                case GlobalConstants.InSpace:
+                    scene = sceneSpace.Update();
 
-                CheckMove();
-                CheckBounds();
-                
-                if (CheckPlanetCollision())
-                {
-                    isInSpace = OnPlanet;
-                }
+                    if (sceneSpace.GetEnteringPlanet())
+                    {
+                        scenePlanet = new ScenePlanet();
+                    }
+
+                    break;
+
+                case GlobalConstants.OnPlanet:
+                    scene = scenePlanet.Update();
+                    break;
+
+                default:
+                    break;
             }
 
             base.Update(gameTime);
@@ -89,28 +112,35 @@ namespace SpaceGame
 
         protected override void Draw(GameTime gameTime)
         {
-            if (isInSpace)
+            switch (scene)
             {
-                GraphicsDevice.Clear(Color.Black);
-            }
+                case GlobalConstants.InSpace:
+                    GraphicsDevice.Clear(Color.Black);
+                    break;
 
-            else
-            {
-                GraphicsDevice.Clear(planetColor);
+                case GlobalConstants.OnPlanet:
+                    GraphicsDevice.Clear(sceneSpace.GetCollidedPlanet().GetPlanetColor());
+                    break;
+
+                default:
+                    break;
             }
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            if (isInSpace)
+            switch (scene)
             {
-                foreach (Planet planet in space)
-                {
-                    planet.UpdatePlanetLocation();
-                    _spriteBatch.Draw(planet.GetPlanetSize(), planet.GetPlanetLocation(), planet.GetPlanetColor());
-                }
+                case GlobalConstants.InSpace:
+                    sceneSpace.Draw();
+                    break;
 
-                _spriteBatch.Draw(myShip, myShipPos, Color.White);
+                case GlobalConstants.OnPlanet:
+                    scenePlanet.Draw();
+                    break;
+
+                default:
+                    break;
             }
 
             _spriteBatch.End();
@@ -118,109 +148,6 @@ namespace SpaceGame
             base.Draw(gameTime);
         }
 
-        public void CheckMove()
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                myShipPos.X -= myShipSpeed.X;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                myShipPos.X += myShipSpeed.X;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                myShipPos.Y -= myShipSpeed.Y;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                myShipPos.Y += myShipSpeed.Y;
-            }
-        }
-
-        public void CheckBounds()
-        {
-            if ((myShipPos.X >= (Window.ClientBounds.Width - myShip.Width) && Keyboard.GetState().IsKeyDown(Keys.D)) || (myShipPos.X <= 0 && Keyboard.GetState().IsKeyDown(Keys.A)))
-            {
-                if (myShipPos.X < 0)
-                {
-                    myShipPos.X = 0;
-                }
-
-                if (myShipPos.X >= Window.ClientBounds.Width - myShip.Width)
-                {
-                    myShipPos.X = Window.ClientBounds.Width - myShip.Width;
-                }
-
-                myShipSpeed.X = 0;
-            }
-
-            else
-            {
-                myShipSpeed.X = 2.5f;
-            }
-
-            if ((myShipPos.Y >= (Window.ClientBounds.Height - 100 - myShip.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W)))
-            {
-                if (myShipPos.Y < 100)
-                {
-                    myShipPos.Y = 100;
-                }
-
-                if (myShipPos.Y >= Window.ClientBounds.Height - 100 - myShip.Height)
-                {
-                    myShipPos.Y = Window.ClientBounds.Height - 100 - myShip.Height;
-                }
-
-                myShipSpeed.Y = 0;
-            }
-            else
-            {
-                myShipSpeed.Y = 2.5f;
-            }
-        }
-
-        public void SpawnPlanet()
-        {
-            if (nextPlanetTimeStamp < DateTime.Now && space.Count < 5)
-            {
-                space.Add(new Planet(bigPlanet, smallPlanet, Window.ClientBounds.Height, Window.ClientBounds.Width));
-
-                randomNumber = rnd.Next(5, 30);
-                nextPlanetTimeStamp = DateTime.Now;
-                nextPlanetTimeStamp = nextPlanetTimeStamp.Add(new System.TimeSpan(0, 0, randomNumber));
-            }
-        }
-
-        public void DeletePlanet()
-        {
-            foreach (Planet planet in space.ToList())
-            {
-                if (planet.GetPlanetLocation().Y == Window.ClientBounds.Height)
-                {
-                    space.Remove(planet);
-                }
-            }
-        }
-
-        public bool CheckPlanetCollision()
-        {
-            foreach (Planet planet in space.ToList())
-            {
-                myShipHitBox = new Rectangle(Convert.ToInt32(myShipPos.X), Convert.ToInt32(myShipPos.Y), myShip.Width, myShip.Height);
-                planetHitBox = new Rectangle(Convert.ToInt32(planet.GetPlanetLocation().X + myShip.Width), Convert.ToInt32(planet.GetPlanetLocation().Y + myShip.Height), planet.GetPlanetSize().Width - myShip.Width, planet.GetPlanetSize().Height - myShip.Height);
-
-                if (myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E))
-                {
-                    planetColor = planet.GetPlanetColor();
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        #endregion
     }
 }
