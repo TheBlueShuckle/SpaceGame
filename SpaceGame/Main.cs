@@ -11,7 +11,7 @@ namespace SpaceGame
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet, bullet;
+        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet, bullet, enemyMeleeRange;
         Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
         int scene = GlobalConstants.InSpace;
         ScenePlanet scenePlanet;
@@ -64,8 +64,6 @@ namespace SpaceGame
             enemySprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
 
             bullet = Content.Load<Texture2D>("Sprites/bullet");
-
-            Texture2D enemyMeleeRange;
 
             enemyMeleeRange = new Texture2D(GraphicsDevice, 1, 1);
             enemyMeleeRange.SetData(new Color[] { Color.DarkSlateGray });
