@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SharpDX.Direct2D1;
+using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -46,20 +47,11 @@ namespace SpaceGame
 
             player.CheckMove();
             CheckShooting();
+            EnemyShoot();
 
             MoveBullets(bullets);
             MoveBullets(enemyBullets);
             MoveEnemies();
-
-            if(enemyBulletCooldown < DateTime.Now)
-            {
-                foreach (Enemy enemy in enemies)
-                {
-                    enemyBullets.Add(enemy.Shoot(player.playerPos));
-                }
-
-                enemyBulletCooldown = DateTime.Now.AddMilliseconds(1000);
-            }
 
             CheckBulletHits();
 
@@ -121,6 +113,19 @@ namespace SpaceGame
             {
                 bullets.Add(new Bullet(new Vector2(player.playerPos.X + (player.GetPlayerSprite().Width / 2), player.playerPos.Y + (player.GetPlayerSprite().Height / 2)), new Vector2(mouseState.X, mouseState.Y)));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
+            }
+        }
+
+        private void EnemyShoot()
+        {
+            if (enemyBulletCooldown < DateTime.Now)
+            {
+                foreach (Enemy enemy in enemies)
+                {
+                    enemyBullets.Add(enemy.Shoot(player.playerPos));
+                }
+
+                enemyBulletCooldown = DateTime.Now.AddMilliseconds(1000);
             }
         }
 
