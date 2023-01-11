@@ -11,10 +11,11 @@ namespace SpaceGame
         Vector2 enemyPos;
         Vector2 enemySpeed;
         double enemyTotalSpeed = 2.5;
-        Rectangle enemyHitBox, enemyMeleeRange;
+        Rectangle enemyHitBox, enemyMeleeRange, enemyVision;
         Texture2D currentEnemySprite;
         Random rnd = new Random();
         int health;
+        DateTime shootCooldown;
 
         #endregion
 
@@ -49,6 +50,32 @@ namespace SpaceGame
             enemyPos += enemySpeed;
         }
 
+        public Rectangle EnemyMeleeRange()
+        {
+            return enemyMeleeRange = new Rectangle((int)GetEnemyPosition().X - 50, (int)GetEnemyPosition().Y - 50, GetCurrentEnemySprite().Width + 100, GetCurrentEnemySprite().Height + 100);
+        }
+
+        public Rectangle EnemyVision()
+        {
+            return enemyVision = new Rectangle((int)GetEnemyPosition().X - 50, (int)GetEnemyPosition().Y + currentEnemySprite.Height + 50, GetCurrentEnemySprite().Width + 100, 300);
+        }
+
+        public Bullet Shoot(Vector2 playerPos)
+        {
+            shootCooldown = DateTime.Now.AddMilliseconds(1000);
+            return new Bullet(enemyPos, playerPos);
+        }
+
+        public bool ShootCooldown()
+        {
+            if (DateTime.Now >= shootCooldown)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private void SetEnemySpeed(double angle)
         {
             enemySpeed.X = (float)Math.Round(Math.Cos(angle) * enemyTotalSpeed, 7);
@@ -68,16 +95,6 @@ namespace SpaceGame
         public Rectangle GetHitbox()
         {
             return enemyHitBox = new Rectangle((int)enemyPos.X, (int)enemyPos.Y, currentEnemySprite.Width, currentEnemySprite.Height);
-        }
-
-        public Rectangle EnemyMeleeRange()
-        {
-            return enemyMeleeRange = new Rectangle((int)GetEnemyPosition().X - 50, (int)GetEnemyPosition().Y - 50, GetCurrentEnemySprite().Width + 100, GetCurrentEnemySprite().Height + 100);
-        }
-
-        public Bullet Shoot(Vector2 playerPos)
-        {
-            return new Bullet(enemyPos, playerPos);
         }
 
         #endregion

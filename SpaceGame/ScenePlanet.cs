@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Reflection.Metadata;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
@@ -46,20 +47,11 @@ namespace SpaceGame
 
             player.CheckMove();
             CheckShooting();
+            CheckEnemyShooting();
 
             MoveBullets(bullets);
             MoveBullets(enemyBullets);
             MoveEnemies();
-
-            if(enemyBulletCooldown < DateTime.Now)
-            {
-                foreach (Enemy enemy in enemies)
-                {
-                    enemyBullets.Add(enemy.Shoot(player.playerPos));
-                }
-
-                enemyBulletCooldown = DateTime.Now.AddMilliseconds(1000);
-            }
 
             CheckBulletHits();
 
@@ -74,6 +66,7 @@ namespace SpaceGame
         public void Draw()
         {
             DrawEnemyMeleeRange();
+            DrawEnemyVision();
 
             GlobalConstants.SpriteBatch.Draw(player.GetPlayerSprite(), player.playerPos, Color.White);
 
@@ -121,6 +114,17 @@ namespace SpaceGame
             {
                 bullets.Add(new Bullet(new Vector2(player.playerPos.X + (player.GetPlayerSprite().Width / 2), player.playerPos.Y + (player.GetPlayerSprite().Height / 2)), new Vector2(mouseState.X, mouseState.Y)));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
+            }
+        }
+
+        private void CheckEnemyShooting()
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.EnemyVision().Intersects(player.GetPlayerHitbox()) && enemy.ShootCooldown() == false)
+                {
+                    enemyBullets.Add(enemy.Shoot(player.playerPos));
+                }
             }
         }
 
@@ -180,6 +184,23 @@ namespace SpaceGame
             }
         }
 
+        private void DrawEnemyVision()
+        {
+            foreach(Enemy enemy in enemies)
+            {
+                GlobalConstants.SpriteBatch.Draw(
+                    GlobalConstants.EnemyVision, 
+                    enemy.GetEnemyPosition(), 
+                    enemy.EnemyVision(), 
+                    Color.White, 
+                    (float)(Math.PI/6), 
+                    new Vector2(enemy.GetEnemyPosition().X + (enemy.GetCurrentEnemySprite().Width / 2), enemy.GetEnemyPosition().Y + (enemy.GetCurrentEnemySprite().Height / 2)),
+                    1f, 
+                    SpriteEffects.None, 
+                    0);
+            }
+        }
+        
         private void DrawBullets(List<Bullet> bullets)
         {
             foreach (Bullet bullet in bullets)
