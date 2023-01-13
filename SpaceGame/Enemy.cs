@@ -54,9 +54,9 @@ namespace SpaceGame
             return new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y - 50, GetCurrentSprite().Width + 100, GetCurrentSprite().Height + 100);
         }
 
-        public Rectangle Vision()
+        public Rectangle fieldOfView()
         {
-            return new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y + currentSprite.Height + 50, GetCurrentSprite().Width + 100, 300);
+            return new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y + currentSprite.Height + 50, GetCurrentSprite().Width + 100, currentSprite.Height + 350);
         }
 
         public Bullet Shoot(Vector2 playerPos)

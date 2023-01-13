@@ -123,7 +123,7 @@ namespace SpaceGame
         {
             foreach (Enemy enemy in enemies)
             {
-                if (player.GetHitBox().Intersects(enemy.Vision()) && enemy.ShootCooldown())
+                if (player.GetHitBox().Intersects(enemy.fieldOfView()) && enemy.ShootCooldown())
                 {
                     enemyBullets.Add(enemy.Shoot(player.pos));
                 }
@@ -190,19 +190,18 @@ namespace SpaceGame
         {
             foreach(Enemy enemy in enemies)
             {
-                /*
                 GlobalConstants.SpriteBatch.Draw(
                     GlobalConstants.EnemyVision, 
-                    enemy.GetEnemyPosition(), 
-                    enemy.EnemyVision(), 
+                    enemy.GetPosition(), 
+                    enemy.fieldOfView(), 
                     Color.White, 
-                    (float)(Math.PI/6), 
-                    new Vector2(enemy.GetEnemyPosition().X + (enemy.GetCurrentEnemySprite().Width / 2), enemy.GetEnemyPosition().Y + (enemy.GetCurrentEnemySprite().Height / 2)),
+                    (float)(0), 
+                    new Vector2(enemy.GetPosition().X + (enemy.GetCurrentSprite().Width / 2), enemy.GetPosition().Y + (enemy.GetCurrentSprite().Height / 2)),
                     1f, 
                     SpriteEffects.None, 
                     0);
-                */
-                GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyVision, enemy.Vision(), Color.White);
+                
+                //GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyVision, enemy.Vision(), Color.White);
             }
         }
         
