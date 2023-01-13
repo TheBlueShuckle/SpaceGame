@@ -15,10 +15,10 @@ namespace SpaceGame
         #region Variables
 
         MouseState mouseState;
-        Vector2 bulletSpeed, bulletPos;
-        double bulletTotalSpeed = 10, angle;
-        Rectangle bulletRectangle;
-        Vector2 bulletOrigin;
+        Vector2 speed, pos;
+        double totalSpeed = 10, angle;
+        Rectangle rectangle;
+        Vector2 origin;
 
         #endregion
 
@@ -27,50 +27,50 @@ namespace SpaceGame
         public Bullet(Vector2 bulletStartPos, Vector2 bulletGoal)
         {
             mouseState = Mouse.GetState();
-            bulletPos = bulletStartPos;
-            SetBulletTrajectory(bulletStartPos, bulletGoal);
+            pos = bulletStartPos;
+            SetTrajectory(bulletStartPos, bulletGoal);
         }
 
-        public void MoveBullet()
+        public void Move()
         {
-            bulletPos += bulletSpeed;
+            pos += speed;
 
-            bulletRectangle = new Rectangle((int)bulletPos.X, (int)bulletPos.Y, GlobalConstants.Bullet.Width, GlobalConstants.Bullet.Height);
-            bulletOrigin = new Vector2(bulletRectangle.Width / 2, bulletRectangle.Height / 2);
+            rectangle = new Rectangle((int)pos.X, (int)pos.Y, GlobalConstants.Bullet.Width, GlobalConstants.Bullet.Height);
+            origin = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
         }
 
-        public Vector2 GetBulletPos()
+        public Vector2 GetPos()
         {
-            return bulletPos;
+            return pos;
         }
 
-        private Vector2 SetBulletTrajectory(Vector2 bulletStartPos, Vector2 bulletGoal)
+        private Vector2 SetTrajectory(Vector2 bulletStartPos, Vector2 bulletGoal)
         {
             angle = Math.Atan((bulletStartPos.Y - bulletGoal.Y) / (bulletStartPos.X - bulletGoal.X));
 
             if (bulletGoal.X > bulletStartPos.X)
             {
-                bulletSpeed.X = (float)Math.Round(Math.Cos(angle) * bulletTotalSpeed, 7);
-                bulletSpeed.Y = (float)Math.Round(Math.Sin(angle) * bulletTotalSpeed, 7);
+                speed.X = (float)Math.Round(Math.Cos(angle) * totalSpeed, 7);
+                speed.Y = (float)Math.Round(Math.Sin(angle) * totalSpeed, 7);
             }
 
             else 
             {
-                bulletSpeed.X = (float)Math.Round(Math.Cos(angle + Math.PI) * bulletTotalSpeed, 7);
-                bulletSpeed.Y = (float)Math.Round(Math.Sin(angle + Math.PI) * bulletTotalSpeed, 7);
+                speed.X = (float)Math.Round(Math.Cos(angle + Math.PI) * totalSpeed, 7);
+                speed.Y = (float)Math.Round(Math.Sin(angle + Math.PI) * totalSpeed, 7);
             }
 
-            return bulletSpeed;
+            return speed;
         }
 
-        public void DrawBullet()
+        public void Draw()
         {
-            GlobalConstants.SpriteBatch.Draw(GlobalConstants.Bullet, bulletPos, null, Color.White, (float) angle + (float) (Math.PI / 2), bulletOrigin, 1f, SpriteEffects.None, 0);
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.Bullet, pos, null, Color.White, (float) angle + (float) (Math.PI / 2), origin, 1f, SpriteEffects.None, 0);
         }
 
         public Rectangle GetRectangle()
         {
-            return bulletRectangle;
+            return rectangle;
         }
 
         #endregion
