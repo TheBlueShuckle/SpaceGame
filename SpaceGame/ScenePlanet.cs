@@ -49,6 +49,14 @@ namespace SpaceGame
             player.CheckMove();
             CheckShooting();
 
+            foreach(Enemy enemy in enemies)
+            {
+                if (player.GetPlayerHitbox().Intersects(enemy.Vision()) && enemy.ShootCooldown())
+                {
+                    enemyBullets.Add(enemy.Shoot(player.playerPos));
+                }
+            }
+
             MoveBullets(bullets);
             MoveBullets(enemyBullets);
             MoveEnemies();
@@ -99,9 +107,9 @@ namespace SpaceGame
         {            
             foreach (Enemy enemy in enemies)
             {
-                if (player.GetPlayerHitbox().Intersects(enemy.EnemyMeleeRange()))
+                if (player.GetPlayerHitbox().Intersects(enemy.MeleeRange()))
                 {
-                    enemy.MoveEnemy(player.playerPos);
+                    enemy.Move(player.playerPos);
                 }
             }
         }
@@ -161,7 +169,7 @@ namespace SpaceGame
         {
             foreach (Enemy enemy in enemies)
             {
-                GlobalConstants.SpriteBatch.Draw(enemy.GetCurrentEnemySprite(), enemy.GetEnemyPosition(), Color.Green);
+                GlobalConstants.SpriteBatch.Draw(enemy.GetCurrentSprite(), enemy.GetPosition(), Color.Green);
             }
         }
 
@@ -169,7 +177,7 @@ namespace SpaceGame
         {
             foreach (Enemy enemy in enemies)
             {
-                GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, enemy.EnemyMeleeRange(), Color.White);
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, enemy.MeleeRange(), Color.White);
             }
         }
 
@@ -177,6 +185,7 @@ namespace SpaceGame
         {
             foreach(Enemy enemy in enemies)
             {
+                /*
                 GlobalConstants.SpriteBatch.Draw(
                     GlobalConstants.EnemyVision, 
                     enemy.GetEnemyPosition(), 
@@ -187,6 +196,8 @@ namespace SpaceGame
                     1f, 
                     SpriteEffects.None, 
                     0);
+                */
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyVision, enemy.Vision(), Color.White);
             }
         }
         

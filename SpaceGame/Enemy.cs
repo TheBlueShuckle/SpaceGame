@@ -31,7 +31,7 @@ namespace SpaceGame
             enemyPos.Y = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenHeight));
         }
 
-        public void MoveEnemy(Vector2 playerPos)
+        public void Move(Vector2 playerPos)
         {
             double angle;
 
@@ -39,36 +39,36 @@ namespace SpaceGame
 
             if (enemyPos.X > playerPos.X)
             {
-                SetEnemySpeed(angle + Math.PI);
+                SetSpeed(angle + Math.PI);
             }
 
             else
             {
-                SetEnemySpeed(angle);
+                SetSpeed(angle);
             }
 
             enemyPos += enemySpeed;
         }
 
-        public Rectangle EnemyMeleeRange()
+        public Rectangle MeleeRange()
         {
-            return enemyMeleeRange = new Rectangle((int)GetEnemyPosition().X - 50, (int)GetEnemyPosition().Y - 50, GetCurrentEnemySprite().Width + 100, GetCurrentEnemySprite().Height + 100);
+            return enemyMeleeRange = new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y - 50, GetCurrentSprite().Width + 100, GetCurrentSprite().Height + 100);
         }
 
-        public Rectangle EnemyVision()
+        public Rectangle Vision()
         {
-            return enemyVision = new Rectangle((int)GetEnemyPosition().X - 50, (int)GetEnemyPosition().Y + currentEnemySprite.Height + 50, GetCurrentEnemySprite().Width + 100, 300);
+            return enemyVision = new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y + currentEnemySprite.Height + 50, GetCurrentSprite().Width + 100, 300);
         }
 
         public Bullet Shoot(Vector2 playerPos)
         {
             shootCooldown = DateTime.Now.AddMilliseconds(1000);
-            return new Bullet(enemyPos, playerPos);
+            return new Bullet(new Vector2(enemyPos.X + (currentEnemySprite.Width / 2), enemyPos.Y + (currentEnemySprite.Height / 2)), playerPos);
         }
 
         public bool ShootCooldown()
         {
-            if (DateTime.Now >= shootCooldown)
+            if (shootCooldown > DateTime.Now)
             {
                 return false;
             }
@@ -76,18 +76,18 @@ namespace SpaceGame
             return true;
         }
 
-        private void SetEnemySpeed(double angle)
+        private void SetSpeed(double angle)
         {
             enemySpeed.X = (float)Math.Round(Math.Cos(angle) * enemyTotalSpeed, 7);
             enemySpeed.Y = (float)Math.Round(Math.Sin(angle) * enemyTotalSpeed, 7);
         }
 
-        public Vector2 GetEnemyPosition()
+        public Vector2 GetPosition()
         {
             return enemyPos;
         }
 
-        public Texture2D GetCurrentEnemySprite()
+        public Texture2D GetCurrentSprite()
         {
             return currentEnemySprite;
         }
