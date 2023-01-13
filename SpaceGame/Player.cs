@@ -15,10 +15,8 @@ namespace SpaceGame
     {
         #region Variables
 
-        Texture2D[] sprites = GlobalConstants.PlayerSprites;
         Texture2D currentSprite = GlobalConstants.PlayerSprites[0];
         Vector2 speed;
-        Rectangle hitBox;
         MouseState mouseState;
         public Vector2 pos;
 
@@ -155,7 +153,7 @@ namespace SpaceGame
 
         public Rectangle GetHitBox()
         {
-            return hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentSprite.Width, currentSprite.Height);
+            return new Rectangle((int)pos.X, (int)pos.Y, currentSprite.Width, currentSprite.Height);
         }
 
         #endregion

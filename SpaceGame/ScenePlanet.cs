@@ -23,7 +23,7 @@ namespace SpaceGame
 
         Player player = new Player();
 
-        DateTime leavePlanetCooldown, bulletCooldown, enemyBulletCooldown;
+        DateTime leavePlanetCooldown, bulletCooldown;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();

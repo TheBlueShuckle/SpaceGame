@@ -11,7 +11,6 @@ namespace SpaceGame
         Vector2 pos;
         Vector2 speed;
         double totalSpeed = 2.5;
-        Rectangle hitBox, meleeRange, vision;
         Texture2D currentSprite;
         Random rnd = new Random();
         int health;
@@ -52,12 +51,12 @@ namespace SpaceGame
 
         public Rectangle MeleeRange()
         {
-            return meleeRange = new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y - 50, GetCurrentSprite().Width + 100, GetCurrentSprite().Height + 100);
+            return new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y - 50, GetCurrentSprite().Width + 100, GetCurrentSprite().Height + 100);
         }
 
         public Rectangle Vision()
         {
-            return vision = new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y + currentSprite.Height + 50, GetCurrentSprite().Width + 100, 300);
+            return new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y + currentSprite.Height + 50, GetCurrentSprite().Width + 100, 300);
         }
 
         public Bullet Shoot(Vector2 playerPos)
@@ -94,7 +93,7 @@ namespace SpaceGame
 
         public Rectangle GetHitbox()
         {
-            return hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentSprite.Width, currentSprite.Height);
+            return new Rectangle((int)pos.X, (int)pos.Y, currentSprite.Width, currentSprite.Height);
         }
 
         #endregion

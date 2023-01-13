@@ -14,7 +14,6 @@ namespace SpaceGame
     {
         #region Variables
 
-        MouseState mouseState;
         Vector2 speed, pos;
         double totalSpeed = 10, angle;
         Rectangle rectangle;
@@ -26,7 +25,6 @@ namespace SpaceGame
 
         public Bullet(Vector2 bulletStartPos, Vector2 bulletGoal)
         {
-            mouseState = Mouse.GetState();
             pos = bulletStartPos;
             SetTrajectory(bulletStartPos, bulletGoal);
         }
