@@ -75,7 +75,6 @@ namespace SpaceGame
             GlobalConstants.EnemySprites = enemySprites;
             GlobalConstants.Bullet = bullet;
             GlobalConstants.EnemyMeleeRange = enemyMeleeRange;
-            GlobalConstants.EnemyVision = enemyVision;
 
             sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
         }

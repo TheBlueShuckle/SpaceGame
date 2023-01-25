@@ -65,12 +65,6 @@ namespace SpaceGame
             set { enemyMeleeRange = value; }
         }
 
-        public static Texture2D EnemyVision
-        {
-            get { return enemyVision; }
-            set { enemyVision = value; }
-        }
-
         public static SpriteBatch SpriteBatch
         {
             get { return spriteBatch; }

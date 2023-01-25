@@ -68,7 +68,6 @@ namespace SpaceGame
         public void Draw()
         {
             DrawEnemyMeleeRange();
-            DrawEnemyVision();
 
             GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
 
@@ -183,25 +182,6 @@ namespace SpaceGame
             foreach (Enemy enemy in enemies)
             {
                 GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, enemy.MeleeRange(), Color.White);
-            }
-        }
-
-        private void DrawEnemyVision()
-        {
-            foreach(Enemy enemy in enemies)
-            {
-                GlobalConstants.SpriteBatch.Draw(
-                    GlobalConstants.EnemyVision, 
-                    enemy.GetPosition(), 
-                    enemy.fieldOfView(), 
-                    Color.White, 
-                    (float)(0), 
-                    new Vector2(enemy.GetPosition().X + (enemy.GetCurrentSprite().Width / 2), enemy.GetPosition().Y + (enemy.GetCurrentSprite().Height / 2)),
-                    1f, 
-                    SpriteEffects.None, 
-                    0);
-                
-                //GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyVision, enemy.Vision(), Color.White);
             }
         }
         
