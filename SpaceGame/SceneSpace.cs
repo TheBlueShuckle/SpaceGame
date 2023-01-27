@@ -203,7 +203,7 @@ namespace SpaceGame
 
         private void CheckIfPlanetDespawned()
         {
-            foreach (Planet planet in visitedPlanets)
+            foreach (Planet planet in visitedPlanets.ToList())
             {
                 if (space.Contains(planet) == false)
                 {

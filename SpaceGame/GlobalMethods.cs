@@ -17,7 +17,7 @@ namespace SpaceGame
 
         public static bool CheckPointIntersects(Rectangle rectangle, Vector2 point)
         {
-            if (point.X < rectangle.Right && point.X > rectangle.Left && point.Y < rectangle.Top && point.Y > rectangle.Bottom)
+            if (point.X < rectangle.Right && point.X > rectangle.Left && point.Y < rectangle.Bottom && point.Y > rectangle.Top)
             {
                 return true;
             }
