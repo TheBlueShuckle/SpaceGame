@@ -64,6 +64,7 @@ namespace SpaceGame
             enemySprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
 
             bullet = Content.Load<Texture2D>("Sprites/bullet");
+            GlobalConstants.HealthPack = Content.Load<Texture2D>("Sprites/Health-pack prot");
 
             enemyMeleeRange = new Texture2D(GraphicsDevice, 1, 1);
             enemyMeleeRange.SetData(new Color[] { Color.DarkSlateGray });
@@ -127,8 +128,10 @@ namespace SpaceGame
                     break;
             }
 
-            // TODO: Add your drawing code here
-            _spriteBatch.Begin();
+            // TODO: Add your drawing code herex
+
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
 
             switch (scene)
             {

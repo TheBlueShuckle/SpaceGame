@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/bullet.png
 
+#begin Sprites/Health-pack prot.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Health-pack prot.png
+
 #begin Sprites/myShipFrame1.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -21,7 +21,7 @@ namespace SpaceGame
         Vector2 speed;
         MouseState mouseState;
         public Vector2 pos;
-        int health = 5;
+        int health = 100;
 
         #endregion
 
@@ -159,9 +159,22 @@ namespace SpaceGame
             return new Rectangle(new Point((int) pos.X, (int) pos.Y), new Point(currentSprite.Width, currentSprite.Height));
         }
 
-        public void ChangeHealth()
+        public void AddHealth(int addedHealth)
         {
-            health -= 1;
+            if(health + addedHealth > 100)
+            {
+                health = 100;
+            }
+
+            else
+            {
+                health += addedHealth;
+            }
+        }
+
+        public void DamageTaken()
+        {
+            health -= 20;
         }
 
         public int GetHealth()

@@ -27,6 +27,7 @@ namespace SpaceGame
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
+        List<HealthPack> healthPacks = new List<HealthPack>();
 
         #endregion
 
@@ -57,6 +58,7 @@ namespace SpaceGame
 
             CheckIfBulletHitsEnemies();
             CheckIfBulletHitsPlayer();
+            CheckCollisionHealthPack();
 
             player.ChangeSprite();
             player.CheckBounds();
@@ -70,11 +72,12 @@ namespace SpaceGame
         {
             DrawEnemyMeleeRange();
 
-            GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
-
             DrawEnemies();
             DrawBullets(bullets);
             DrawBullets(enemyBullets);
+            DrawHealthPacks(healthPacks);
+
+            GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
         }
 
         #endregion
@@ -137,7 +140,7 @@ namespace SpaceGame
                 if (bullet.GetRectangle().Intersects(player.GetHitBox()))
                 {
                     enemyBullets.Remove(bullet);
-                    player.ChangeHealth();
+                    player.DamageTaken();
 
                     if (player.GetHealth() < 1)
                     {
@@ -168,6 +171,29 @@ namespace SpaceGame
                 if (enemy.GetHealth() < 1)
                 {
                     enemies.Remove(enemy);
+                    GenerateHealthPack(enemy);
+                }
+            }
+        }
+
+        private void GenerateHealthPack(Enemy enemy)
+        {
+            Random rand = new Random();
+
+            if (rand.Next(1, 5) == 1)
+            {
+                healthPacks.Add(new HealthPack(enemy.GetPosition()));
+            }
+        }
+
+        private void CheckCollisionHealthPack()
+        {
+            foreach (HealthPack healthPack in healthPacks.ToList())
+            {
+                if (player.GetHitBox().Intersects(healthPack.GetRectangle()) && player.GetHealth() < 5)
+                {
+                    player.AddHealth(healthPack.GetValue());
+                    healthPacks.Remove(healthPack);
                 }
             }
         }
@@ -218,6 +244,14 @@ namespace SpaceGame
             foreach (Bullet bullet in bullets)
             {
                 bullet.Draw();
+            }
+        }
+
+        private void DrawHealthPacks(List<HealthPack> healthPacks)
+        {
+            foreach (HealthPack healthPack in healthPacks)
+            {
+                healthPack.Draw();
             }
         }
 

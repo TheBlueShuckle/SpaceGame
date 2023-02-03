@@ -25,7 +25,7 @@ namespace SpaceGame
 
         private static float screenWidth, screenHeight;
         private static Texture2D[] playerSprites, enemySprites;
-        private static Texture2D bullet, enemyMeleeRange, enemyVision;
+        private static Texture2D bullet, enemyMeleeRange, enemyVision, healthPack;
         private static SpriteBatch spriteBatch;
         private static GraphicsDevice graphicsDevice;
 
@@ -63,6 +63,12 @@ namespace SpaceGame
         {
             get { return enemyMeleeRange; }
             set { enemyMeleeRange = value; }
+        }
+
+        public static Texture2D HealthPack
+        {
+            get { return healthPack; }
+            set { healthPack = value; }
         }
 
         public static SpriteBatch SpriteBatch

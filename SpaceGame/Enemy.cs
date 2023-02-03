@@ -16,7 +16,7 @@ namespace SpaceGame
         float currentDir = 0;
         Texture2D currentSprite;
         Random rnd = new Random();
-        int health = 3;
+        int health = 75;
         DateTime shootCooldown;
 
         #endregion
@@ -116,7 +116,7 @@ namespace SpaceGame
 
         public void ChangeHealth()
         {
-            health -= 1;
+            health -= 20;
         }
 
         public int GetHealth()
