@@ -19,6 +19,7 @@ namespace SpaceGame
         Vector2 speed;
         MouseState mouseState;
         public Vector2 pos;
+        int health;
 
         #endregion
 

@@ -100,7 +100,6 @@ namespace SpaceGame
         {            
             foreach (Enemy enemy in enemies)
             {
-                //if (player.GetHitBox().Intersects(enemy.MeleeRange()))
                 if(GlobalMethods.CheckPointIntersects(enemy.MeleeRange(), GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)))
                 {
                     enemy.Move(player.pos);
@@ -136,11 +135,21 @@ namespace SpaceGame
             {
                 foreach (Enemy enemy in enemies.ToList())
                 {
-                    if (GlobalMethods.CheckPointIntersects(enemy.GetHitbox(), GlobalMethods.GetCenter(bullet.GetPos(), GlobalConstants.Bullet.Width, GlobalConstants.Bullet.Height)))
-                    {
-                        bullets.Remove(bullet);
-                        enemies.Remove(enemy);
-                    }
+                    IfBulletHit(enemy, bullet);
+                }
+            }
+        }
+
+        private void IfBulletHit(Enemy enemy, Bullet bullet)
+        {
+            if (GlobalMethods.CheckPointIntersects(enemy.GetHitbox(), GlobalMethods.GetCenter(bullet.GetPos(), GlobalConstants.Bullet.Width, GlobalConstants.Bullet.Height)))
+            {
+                bullets.Remove(bullet);
+                enemy.ChangeHealth();
+
+                if (enemy.GetHealth() < 1)
+                {
+                    enemies.Remove(enemy);
                 }
             }
         }

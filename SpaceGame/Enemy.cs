@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.WIC;
 using System;
+using System.Collections;
 
 namespace SpaceGame
 {
@@ -11,9 +13,10 @@ namespace SpaceGame
         Vector2 pos;
         Vector2 speed;
         double totalSpeed = 2.5;
+        float currentDir = 0;
         Texture2D currentSprite;
         Random rnd = new Random();
-        int health;
+        int health = 3;
         DateTime shootCooldown;
 
         #endregion
@@ -54,6 +57,21 @@ namespace SpaceGame
             return new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y - 50, GetCurrentSprite().Width + 100, GetCurrentSprite().Height + 100);
         }
 
+        public float UpdateLookingDir()
+        {
+            if (currentDir != Math.PI / 3 * 5)
+            {
+                currentDir += (float)Math.PI / 3;
+            }
+
+            else
+            {
+                currentDir = 0;
+            }
+
+            return currentDir;
+        }
+
         public Rectangle fieldOfView()
         {
             return new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y + currentSprite.Height + 50, GetCurrentSprite().Width + 100, currentSprite.Height + 350);
@@ -77,8 +95,8 @@ namespace SpaceGame
 
         private void SetSpeed(double angle)
         {
-            speed.X = (float)Math.Round(Math.Cos(angle) * totalSpeed, 7);
-            speed.Y = (float)Math.Round(Math.Sin(angle) * totalSpeed, 7);
+            speed.X = (float) Math.Cos(angle) * (float) totalSpeed;
+            speed.Y = (float) Math.Sin(angle) * (float) totalSpeed;
         }
 
         public Vector2 GetPosition()
@@ -94,6 +112,26 @@ namespace SpaceGame
         public Rectangle GetHitbox()
         {
             return new Rectangle((int)pos.X, (int)pos.Y, currentSprite.Width, currentSprite.Height);
+        }
+
+        public void ChangeHealth()
+        {
+            health -= 1;
+        }
+
+        public int GetHealth()
+        {
+            return health;
+        }
+
+        public bool CheckIfDead()
+        {
+            if (health <= 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
