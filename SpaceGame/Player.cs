@@ -7,6 +7,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace SpaceGame
 {
@@ -19,7 +21,7 @@ namespace SpaceGame
         Vector2 speed;
         MouseState mouseState;
         public Vector2 pos;
-        int health;
+        int health = 5;
 
         #endregion
 
@@ -154,7 +156,17 @@ namespace SpaceGame
 
         public Rectangle GetHitBox()
         {
-            return new Rectangle((int)pos.X, (int)pos.Y, currentSprite.Width, currentSprite.Height);
+            return new Rectangle(new Point((int) pos.X, (int) pos.Y), new Point(currentSprite.Width, currentSprite.Height));
+        }
+
+        public void ChangeHealth()
+        {
+            health -= 1;
+        }
+
+        public int GetHealth()
+        {
+            return health;
         }
 
         #endregion

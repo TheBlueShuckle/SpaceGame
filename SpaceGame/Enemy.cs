@@ -124,16 +124,6 @@ namespace SpaceGame
             return health;
         }
 
-        public bool CheckIfDead()
-        {
-            if (health <= 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         #endregion
     }
 }

@@ -55,7 +55,8 @@ namespace SpaceGame
             MoveBullets(enemyBullets);
             MoveEnemies();
 
-            CheckBulletHits();
+            CheckIfBulletHitsEnemies();
+            CheckIfBulletHitsPlayer();
 
             player.ChangeSprite();
             player.CheckBounds();
@@ -129,7 +130,24 @@ namespace SpaceGame
             }
         }
 
-        private void CheckBulletHits()
+        private void CheckIfBulletHitsPlayer()
+        {
+            foreach (Bullet bullet in enemyBullets.ToList())
+            {
+                if (bullet.GetRectangle().Intersects(player.GetHitBox()))
+                {
+                    enemyBullets.Remove(bullet);
+                    player.ChangeHealth();
+
+                    if (player.GetHealth() < 1)
+                    {
+                        scene = GlobalConstants.InSpace;
+                    }
+                }
+            }
+        }
+
+        private void CheckIfBulletHitsEnemies()
         {
             foreach (Bullet bullet in bullets.ToList())
             {
