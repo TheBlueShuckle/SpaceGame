@@ -11,7 +11,7 @@ namespace SpaceGame
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet, bullet, enemyMeleeRange, enemyVision;
+        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
         Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
         int scene = GlobalConstants.InSpace;
         ScenePlanet scenePlanet;
@@ -53,30 +53,25 @@ namespace SpaceGame
             bigPlanet = Content.Load<Texture2D>("Sprites/bigPlanet");
             smallPlanet = Content.Load<Texture2D>("Sprites/smallPlanet");
 
-            playerSprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
-            playerSprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
-            playerSprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
-            playerSprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
+            GlobalConstants.PlayerSprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
+            GlobalConstants.PlayerSprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
+            GlobalConstants.PlayerSprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
+            GlobalConstants.PlayerSprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
 
-            enemySprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
-            enemySprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
-            enemySprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
-            enemySprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
+            GlobalConstants.EnemySprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
+            GlobalConstants.EnemySprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
+            GlobalConstants.EnemySprites[2] = Content.Load<Texture2D>("Sprites/protagonistBackStandingRight");
+            GlobalConstants.EnemySprites[3] = Content.Load<Texture2D>("Sprites/protagonistBackStandingLeft");
 
-            bullet = Content.Load<Texture2D>("Sprites/bullet");
+            GlobalConstants.Bullet = Content.Load<Texture2D>("Sprites/bullet");
             GlobalConstants.HealthPack = Content.Load<Texture2D>("Sprites/Health-pack prot");
 
-            enemyMeleeRange = new Texture2D(GraphicsDevice, 1, 1);
-            enemyMeleeRange.SetData(new Color[] { Color.DarkSlateGray });
+            GlobalConstants.EnemyMeleeRange = new Texture2D(GraphicsDevice, 1, 1);
+            GlobalConstants.EnemyMeleeRange.SetData(new Color[] { Color.DarkSlateGray });
 
-            enemyVision = new Texture2D(GraphicsDevice, 1, 1);
-            enemyVision.SetData(new Color[] { Color.Black });
-
-            GlobalConstants.PlayerSprites = playerSprites;
-            GlobalConstants.EnemySprites = enemySprites;
-            GlobalConstants.Bullet = bullet;
-            GlobalConstants.EnemyMeleeRange = enemyMeleeRange;
-
+            GlobalConstants.HealthBar = new Texture2D(GraphicsDevice, 1, 1);
+            GlobalConstants.HealthBar.SetData(new Color[] { Color.White });
+            
             sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
         }
 

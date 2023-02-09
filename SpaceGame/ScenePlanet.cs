@@ -28,6 +28,7 @@ namespace SpaceGame
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
         List<HealthPack> healthPacks = new List<HealthPack>();
+        List<HealthBar> healthBars = new List<HealthBar>();
 
         #endregion
 
@@ -64,6 +65,11 @@ namespace SpaceGame
             player.CheckBounds();
 
             CheckBulletBounds();
+
+            foreach(Enemy enemy in enemies)
+            {
+                SpawnHealthBar(enemy.GetHealth());
+            }
 
             return scene;
         }
@@ -190,7 +196,7 @@ namespace SpaceGame
         {
             foreach (HealthPack healthPack in healthPacks.ToList())
             {
-                if (player.GetHitBox().Intersects(healthPack.GetRectangle()) && player.GetHealth() < 5)
+                if (player.GetHitBox().Intersects(healthPack.GetRectangle()) && player.GetHealth() < 100)
                 {
                     player.AddHealth(healthPack.GetValue());
                     healthPacks.Remove(healthPack);
@@ -253,6 +259,16 @@ namespace SpaceGame
             {
                 healthPack.Draw();
             }
+        }
+
+        private void SpawnHealthBar(int fullHealth)
+        {
+            healthBars.Add(new HealthBar(fullHealth));
+        }
+
+        private void UpdateHealthBarPos(Vector2 pos)
+        {
+
         }
 
         #endregion

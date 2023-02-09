@@ -24,8 +24,8 @@ namespace SpaceGame
         #region GettersSetters
 
         private static float screenWidth, screenHeight;
-        private static Texture2D[] playerSprites, enemySprites;
-        private static Texture2D bullet, enemyMeleeRange, enemyVision, healthPack;
+        private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
+        private static Texture2D bullet, enemyMeleeRange, healthPack, healthBar;
         private static SpriteBatch spriteBatch;
         private static GraphicsDevice graphicsDevice;
 
@@ -69,6 +69,12 @@ namespace SpaceGame
         {
             get { return healthPack; }
             set { healthPack = value; }
+        }
+
+        public static Texture2D HealthBar
+        {
+            get { return healthBar; }
+            set { healthBar = value; }
         }
 
         public static SpriteBatch SpriteBatch
