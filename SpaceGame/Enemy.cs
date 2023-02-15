@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct3D9;
-using SharpDX.WIC;
 using System;
-using System.Collections;
 
 namespace SpaceGame
 {
@@ -14,7 +11,7 @@ namespace SpaceGame
         const int MaxHealth = 75, HealthBarWidth = 50, HealthBarHeight = 10;
         const float criticalHealth = 0.2f;
 
-        Vector2 pos;
+        Vector2 pos, healthBarPos;
         Vector2 speed;
         double totalSpeed = 2.5;
         float currentDir = 0;
@@ -99,8 +96,8 @@ namespace SpaceGame
 
         private void SetSpeed(double angle)
         {
-            speed.X = (float) Math.Cos(angle) * (float) totalSpeed;
-            speed.Y = (float) Math.Sin(angle) * (float) totalSpeed;
+            speed.X = (float)Math.Cos(angle) * (float)totalSpeed;
+            speed.Y = (float)Math.Sin(angle) * (float)totalSpeed;
         }
 
         public Vector2 GetPosition()
@@ -128,23 +125,29 @@ namespace SpaceGame
             return health;
         }
 
-        public float PercentOfFullHealth()
+        public void UpdateHealthBarPos()
         {
-            return health / MaxHealth;
+            healthBarPos = new Vector2((pos.X + (currentSprite.Width/2) - (HealthBarWidth/2)), pos.Y - HealthBarHeight - 5);
+        }
+
+        private int UpdatedHealthBarWidth()
+        {
+            double value = HealthBarWidth * health / MaxHealth;
+            return (int)value;
         }
 
         public void DrawHealthBar()
         {
-            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X, (int)pos.Y, HealthBarWidth, HealthBarHeight), Color.Gray);
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, HealthBarWidth, HealthBarHeight), Color.Gray);
 
             if (health <= MaxHealth * criticalHealth)
             {
-                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X, (int)pos.Y, (int)(HealthBarWidth * PercentOfFullHealth()), HealthBarHeight), Color.Red);
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, UpdatedHealthBarWidth(), HealthBarHeight), Color.Red);
             }
 
             else
             {
-                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X, (int)pos.Y, (int)(HealthBarWidth * PercentOfFullHealth()), HealthBarHeight), Color.Green);
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, UpdatedHealthBarWidth(), HealthBarHeight), Color.Green);
             }
         }
 

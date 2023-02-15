@@ -16,11 +16,14 @@ namespace SpaceGame
     {
         #region Variables
 
+        const int MaxHealth = 100, HealthBarWidth = 50, HealthBarHeight = 10;
+        const float criticalHealth = 0.2f;
+
         Texture2D currentSprite = GlobalConstants.PlayerSprites[0];
-        Vector2 speed;
+        Vector2 speed, healthBarPos;
         MouseState mouseState;
         public Vector2 pos;
-        int health = 100;
+        int health = MaxHealth;
 
         #endregion
 
@@ -179,6 +182,32 @@ namespace SpaceGame
         public int GetHealth()
         {
             return health;
+        }
+
+        public void UpdateHealthBarPos()
+        {
+            healthBarPos = new Vector2((pos.X + (currentSprite.Width / 2) - (HealthBarWidth / 2)), pos.Y - HealthBarHeight - 5);
+        }
+
+        private int UpdatedHealthBarWidth()
+        {
+            double value = HealthBarWidth * health / MaxHealth;
+            return (int)value;
+        }
+
+        public void DrawHealthBar()
+        {
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, HealthBarWidth, HealthBarHeight), Color.Gray);
+
+            if (health <= MaxHealth * criticalHealth)
+            {
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, UpdatedHealthBarWidth(), HealthBarHeight), Color.Red);
+            }
+
+            else
+            {
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, UpdatedHealthBarWidth(), HealthBarHeight), Color.Green);
+            }
         }
 
         #endregion

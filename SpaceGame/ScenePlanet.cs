@@ -55,6 +55,7 @@ namespace SpaceGame
             MoveBullets(bullets);
             MoveBullets(enemyBullets);
             MoveEnemies();
+            UpdateHealthBarPos();
 
             CheckIfBulletHitsEnemies();
             CheckIfBulletHitsPlayer();
@@ -76,10 +77,7 @@ namespace SpaceGame
             DrawBullets(bullets);
             DrawBullets(enemyBullets);
             DrawHealthPacks(healthPacks);
-            foreach(Enemy enemy in enemies)
-            {
-                enemy.DrawHealthBar();
-            }
+            DrawHealthBars();
 
             GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
         }
@@ -227,6 +225,16 @@ namespace SpaceGame
             }
         }
 
+        private void UpdateHealthBarPos()
+        {
+            player.UpdateHealthBarPos();
+
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.UpdateHealthBarPos();
+            }
+        }
+
         private void DrawEnemies()
         {
             foreach (Enemy enemy in enemies)
@@ -256,6 +264,16 @@ namespace SpaceGame
             foreach (HealthPack healthPack in healthPacks)
             {
                 healthPack.Draw();
+            }
+        }
+
+        private void DrawHealthBars()
+        {
+            player.DrawHealthBar();
+
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.DrawHealthBar();
             }
         }
 
