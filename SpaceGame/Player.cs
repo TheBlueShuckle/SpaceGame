@@ -12,7 +12,6 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace SpaceGame
 {
-
     internal class Player
     {
         #region Variables

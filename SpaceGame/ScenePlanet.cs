@@ -28,7 +28,6 @@ namespace SpaceGame
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
         List<HealthPack> healthPacks = new List<HealthPack>();
-        List<HealthBar> healthBars = new List<HealthBar>();
 
         #endregion
 
@@ -66,11 +65,6 @@ namespace SpaceGame
 
             CheckBulletBounds();
 
-            foreach(Enemy enemy in enemies)
-            {
-                SpawnHealthBar(enemy.GetHealth());
-            }
-
             return scene;
         }
 
@@ -82,6 +76,10 @@ namespace SpaceGame
             DrawBullets(bullets);
             DrawBullets(enemyBullets);
             DrawHealthPacks(healthPacks);
+            foreach(Enemy enemy in enemies)
+            {
+                enemy.DrawHealthBar();
+            }
 
             GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
         }
@@ -259,16 +257,6 @@ namespace SpaceGame
             {
                 healthPack.Draw();
             }
-        }
-
-        private void SpawnHealthBar(int fullHealth)
-        {
-            healthBars.Add(new HealthBar(fullHealth));
-        }
-
-        private void UpdateHealthBarPos(Vector2 pos)
-        {
-
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct3D9;
 using SharpDX.WIC;
 using System;
 using System.Collections;
@@ -10,13 +11,16 @@ namespace SpaceGame
     {
         #region Variables
 
+        const int MaxHealth = 75, HealthBarWidth = 50, HealthBarHeight = 10;
+        const float criticalHealth = 0.2f;
+
         Vector2 pos;
         Vector2 speed;
         double totalSpeed = 2.5;
         float currentDir = 0;
         Texture2D currentSprite;
         Random rnd = new Random();
-        int health = 75;
+        int health = MaxHealth;
         DateTime shootCooldown;
 
         #endregion
@@ -122,6 +126,26 @@ namespace SpaceGame
         public int GetHealth()
         {
             return health;
+        }
+
+        public float PercentOfFullHealth()
+        {
+            return health / MaxHealth;
+        }
+
+        public void DrawHealthBar()
+        {
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X, (int)pos.Y, HealthBarWidth, HealthBarHeight), Color.Gray);
+
+            if (health <= MaxHealth * criticalHealth)
+            {
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X, (int)pos.Y, (int)(HealthBarWidth * PercentOfFullHealth()), HealthBarHeight), Color.Red);
+            }
+
+            else
+            {
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X, (int)pos.Y, (int)(HealthBarWidth * PercentOfFullHealth()), HealthBarHeight), Color.Green);
+            }
         }
 
         #endregion
