@@ -6,13 +6,13 @@ using System.Security.Cryptography.Pkcs;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpaceGame
+namespace SpaceGame.Main
 {
     public static class GlobalMethods
     {
         public static Vector2 GetCenter(Vector2 pos, float width, float height)
         {
-            return new Vector2(pos.X + (width / 2), pos.Y + (height / 2));
+            return new Vector2(pos.X + width / 2, pos.Y + height / 2);
         }
 
         public static bool CheckPointIntersects(Rectangle rectangle, Vector2 point)

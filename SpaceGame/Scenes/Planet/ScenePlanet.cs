@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SharpDX.Direct2D1;
 using SharpDX.XAudio2;
+using SpaceGame.Main;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -12,7 +13,7 @@ using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
-namespace SpaceGame
+namespace SpaceGame.Scenes.Planet
 {
     internal class ScenePlanet
     {
@@ -72,6 +73,10 @@ namespace SpaceGame
 
         public void Draw()
         {
+            foreach (Enemy enemy in enemies)
+            {
+                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, enemy.fieldOfView(), Color.White);
+            }
             DrawEnemyMeleeRange();
 
             DrawEnemies();
@@ -79,6 +84,7 @@ namespace SpaceGame
             DrawBullets(enemyBullets);
             DrawHealthPacks(healthPacks);
             DrawHealthBars();
+
 
             GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
         }
@@ -104,10 +110,10 @@ namespace SpaceGame
         }
 
         private void MoveEnemies()
-        {            
+        {
             foreach (Enemy enemy in enemies)
             {
-                if(GlobalMethods.CheckPointIntersects(enemy.MeleeRange(), GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)))
+                if (GlobalMethods.CheckPointIntersects(enemy.MeleeRange(), GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)))
                 {
                     enemy.Move(player.pos);
                 }
@@ -120,7 +126,7 @@ namespace SpaceGame
 
             if (mouseState.LeftButton == ButtonState.Pressed && bulletCooldown < DateTime.Now)
             {
-                bullets.Add(new Bullet(new Vector2(player.pos.X + (player.GetSprite().Width / 2), player.pos.Y + (player.GetSprite().Height / 2)), new Vector2(mouseState.X, mouseState.Y)));
+                bullets.Add(new Bullet(new Vector2(player.pos.X + player.GetSprite().Width / 2, player.pos.Y + player.GetSprite().Height / 2), new Vector2(mouseState.X, mouseState.Y)));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
             }
         }
@@ -210,9 +216,9 @@ namespace SpaceGame
         {
             foreach (Bullet bullet in bullets.ToList())
             {
-                if(bullet.GetPos().X <= 10 || 
+                if (bullet.GetPos().X <= 10 ||
                    bullet.GetPos().Y <= 10 ||
-                   bullet.GetPos().X >= GlobalConstants.ScreenWidth || 
+                   bullet.GetPos().X >= GlobalConstants.ScreenWidth ||
                    bullet.GetPos().Y >= GlobalConstants.ScreenHeight)
                 {
                     bullets.Remove(bullet);
@@ -233,7 +239,7 @@ namespace SpaceGame
 
         private void CheckPlayerDamage()
         {
-            if(damageCooldown <= DateTime.Now)
+            if (damageCooldown <= DateTime.Now)
             {
                 CheckIfBulletHitsPlayer();
                 CheckEnemyMelee();
@@ -279,7 +285,7 @@ namespace SpaceGame
                 GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, enemy.MeleeRange(), Color.White);
             }
         }
-        
+
         private void DrawBullets(List<Bullet> bullets)
         {
             foreach (Bullet bullet in bullets)

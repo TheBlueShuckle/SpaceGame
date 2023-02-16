@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using System.Reflection.Metadata;
 
-namespace SpaceGame
+namespace SpaceGame.Scenes.Planet
 {
     internal class HealthPack
     {
@@ -16,7 +16,7 @@ namespace SpaceGame
 
         public HealthPack(Vector2 centerPos)
         {
-            pos = new Vector2(centerPos.X - (GlobalConstants.HealthPack.Width / 2), centerPos.Y - (GlobalConstants.HealthPack.Height / 2));
+            pos = new Vector2(centerPos.X - GlobalConstants.HealthPack.Width / 2, centerPos.Y - GlobalConstants.HealthPack.Height / 2);
             GenerateValue();
         }
 

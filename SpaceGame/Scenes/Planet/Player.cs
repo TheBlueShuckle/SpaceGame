@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
-namespace SpaceGame
+namespace SpaceGame.Scenes.Planet
 {
     internal class Player
     {
@@ -42,7 +42,7 @@ namespace SpaceGame
         {
             mouseState = Mouse.GetState();
 
-            if (mouseState.X >= (pos.X + (currentSprite.Width / 2)))
+            if (mouseState.X >= pos.X + currentSprite.Width / 2)
             {
                 if (currentSprite == GlobalConstants.PlayerSprites[2] || currentSprite == GlobalConstants.PlayerSprites[3])
                 {
@@ -111,7 +111,7 @@ namespace SpaceGame
 
         public void CheckBounds()
         {
-            if ((pos.X >= (GlobalConstants.ScreenWidth - currentSprite.Width) && Keyboard.GetState().IsKeyDown(Keys.D)) || (pos.X <= 0 && Keyboard.GetState().IsKeyDown(Keys.A)))
+            if (pos.X >= GlobalConstants.ScreenWidth - currentSprite.Width && Keyboard.GetState().IsKeyDown(Keys.D) || pos.X <= 0 && Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 if (pos.X < 0)
                 {
@@ -131,7 +131,7 @@ namespace SpaceGame
                 speed.X = GlobalConstants.PlayerSpeed;
             }
 
-            if ((pos.Y >= (GlobalConstants.ScreenHeight - currentSprite.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (pos.Y <= 0 && Keyboard.GetState().IsKeyDown(Keys.W)))
+            if (pos.Y >= GlobalConstants.ScreenHeight - currentSprite.Height && Keyboard.GetState().IsKeyDown(Keys.S) || pos.Y <= 0 && Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 if (pos.Y < 0)
                 {
@@ -158,12 +158,12 @@ namespace SpaceGame
 
         public Rectangle GetHitBox()
         {
-            return new Rectangle(new Point((int) pos.X, (int) pos.Y), new Point(currentSprite.Width, currentSprite.Height));
+            return new Rectangle(new Point((int)pos.X, (int)pos.Y), new Point(currentSprite.Width, currentSprite.Height));
         }
 
         public void AddHealth(int addedHealth)
         {
-            if(health + addedHealth > 100)
+            if (health + addedHealth > 100)
             {
                 health = 100;
             }
@@ -186,7 +186,7 @@ namespace SpaceGame
 
         public void UpdateHealthBarPos()
         {
-            healthBarPos = new Vector2((pos.X + (currentSprite.Width / 2) - (HealthBarWidth / 2)), pos.Y - HealthBarHeight - 5);
+            healthBarPos = new Vector2(pos.X + currentSprite.Width / 2 - HealthBarWidth / 2, pos.Y - HealthBarHeight - 5);
         }
 
         private int UpdatedHealthBarWidth()

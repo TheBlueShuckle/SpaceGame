@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace SpaceGame
+namespace SpaceGame.Scenes.Planet
 {
     internal class Enemy
     {
@@ -28,7 +28,7 @@ namespace SpaceGame
 
         public Enemy()
         {
-            this.currentSprite = GlobalConstants.EnemySprites[0];
+            currentSprite = GlobalConstants.EnemySprites[0];
 
             pos.X = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenWidth));
             pos.Y = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenHeight));
@@ -55,33 +55,18 @@ namespace SpaceGame
 
         public Rectangle MeleeRange()
         {
-            return new Rectangle((int)GetPosition().X - 100, (int)GetPosition().Y - 100, GetCurrentSprite().Width + 200, GetCurrentSprite().Height + 200);
-        }
-
-        public float UpdateLookingDir()
-        {
-            if (currentDir != Math.PI / 3 * 5)
-            {
-                currentDir += (float)Math.PI / 3;
-            }
-
-            else
-            {
-                currentDir = 0;
-            }
-
-            return currentDir;
+            return new Rectangle((int)GetPosition().X - 75, (int)GetPosition().Y - 75, GetCurrentSprite().Width + 150, GetCurrentSprite().Height + 150);
         }
 
         public Rectangle fieldOfView()
         {
-            return new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y + currentSprite.Height + 50, GetCurrentSprite().Width + 100, currentSprite.Height + 350);
+            return new Rectangle((int)GetPosition().X - 150, (int)GetPosition().Y - 150, GetCurrentSprite().Width + 300, currentSprite.Height + 300);
         }
 
         public Bullet Shoot(Vector2 playerPos)
         {
             shootCooldown = DateTime.Now.AddMilliseconds(1000);
-            return new Bullet(new Vector2(pos.X + (currentSprite.Width / 2), pos.Y + (currentSprite.Height / 2)), playerPos);
+            return new Bullet(new Vector2(pos.X + currentSprite.Width / 2, pos.Y + currentSprite.Height / 2), playerPos);
         }
 
         public bool ShootCooldown()
@@ -127,7 +112,7 @@ namespace SpaceGame
 
         public void UpdateHealthBarPos()
         {
-            healthBarPos = new Vector2((pos.X + (currentSprite.Width/2) - (HealthBarWidth/2)), pos.Y - HealthBarHeight - 5);
+            healthBarPos = new Vector2(pos.X + currentSprite.Width / 2 - HealthBarWidth / 2, pos.Y - HealthBarHeight - 5);
         }
 
         private int UpdatedHealthBarWidth()

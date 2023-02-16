@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceGame.Scenes.Planet;
+using SpaceGame.Scenes.Space;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
-namespace SpaceGame
+namespace SpaceGame.Main
 {
     public class Main : Game
     {
@@ -71,7 +73,7 @@ namespace SpaceGame
 
             GlobalConstants.HealthBar = new Texture2D(GraphicsDevice, 1, 1);
             GlobalConstants.HealthBar.SetData(new Color[] { Color.White });
-            
+
             sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
         }
 

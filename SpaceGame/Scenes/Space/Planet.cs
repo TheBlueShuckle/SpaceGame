@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SharpDX.Direct3D9;
+using SpaceGame.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
-namespace SpaceGame
+namespace SpaceGame.Scenes.Space
 {
     public class Planet
     {
@@ -58,8 +59,8 @@ namespace SpaceGame
         private void GeneratePlanetLocation()
         {
             Random rnd = new Random();
-            int randomHeight = rnd.Next(size.Height, (int) Math.Round(GlobalConstants.ScreenHeight));
-            int randomWidth = rnd.Next(0 - (GetPlanetSize().Width / 2), (int) Math.Round(GlobalConstants.ScreenWidth) - (GetPlanetSize().Width / 2));
+            int randomHeight = rnd.Next(size.Height, (int)Math.Round(GlobalConstants.ScreenHeight));
+            int randomWidth = rnd.Next(0 - GetPlanetSize().Width / 2, (int)Math.Round(GlobalConstants.ScreenWidth) - GetPlanetSize().Width / 2);
 
             location.Y = -randomHeight;
             location.X = randomWidth;
