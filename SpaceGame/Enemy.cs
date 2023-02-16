@@ -55,7 +55,7 @@ namespace SpaceGame
 
         public Rectangle MeleeRange()
         {
-            return new Rectangle((int)GetPosition().X - 50, (int)GetPosition().Y - 50, GetCurrentSprite().Width + 100, GetCurrentSprite().Height + 100);
+            return new Rectangle((int)GetPosition().X - 100, (int)GetPosition().Y - 100, GetCurrentSprite().Width + 200, GetCurrentSprite().Height + 200);
         }
 
         public float UpdateLookingDir()

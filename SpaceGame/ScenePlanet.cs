@@ -23,7 +23,7 @@ namespace SpaceGame
 
         Player player = new Player();
 
-        DateTime leavePlanetCooldown, bulletCooldown;
+        DateTime leavePlanetCooldown, bulletCooldown, enemyMeleeCooldown;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
@@ -65,6 +65,15 @@ namespace SpaceGame
             player.CheckBounds();
 
             CheckBulletBounds();
+
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.GetHitbox().Intersects(player.GetHitBox()) && enemyMeleeCooldown <= DateTime.Now)
+                {
+                    player.DamageTaken();
+                    enemyMeleeCooldown = DateTime.Now.AddMilliseconds(500);
+                }
+            }
 
             return scene;
         }
