@@ -55,6 +55,15 @@ namespace SpaceGame.Scenes.Planet
 
             MoveBullets(bullets);
             MoveBullets(enemyBullets);
+
+            foreach (Enemy enemy in enemies)
+            {
+                if (!enemy.fieldOfView().Intersects(player.GetHitBox()) && enemy.CurrentlyMovingToPoint == false)
+                {
+                    enemy.Move(enemy.GenerateRandomPoint());
+                }
+            }
+
             MoveEnemies();
             UpdateHealthBarPos();
 
@@ -115,7 +124,8 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (GlobalMethods.CheckPointIntersects(enemy.MeleeRange(), GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)))
                 {
-                    enemy.Move(player.pos);
+                    enemy.Move(new Point((int)player.pos.X, (int)player.pos.Y));
+                    enemy.CurrentlyMovingToPoint = true;
                 }
             }
         }

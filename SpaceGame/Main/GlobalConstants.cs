@@ -23,19 +23,19 @@ namespace SpaceGame
 
         #region GettersSetters
 
-        private static float screenWidth, screenHeight;
+        private static int screenWidth, screenHeight;
         private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
         private static Texture2D bullet, enemyMeleeRange, healthPack, healthBar;
         private static SpriteBatch spriteBatch;
         private static GraphicsDevice graphicsDevice;
 
-        public static float ScreenWidth
+        public static int ScreenWidth
         {
             get { return screenWidth; }
             set { screenWidth = value; }
         }
 
-        public static float ScreenHeight
+        public static int ScreenHeight
         {
             get { return screenHeight; }
             set { screenHeight = value; }

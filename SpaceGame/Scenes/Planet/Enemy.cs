@@ -18,6 +18,7 @@ namespace SpaceGame.Scenes.Planet
         Texture2D currentSprite;
         Random rnd = new Random();
         int health = MaxHealth;
+        public bool CurrentlyMovingToPoint = false;
         DateTime shootCooldown;
 
         #endregion
@@ -30,17 +31,17 @@ namespace SpaceGame.Scenes.Planet
         {
             currentSprite = GlobalConstants.EnemySprites[0];
 
-            pos.X = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenWidth));
-            pos.Y = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenHeight));
+            pos.X = rnd.Next(0, GlobalConstants.ScreenWidth);
+            pos.Y = rnd.Next(0, GlobalConstants.ScreenHeight);
         }
 
-        public void Move(Vector2 playerPos)
+        public void Move(Point targetPos)
         {
             double angle;
 
-            angle = Math.Atan((pos.Y - playerPos.Y) / (pos.X - playerPos.X));
+            angle = Math.Atan((pos.Y - targetPos.Y) / (pos.X - targetPos.X));
 
-            if (pos.X > playerPos.X)
+            if (pos.X > targetPos.X)
             {
                 SetSpeed(angle + Math.PI);
             }
@@ -50,7 +51,17 @@ namespace SpaceGame.Scenes.Planet
                 SetSpeed(angle);
             }
 
-            pos += speed;
+            if (new Point((int)pos.X, (int)pos.Y) == targetPos)
+            {
+                CurrentlyMovingToPoint = false;
+            }
+
+                pos += speed;
+        }
+
+        public Point GenerateRandomPoint()
+        {
+            return new Point(rnd.Next(0, GlobalConstants.ScreenWidth), rnd.Next(0, GlobalConstants.ScreenHeight));
         }
 
         public Rectangle MeleeRange()
