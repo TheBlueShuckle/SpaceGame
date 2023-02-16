@@ -23,7 +23,7 @@ namespace SpaceGame
 
         Player player = new Player();
 
-        DateTime leavePlanetCooldown, bulletCooldown, enemyMeleeCooldown;
+        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500);
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
@@ -57,23 +57,15 @@ namespace SpaceGame
             MoveEnemies();
             UpdateHealthBarPos();
 
+            CheckPlayerDamage();
+
             CheckIfBulletHitsEnemies();
-            CheckIfBulletHitsPlayer();
             CheckCollisionHealthPack();
 
             player.ChangeSprite();
             player.CheckBounds();
 
             CheckBulletBounds();
-
-            foreach (Enemy enemy in enemies)
-            {
-                if (enemy.GetHitbox().Intersects(player.GetHitBox()) && enemyMeleeCooldown <= DateTime.Now)
-                {
-                    player.DamageTaken();
-                    enemyMeleeCooldown = DateTime.Now.AddMilliseconds(500);
-                }
-            }
 
             return scene;
         }
@@ -153,10 +145,7 @@ namespace SpaceGame
                     enemyBullets.Remove(bullet);
                     player.DamageTaken();
 
-                    if (player.GetHealth() < 1)
-                    {
-                        scene = GlobalConstants.InSpace;
-                    }
+                    CheckIfPlayerIsDead();
                 }
             }
         }
@@ -169,6 +158,14 @@ namespace SpaceGame
                 {
                     IfBulletHit(enemy, bullet);
                 }
+            }
+        }
+
+        private void CheckIfPlayerIsDead()
+        {
+            if (player.GetHealth() < 1)
+            {
+                scene = GlobalConstants.InSpace;
             }
         }
 
@@ -230,6 +227,29 @@ namespace SpaceGame
                    bullet.GetPos().Y >= GlobalConstants.ScreenHeight - 10)
                 {
                     enemyBullets.Remove(bullet);
+                }
+            }
+        }
+
+        private void CheckPlayerDamage()
+        {
+            if(damageCooldown <= DateTime.Now)
+            {
+                CheckIfBulletHitsPlayer();
+                CheckEnemyMelee();
+
+                damageCooldown = DateTime.Now.AddMilliseconds(500);
+            }
+        }
+
+        private void CheckEnemyMelee()
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.GetHitbox().Intersects(player.GetHitBox()))
+                {
+                    player.DamageTaken();
+                    CheckIfPlayerIsDead();
                 }
             }
         }
