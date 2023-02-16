@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SharpDX.WIC;
+using SpaceGame.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Windows.Forms;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
-namespace SpaceGame
+namespace SpaceGame.Scenes.Space
 {
     internal class SceneSpace
     {
@@ -112,7 +113,7 @@ namespace SpaceGame
 
         public void CheckBounds()
         {
-            if ((myShipPos.X >= (GlobalConstants.ScreenWidth - myShipFrame1.Width) && Keyboard.GetState().IsKeyDown(Keys.D)) || (myShipPos.X <= 0 && Keyboard.GetState().IsKeyDown(Keys.A)))
+            if (myShipPos.X >= GlobalConstants.ScreenWidth - myShipFrame1.Width && Keyboard.GetState().IsKeyDown(Keys.D) || myShipPos.X <= 0 && Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 if (myShipPos.X < 0)
                 {
@@ -132,7 +133,7 @@ namespace SpaceGame
                 myShipSpeed.X = GlobalConstants.MyShipSpeed;
             }
 
-            if ((myShipPos.Y >= (GlobalConstants.ScreenHeight - 100 - myShipFrame1.Height) && Keyboard.GetState().IsKeyDown(Keys.S)) || (myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W)))
+            if (myShipPos.Y >= GlobalConstants.ScreenHeight - 100 - myShipFrame1.Height && Keyboard.GetState().IsKeyDown(Keys.S) || myShipPos.Y <= 100 && Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 if (myShipPos.Y < 100)
                 {
@@ -178,8 +179,8 @@ namespace SpaceGame
         {
             foreach (Planet planet in space.ToList())
             {
-                myShipHitBox = new Rectangle(Convert.ToInt32(myShipPos.X), Convert.ToInt32(myShipPos.Y), (int) Math.Round(myShipPos.X + myShipFrame1.Width), (int)Math.Round(myShipPos.Y + myShipFrame1.Height));
-                planetHitBox = new Rectangle(Convert.ToInt32(planet.GetPlanetLocation().X + myShipFrame1.Width), Convert.ToInt32(planet.GetPlanetLocation().Y + myShipFrame1.Height), (int) Math.Round(planet.GetPlanetLocation().X + planet.GetPlanetSize().Width - myShipFrame1.Width), (int) Math.Round(planet.GetPlanetLocation().Y + planet.GetPlanetSize().Height - myShipFrame1.Height));
+                myShipHitBox = new Rectangle(Convert.ToInt32(myShipPos.X), Convert.ToInt32(myShipPos.Y), (int)Math.Round(myShipPos.X + myShipFrame1.Width), (int)Math.Round(myShipPos.Y + myShipFrame1.Height));
+                planetHitBox = new Rectangle(Convert.ToInt32(planet.GetPlanetLocation().X + myShipFrame1.Width), Convert.ToInt32(planet.GetPlanetLocation().Y + myShipFrame1.Height), (int)Math.Round(planet.GetPlanetLocation().X + planet.GetPlanetSize().Width - myShipFrame1.Width), (int)Math.Round(planet.GetPlanetLocation().Y + planet.GetPlanetSize().Height - myShipFrame1.Height));
 
                 if (myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E) && visitedPlanets.Contains(planet) == false)
                 {
@@ -203,7 +204,7 @@ namespace SpaceGame
 
         private void CheckIfPlanetDespawned()
         {
-            foreach (Planet planet in visitedPlanets)
+            foreach (Planet planet in visitedPlanets.ToList())
             {
                 if (space.Contains(planet) == false)
                 {
