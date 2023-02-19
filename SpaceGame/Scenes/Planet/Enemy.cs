@@ -12,13 +12,13 @@ namespace SpaceGame.Scenes.Planet
         const float criticalHealth = 0.2f;
 
         Vector2 pos, healthBarPos;
+        public Point randomTargetPos;
         Vector2 speed;
         double totalSpeed = 2.5;
         float currentDir = 0;
         Texture2D currentSprite;
         Random rnd = new Random();
         int health = MaxHealth;
-        public bool CurrentlyMovingToPoint = false;
         DateTime shootCooldown;
 
         #endregion
@@ -51,17 +51,12 @@ namespace SpaceGame.Scenes.Planet
                 SetSpeed(angle);
             }
 
-            if (new Point((int)pos.X, (int)pos.Y) == targetPos)
-            {
-                CurrentlyMovingToPoint = false;
-            }
-
-                pos += speed;
+            pos += speed;
         }
 
         public Point GenerateRandomPoint()
         {
-            return new Point(rnd.Next(0, GlobalConstants.ScreenWidth), rnd.Next(0, GlobalConstants.ScreenHeight));
+            return randomTargetPos = new Point(rnd.Next(0, GlobalConstants.ScreenWidth), rnd.Next(0, GlobalConstants.ScreenHeight));
         }
 
         public Rectangle MeleeRange()

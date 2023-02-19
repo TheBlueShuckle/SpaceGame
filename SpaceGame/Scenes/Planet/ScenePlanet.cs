@@ -9,7 +9,10 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Windows.Forms;
+using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
@@ -58,9 +61,17 @@ namespace SpaceGame.Scenes.Planet
 
             foreach (Enemy enemy in enemies)
             {
-                if (!enemy.fieldOfView().Intersects(player.GetHitBox()) && enemy.CurrentlyMovingToPoint == false)
+                if (!enemy.fieldOfView().Intersects(player.GetHitBox()))
                 {
-                    enemy.Move(enemy.GenerateRandomPoint());
+                    if (new Point((int)enemy.GetPosition().X, (int)enemy.GetPosition().Y) == enemy.randomTargetPos)
+                    {
+                        enemy.Move(enemy.GenerateRandomPoint());
+                    }
+
+                    else
+                    {
+                        enemy.Move(enemy.randomTargetPos);
+                    }
                 }
             }
 
@@ -125,7 +136,6 @@ namespace SpaceGame.Scenes.Planet
                 if (GlobalMethods.CheckPointIntersects(enemy.MeleeRange(), GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)))
                 {
                     enemy.Move(new Point((int)player.pos.X, (int)player.pos.Y));
-                    enemy.CurrentlyMovingToPoint = true;
                 }
             }
         }
