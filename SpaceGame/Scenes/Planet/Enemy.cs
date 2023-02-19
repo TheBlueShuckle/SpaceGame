@@ -33,6 +33,7 @@ namespace SpaceGame.Scenes.Planet
 
             pos.X = rnd.Next(0, GlobalConstants.ScreenWidth);
             pos.Y = rnd.Next(0, GlobalConstants.ScreenHeight);
+            randomTargetPos = GenerateRandomPoint();
         }
 
         public void Move(Point targetPos)
@@ -52,6 +53,8 @@ namespace SpaceGame.Scenes.Planet
             }
 
             pos += speed;
+
+            pos = new Vector2((int)pos.X, (int)pos.Y);
         }
 
         public Point GenerateRandomPoint()

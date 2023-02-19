@@ -107,6 +107,8 @@ namespace SpaceGame.Scenes.Planet
                     currentSprite = GlobalConstants.PlayerSprites[0];
                 }
             }
+
+            pos = new Vector2((int)pos.X, (int)pos.Y);
         }
 
         public void CheckBounds()
