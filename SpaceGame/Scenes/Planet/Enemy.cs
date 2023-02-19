@@ -33,7 +33,7 @@ namespace SpaceGame.Scenes.Planet
 
             pos.X = rnd.Next(0, GlobalConstants.ScreenWidth);
             pos.Y = rnd.Next(0, GlobalConstants.ScreenHeight);
-            randomTargetPos = GenerateRandomPoint();
+            GenerateRandomPoint();
         }
 
         public void Move(Point targetPos)
@@ -52,14 +52,30 @@ namespace SpaceGame.Scenes.Planet
                 SetSpeed(angle);
             }
 
+            if(new Point((int)pos.X, (int)pos.Y) == targetPos)
+            {
+                speed = new Vector2(0,0);
+            }
+
             pos += speed;
 
             pos = new Vector2((int)pos.X, (int)pos.Y);
         }
 
+        private void SetSpeed(double angle)
+        {
+            speed.X = (float)Math.Cos(angle) * (float)totalSpeed;
+            speed.Y = (float)Math.Sin(angle) * (float)totalSpeed;
+        }
+
         public Point GenerateRandomPoint()
         {
             return randomTargetPos = new Point(rnd.Next(0, GlobalConstants.ScreenWidth), rnd.Next(0, GlobalConstants.ScreenHeight));
+        }
+
+        public Vector2 GetPosition()
+        {
+            return pos;
         }
 
         public Rectangle MeleeRange()
@@ -88,16 +104,7 @@ namespace SpaceGame.Scenes.Planet
             return true;
         }
 
-        private void SetSpeed(double angle)
-        {
-            speed.X = (float)Math.Cos(angle) * (float)totalSpeed;
-            speed.Y = (float)Math.Sin(angle) * (float)totalSpeed;
-        }
 
-        public Vector2 GetPosition()
-        {
-            return pos;
-        }
 
         public Texture2D GetCurrentSprite()
         {
