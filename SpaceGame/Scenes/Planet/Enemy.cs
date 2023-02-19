@@ -52,14 +52,9 @@ namespace SpaceGame.Scenes.Planet
                 SetSpeed(angle);
             }
 
-            if(new Point((int)pos.X, (int)pos.Y) == targetPos)
-            {
-                speed = new Vector2(0,0);
-            }
-
             pos += speed;
 
-            pos = new Vector2((int)pos.X, (int)pos.Y);
+//            pos = new Vector2((int)pos.X, (int)pos.Y);
         }
 
         private void SetSpeed(double angle)

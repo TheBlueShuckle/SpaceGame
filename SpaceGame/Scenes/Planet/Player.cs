@@ -108,7 +108,7 @@ namespace SpaceGame.Scenes.Planet
                 }
             }
 
-            pos = new Vector2((int)pos.X, (int)pos.Y);
+//            pos = new Vector2((int)pos.X, (int)pos.Y);
         }
 
         public void CheckBounds()
