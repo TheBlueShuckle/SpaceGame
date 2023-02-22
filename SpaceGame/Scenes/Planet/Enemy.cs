@@ -38,9 +38,13 @@ namespace SpaceGame.Scenes.Planet
 
         public void Move(Point targetPos)
         {
-            double angle;
+            double angle, distance;
 
             angle = Math.Atan((pos.Y - targetPos.Y) / (pos.X - targetPos.X));
+            distance = Math.Sqrt();
+
+
+            if(totalSpeed < )
 
             if (pos.X > targetPos.X)
             {
@@ -53,6 +57,11 @@ namespace SpaceGame.Scenes.Planet
             }
 
             pos += speed;
+
+            //if totalSpeed < distanceToTarget
+            // set totalSpeed to distanceToTarget
+            //else 
+            // set totalSpeed to 2.5
 
 //            pos = new Vector2((int)pos.X, (int)pos.Y);
         }
