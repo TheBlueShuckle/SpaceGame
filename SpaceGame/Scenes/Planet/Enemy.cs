@@ -41,10 +41,18 @@ namespace SpaceGame.Scenes.Planet
             double angle, distance;
 
             angle = Math.Atan((pos.Y - targetPos.Y) / (pos.X - targetPos.X));
-            distance = Math.Sqrt();
+            distance = Math.Sqrt(Math.Abs(pos.X - targetPos.X) + Math.Abs(pos.Y - targetPos.Y));
 
 
-            if(totalSpeed < )
+            if (distance < 2.5)
+            {
+                totalSpeed = distance;
+            }
+
+            else
+            {
+                totalSpeed = 2.5;
+            }
 
             if (pos.X > targetPos.X)
             {
