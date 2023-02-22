@@ -59,22 +59,6 @@ namespace SpaceGame.Scenes.Planet
             MoveBullets(bullets);
             MoveBullets(enemyBullets);
 
-            foreach (Enemy enemy in enemies)
-            {
-                if (!enemy.fieldOfView().Intersects(player.GetHitBox()))
-                {
-                    if (new Point((int)enemy.GetPosition().X, (int)enemy.GetPosition().Y) == enemy.randomTargetPos)
-                    {
-                        enemy.Move(enemy.GenerateRandomPoint());
-                    }
-
-                    else
-                    {
-                        enemy.Move(enemy.randomTargetPos);
-                    }
-                }
-            }
-
             MoveEnemies();
             UpdateHealthBarPos();
 
@@ -97,6 +81,7 @@ namespace SpaceGame.Scenes.Planet
             {
                 GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, enemy.fieldOfView(), Color.White);
             }
+
             DrawEnemyMeleeRange();
 
             DrawEnemies();
@@ -105,6 +90,10 @@ namespace SpaceGame.Scenes.Planet
             DrawHealthPacks(healthPacks);
             DrawHealthBars();
 
+            foreach (Enemy enemy in enemies)
+            {
+                GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
+            }
 
             GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
         }
@@ -135,8 +124,26 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (GlobalMethods.CheckPointIntersects(enemy.MeleeRange(), GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)))
                 {
-                    enemy.Move(new Point((int)player.pos.X, (int)player.pos.Y));
+                    enemy.Move(player.pos);
                 }
+
+                else
+                {
+                    GoToRandomPos(enemy);
+                }
+            }
+        }
+
+        private void GoToRandomPos(Enemy enemy)
+        {
+            if (enemy.GetPosition() == enemy.randomTargetPos)
+            {
+                enemy.Move(enemy.GenerateRandomPoint());
+            }
+
+            else
+            {
+                enemy.Move(enemy.randomTargetPos);
             }
         }
 

@@ -12,10 +12,8 @@ namespace SpaceGame.Scenes.Planet
         const float criticalHealth = 0.2f;
 
         Vector2 pos, healthBarPos;
-        public Point randomTargetPos;
-        Vector2 speed;
-        double totalSpeed = 2.5;
-        float currentDir = 0;
+        public Vector2 randomTargetPos;
+        Vector2 speed = new Vector2(2.5f, 2.5f);
         Texture2D currentSprite;
         Random rnd = new Random();
         int health = MaxHealth;
@@ -36,53 +34,23 @@ namespace SpaceGame.Scenes.Planet
             GenerateRandomPoint();
         }
 
-        public void Move(Point targetPos)
+        public void Move(Vector2 targetPos)
         {
-            double angle, distance;
+            Vector2 direction;
 
-            angle = Math.Atan((pos.Y - targetPos.Y) / (pos.X - targetPos.X));
-            distance = Math.Sqrt(Math.Abs(pos.X - targetPos.X) + Math.Abs(pos.Y - targetPos.Y));
+            direction = Vector2.Normalize(targetPos - pos);
 
+            pos += direction * speed;
 
-            if (distance < 2.5)
+            if (Math.Abs(Vector2.Dot(direction, Vector2.Normalize(targetPos - pos)) + 1) < 0.1f)
             {
-                totalSpeed = distance;
+                pos = targetPos;
             }
-
-            else
-            {
-                totalSpeed = 2.5;
-            }
-
-            if (pos.X > targetPos.X)
-            {
-                SetSpeed(angle + Math.PI);
-            }
-
-            else
-            {
-                SetSpeed(angle);
-            }
-
-            pos += speed;
-
-            //if totalSpeed < distanceToTarget
-            // set totalSpeed to distanceToTarget
-            //else 
-            // set totalSpeed to 2.5
-
-//            pos = new Vector2((int)pos.X, (int)pos.Y);
         }
 
-        private void SetSpeed(double angle)
+        public Vector2 GenerateRandomPoint()
         {
-            speed.X = (float)Math.Cos(angle) * (float)totalSpeed;
-            speed.Y = (float)Math.Sin(angle) * (float)totalSpeed;
-        }
-
-        public Point GenerateRandomPoint()
-        {
-            return randomTargetPos = new Point(rnd.Next(0, GlobalConstants.ScreenWidth), rnd.Next(0, GlobalConstants.ScreenHeight));
+            return randomTargetPos = new Vector2(rnd.Next(0, GlobalConstants.ScreenWidth), rnd.Next(0, GlobalConstants.ScreenHeight));
         }
 
         public Vector2 GetPosition()

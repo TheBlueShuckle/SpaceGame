@@ -179,8 +179,12 @@ namespace SpaceGame.Scenes.Space
         {
             foreach (Planet planet in space.ToList())
             {
-                myShipHitBox = new Rectangle(Convert.ToInt32(myShipPos.X), Convert.ToInt32(myShipPos.Y), (int)Math.Round(myShipPos.X + myShipFrame1.Width), (int)Math.Round(myShipPos.Y + myShipFrame1.Height));
-                planetHitBox = new Rectangle(Convert.ToInt32(planet.GetPlanetLocation().X + myShipFrame1.Width), Convert.ToInt32(planet.GetPlanetLocation().Y + myShipFrame1.Height), (int)Math.Round(planet.GetPlanetLocation().X + planet.GetPlanetSize().Width - myShipFrame1.Width), (int)Math.Round(planet.GetPlanetLocation().Y + planet.GetPlanetSize().Height - myShipFrame1.Height));
+                myShipHitBox = new Rectangle((int)myShipPos.X, (int)myShipPos.Y, myShipFrame1.Width, myShipFrame1.Height);
+                planetHitBox = new Rectangle(
+                    (int)(planet.GetPlanetLocation().X + myShipFrame1.Width), 
+                    (int)(planet.GetPlanetLocation().Y + myShipFrame1.Height), 
+                    planet.GetPlanetSize().Width - 2*myShipFrame1.Width, 
+                    planet.GetPlanetSize().Height - 2*myShipFrame1.Height);
 
                 if (myShipHitBox.Intersects(planetHitBox) && Keyboard.GetState().IsKeyDown(Keys.E) && visitedPlanets.Contains(planet) == false)
                 {

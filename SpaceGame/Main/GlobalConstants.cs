@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +28,7 @@ namespace SpaceGame
         private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
         private static Texture2D bullet, enemyMeleeRange, healthPack, healthBar;
         private static SpriteBatch spriteBatch;
-        private static GraphicsDevice graphicsDevice;
+        private static SpriteFont gameFont;
 
         public static int ScreenWidth
         {
@@ -81,6 +82,12 @@ namespace SpaceGame
         {
             get { return spriteBatch; }
             set { spriteBatch = value; }
+        }
+
+        public static SpriteFont GameFont
+        {
+            get { return gameFont; }
+            set { gameFont = value; }
         }
 
         #endregion
