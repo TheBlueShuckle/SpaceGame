@@ -14,7 +14,6 @@ namespace SpaceGame.Main
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
-        Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
         int scene = GlobalConstants.InSpace;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
@@ -73,6 +72,8 @@ namespace SpaceGame.Main
 
             GlobalConstants.HealthBar = new Texture2D(GraphicsDevice, 1, 1);
             GlobalConstants.HealthBar.SetData(new Color[] { Color.White });
+
+            GlobalConstants.GameFont = Content.Load<SpriteFont>("Print/GameFont");
 
             sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
         }

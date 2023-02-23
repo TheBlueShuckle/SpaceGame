@@ -22,9 +22,9 @@ namespace SpaceGame.Scenes.Planet
 
         private void GenerateValue()
         {
-            Random rand = new Random();
+            Random rnd = new Random();
 
-            healthPackValue = rand.Next(1, 10) * 10;
+            healthPackValue = rnd.Next(1, 10) * 10;
         }
 
         public int GetValue()

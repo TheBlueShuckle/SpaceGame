@@ -59,8 +59,8 @@ namespace SpaceGame.Scenes.Space
         private void GeneratePlanetLocation()
         {
             Random rnd = new Random();
-            int randomHeight = rnd.Next(size.Height, (int)Math.Round(GlobalConstants.ScreenHeight));
-            int randomWidth = rnd.Next(0 - GetPlanetSize().Width / 2, (int)Math.Round(GlobalConstants.ScreenWidth) - GetPlanetSize().Width / 2);
+            int randomHeight = rnd.Next(size.Height, GlobalConstants.ScreenHeight);
+            int randomWidth = rnd.Next(0 - GetPlanetSize().Width / 2, GlobalConstants.ScreenWidth - GetPlanetSize().Width / 2);
 
             location.Y = -randomHeight;
             location.X = randomWidth;

@@ -12,9 +12,8 @@ namespace SpaceGame.Scenes.Planet
         const float criticalHealth = 0.2f;
 
         Vector2 pos, healthBarPos;
-        Vector2 speed;
-        double totalSpeed = 2.5;
-        float currentDir = 0;
+        public Vector2 randomTargetPos;
+        Vector2 speed = new Vector2(2.5f, 2.5f);
         Texture2D currentSprite;
         Random rnd = new Random();
         int health = MaxHealth;
@@ -30,27 +29,41 @@ namespace SpaceGame.Scenes.Planet
         {
             currentSprite = GlobalConstants.EnemySprites[0];
 
-            pos.X = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenWidth));
-            pos.Y = rnd.Next(0, (int)Math.Round(GlobalConstants.ScreenHeight));
+            pos.X = rnd.Next(0, GlobalConstants.ScreenWidth);
+            pos.Y = rnd.Next(0, GlobalConstants.ScreenHeight);
+            GenerateRandomPoint();
         }
 
-        public void Move(Vector2 playerPos)
+        public void Move(Vector2 goal)
         {
-            double angle;
+            Vector2 direction;
 
-            angle = Math.Atan((pos.Y - playerPos.Y) / (pos.X - playerPos.X));
-
-            if (pos.X > playerPos.X)
+            if (goal == pos)
             {
-                SetSpeed(angle + Math.PI);
+                direction = new Vector2(0, 0);
             }
 
             else
             {
-                SetSpeed(angle);
+                direction = Vector2.Normalize(goal - pos);
             }
 
-            pos += speed;
+            pos += direction * speed;
+
+            if (Math.Abs(Vector2.Dot(direction, Vector2.Normalize(goal - pos)) + 1) < 0.1f)
+            {
+                pos = goal;
+            }
+        }
+
+        public Vector2 GenerateRandomPoint()
+        {
+            return randomTargetPos = new Vector2(rnd.Next(0, GlobalConstants.ScreenWidth), rnd.Next(0, GlobalConstants.ScreenHeight));
+        }
+
+        public Vector2 GetPosition()
+        {
+            return pos;
         }
 
         public Rectangle MeleeRange()
@@ -79,16 +92,7 @@ namespace SpaceGame.Scenes.Planet
             return true;
         }
 
-        private void SetSpeed(double angle)
-        {
-            speed.X = (float)Math.Cos(angle) * (float)totalSpeed;
-            speed.Y = (float)Math.Sin(angle) * (float)totalSpeed;
-        }
 
-        public Vector2 GetPosition()
-        {
-            return pos;
-        }
 
         public Texture2D GetCurrentSprite()
         {
