@@ -34,17 +34,25 @@ namespace SpaceGame.Scenes.Planet
             GenerateRandomPoint();
         }
 
-        public void Move(Vector2 targetPos)
+        public void Move(Vector2 goal)
         {
             Vector2 direction;
 
-            direction = Vector2.Normalize(targetPos - pos);
+            if (goal == pos)
+            {
+                direction = new Vector2(0, 0);
+            }
+
+            else
+            {
+                direction = Vector2.Normalize(goal - pos);
+            }
 
             pos += direction * speed;
 
-            if (Math.Abs(Vector2.Dot(direction, Vector2.Normalize(targetPos - pos)) + 1) < 0.1f)
+            if (Math.Abs(Vector2.Dot(direction, Vector2.Normalize(goal - pos)) + 1) < 0.1f)
             {
-                pos = targetPos;
+                pos = goal;
             }
         }
 
