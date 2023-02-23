@@ -59,7 +59,7 @@ namespace SpaceGame.Scenes.Planet
             MoveBullets(bullets);
             MoveBullets(enemyBullets);
 
-            MoveEnemies();
+            CheckIfMoveEnemy();
             UpdateHealthBarPos();
 
             CheckPlayerDamage();
@@ -118,7 +118,7 @@ namespace SpaceGame.Scenes.Planet
             }
         }
 
-        private void MoveEnemies()
+        private void CheckIfMoveEnemy()
         {
             foreach (Enemy enemy in enemies)
             {
@@ -127,14 +127,14 @@ namespace SpaceGame.Scenes.Planet
                     enemy.Move(player.pos);
                 }
 
-                else
+                else if (!enemy.fieldOfView().Intersects(player.GetHitBox()))
                 {
-                    GoToRandomPos(enemy);
+                    MoveEnemy(enemy);
                 }
             }
         }
 
-        private void GoToRandomPos(Enemy enemy)
+        private void MoveEnemy(Enemy enemy)
         {
             if (enemy.GetPosition() == enemy.randomTargetPos)
             {
