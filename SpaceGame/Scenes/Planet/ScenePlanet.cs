@@ -147,6 +147,26 @@ namespace SpaceGame.Scenes.Planet
             }
         }
 
+        public void ChangeState(Enemy enemy)
+        {
+            const int Idling = 0, Patrolling = 1, Shooting = 2, Chasing = 3;
+
+            switch (enemy.enemystate)
+            {
+                case Idling:
+                    break;
+
+                case Patrolling:
+                    break;
+
+                case Shooting:
+                    break;
+
+                case Chasing:
+                    break;
+            }
+        }
+
         private void CheckShooting()
         {
             mouseState = Mouse.GetState();

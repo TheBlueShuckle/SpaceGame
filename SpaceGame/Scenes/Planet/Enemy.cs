@@ -11,8 +11,9 @@ namespace SpaceGame.Scenes.Planet
         const int MaxHealth = 75, HealthBarWidth = 50, HealthBarHeight = 10;
         const float criticalHealth = 0.2f;
 
-        Vector2 pos, healthBarPos;
+        public int enemystate;
         public Vector2 randomTargetPos;
+        Vector2 pos, healthBarPos;
         Vector2 speed = new Vector2(2.5f, 2.5f);
         Texture2D currentSprite;
         Random rnd = new Random();
@@ -20,8 +21,6 @@ namespace SpaceGame.Scenes.Planet
         DateTime shootCooldown;
 
         #endregion
-
-        // Lägg till health, damage mm.
 
         #region Methods
 
