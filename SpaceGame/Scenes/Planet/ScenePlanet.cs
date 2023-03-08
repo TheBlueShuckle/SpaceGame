@@ -24,10 +24,11 @@ namespace SpaceGame.Scenes.Planet
 
         int scene = GlobalConstants.OnPlanet;
         MouseState mouseState;
+        Random rnd = new Random();
 
         Player player = new Player();
 
-        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500);
+        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500), enemyIdleTime;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
@@ -129,41 +130,29 @@ namespace SpaceGame.Scenes.Planet
 
                 else if (!enemy.fieldOfView().Intersects(player.GetHitBox()))
                 {
-                    MoveEnemy(enemy);
+                    MoveToRandomPos(enemy);
                 }
             }
         }
 
-        private void MoveEnemy(Enemy enemy)
+        private void MoveToRandomPos(Enemy enemy)
         {
             if (enemy.GetPosition() == enemy.randomTargetPos)
             {
-                enemy.Move(enemy.GenerateRandomPoint());
+                if (rnd.Next(1, 3) == 1 && enemyIdleTime <= DateTime.Now)
+                {
+                    enemy.Move(enemy.GenerateRandomPoint());
+                }
+
+                if (enemyIdleTime <= DateTime.Now)
+                {
+                    enemyIdleTime = DateTime.Now.AddMilliseconds(rnd.Next(1, 5) * 100);
+                }
             }
 
             else
             {
                 enemy.Move(enemy.randomTargetPos);
-            }
-        }
-
-        public void ChangeState(Enemy enemy)
-        {
-            const int Idling = 0, Patrolling = 1, Shooting = 2, Chasing = 3;
-
-            switch (enemy.enemystate)
-            {
-                case Idling:
-                    break;
-
-                case Patrolling:
-                    break;
-
-                case Shooting:
-                    break;
-
-                case Chasing:
-                    break;
             }
         }
 

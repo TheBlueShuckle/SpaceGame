@@ -91,8 +91,6 @@ namespace SpaceGame.Scenes.Planet
             return true;
         }
 
-
-
         public Texture2D GetCurrentSprite()
         {
             return currentSprite;
