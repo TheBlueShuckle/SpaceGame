@@ -109,8 +109,6 @@ namespace SpaceGame.Scenes.Planet
                 GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
             }
 
-            GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "" + (levelBeatenCooldown - DateTime.Now), new Vector2(GlobalConstants.ScreenWidth/2, GlobalConstants.ScreenHeight/2), Color.White);
-
             GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
         }
 
