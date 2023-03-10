@@ -33,6 +33,11 @@ namespace SpaceGame.Main
         {
             // TODO: Add your initialization logic here
 
+            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
+
             GlobalConstants.ScreenWidth = Window.ClientBounds.Width;
             GlobalConstants.ScreenHeight = Window.ClientBounds.Height;
 

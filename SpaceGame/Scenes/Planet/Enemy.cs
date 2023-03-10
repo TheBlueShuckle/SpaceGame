@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Dynamic;
 
 namespace SpaceGame.Scenes.Planet
 {
@@ -135,6 +136,16 @@ namespace SpaceGame.Scenes.Planet
             {
                 GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, UpdatedHealthBarWidth(), HealthBarHeight), Color.Green);
             }
+        }
+
+        public void ChangeToWanderingSpeed()
+        {
+            speed = new Vector2(1.5f, 1.5f);
+        }
+
+        public void ChangeToChasingSpeed()
+        {
+            speed = new Vector2(2.5f, 2.5f);
         }
 
         #endregion

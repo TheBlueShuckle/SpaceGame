@@ -41,6 +41,7 @@ namespace SpaceGame.Scenes.Planet
         public ScenePlanet()
         {
             leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, GlobalConstants.PlanetWaitSecondsMin));
+            SpawnEnemies();
         }
 
         public int Update()
@@ -49,8 +50,6 @@ namespace SpaceGame.Scenes.Planet
             {
                 scene = GlobalConstants.InSpace;
             }
-
-            SpawnEnemies();
 
             player.CheckMove();
             CheckShooting();
@@ -72,6 +71,11 @@ namespace SpaceGame.Scenes.Planet
             player.CheckBounds();
 
             CheckBulletBounds();
+
+            if(enemies.Count == 0)
+            {
+                scene = GlobalConstants.InSpace;
+            }
 
             return scene;
         }
@@ -105,7 +109,7 @@ namespace SpaceGame.Scenes.Planet
 
         private void SpawnEnemies()
         {
-            while (enemies.Count < 5)
+            for(int i = 0; i < rnd.Next(3, 8);  i++)
             {
                 enemies.Add(new Enemy());
             }
@@ -125,11 +129,13 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (GlobalMethods.CheckPointIntersects(enemy.MeleeRange(), GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)))
                 {
+                    enemy.ChangeToChasingSpeed();
                     enemy.Move(player.pos);
                 }
 
                 else if (!enemy.fieldOfView().Intersects(player.GetHitBox()))
                 {
+                    enemy.ChangeToWanderingSpeed();
                     MoveToRandomPos(enemy);
                 }
             }
