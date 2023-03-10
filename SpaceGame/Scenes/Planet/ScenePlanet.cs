@@ -28,7 +28,7 @@ namespace SpaceGame.Scenes.Planet
 
         Player player = new Player();
 
-        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500), enemyIdleTime;
+        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500), enemyIdleTime, levelBeatenCooldown;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
@@ -74,7 +74,16 @@ namespace SpaceGame.Scenes.Planet
 
             if(enemies.Count == 0)
             {
-                scene = GlobalConstants.InSpace;
+                if(levelBeatenCooldown == DateTime.MinValue)
+                {
+                    levelBeatenCooldown = DateTime.Now.AddSeconds(3);
+                }
+
+                if (levelBeatenCooldown <= DateTime.Now)
+                {
+                    scene = GlobalConstants.InSpace;
+                    GlobalConstants.LevelsBeaten++;
+                }
             }
 
             return scene;
@@ -100,6 +109,8 @@ namespace SpaceGame.Scenes.Planet
                 GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
             }
 
+            GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "" + (levelBeatenCooldown - DateTime.Now), new Vector2(GlobalConstants.ScreenWidth/2, GlobalConstants.ScreenHeight/2), Color.White);
+
             GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
         }
 
@@ -109,7 +120,7 @@ namespace SpaceGame.Scenes.Planet
 
         private void SpawnEnemies()
         {
-            for(int i = 0; i < rnd.Next(3, 8);  i++)
+            for(int i = 0; i < rnd.Next(3, 3 + 2 * GlobalConstants.LevelsBeaten);  i++)
             {
                 enemies.Add(new Enemy());
             }

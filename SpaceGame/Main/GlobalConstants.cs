@@ -24,7 +24,7 @@ namespace SpaceGame
 
         #region GettersSetters
 
-        private static int screenWidth, screenHeight;
+        private static int screenWidth, screenHeight, levelsBeaten = 0;
         private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
         private static Texture2D bullet, enemyMeleeRange, healthPack, healthBar;
         private static SpriteBatch spriteBatch;
@@ -40,6 +40,12 @@ namespace SpaceGame
         {
             get { return screenHeight; }
             set { screenHeight = value; }
+        }
+
+        public static int LevelsBeaten
+        {
+            get { return levelsBeaten; }
+            set { levelsBeaten = value; }
         }
 
         public static Texture2D[] PlayerSprites

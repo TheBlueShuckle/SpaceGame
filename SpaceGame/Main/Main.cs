@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceGame.Scenes.Planet;
 using SpaceGame.Scenes.Space;
+using System;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame.Main
@@ -149,7 +150,7 @@ namespace SpaceGame.Main
                 default:
                     break;
             }
-
+            GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "" + GlobalConstants.LevelsBeaten, new Vector2(0, 0), Color.White);
             _spriteBatch.End();
 
             base.Draw(gameTime);
