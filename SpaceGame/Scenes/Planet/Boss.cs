@@ -1,64 +1,46 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Dynamic;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SpaceGame.Scenes.Planet
 {
-    internal class Enemy
+    internal class Boss
     {
-        #region Variables
-
-        const int MaxHealth = 75, HealthBarWidth = 50, HealthBarHeight = 10;
+        const int HealthBarWidth = 50, HealthBarHeight = 10;
         const float criticalHealth = 0.2f;
 
-        public int enemystate;
+        public int enemystate, maxHealth;
         public Vector2 randomTargetPos;
         Vector2 pos, healthBarPos;
-        Vector2 speed = new Vector2(2.5f, 2.5f);
         Texture2D currentSprite;
         Random rnd = new Random();
-        int health = MaxHealth, damage = 20;
+        int health, damage;
         DateTime shootCooldown;
 
-        #endregion
-
-        #region Methods
-
-        public Enemy()
+        public Boss()
         {
             currentSprite = GlobalConstants.EnemySprites[0];
+            health = maxHealth = rnd.Next(5, 11) * 100;
 
-            pos.X = rnd.Next(0, GlobalConstants.ScreenWidth);
-            pos.Y = rnd.Next(0, GlobalConstants.ScreenHeight);
-            GenerateRandomPoint();
-        }
-
-        public void Move(Vector2 goal)
-        {
-            Vector2 direction;
-
-            if (goal == pos)
+            if (health < 700)
             {
-                direction = new Vector2(0, 0);
+                damage = rnd.Next(20, 36);
             }
 
-            else
+            if (health < 900)
             {
-                direction = Vector2.Normalize(goal - pos);
+                damage = rnd.Next(15, 26);
             }
 
-            pos += direction * speed;
-
-            if (Math.Abs(Vector2.Dot(direction, Vector2.Normalize(goal - pos)) + 1) < 0.1f)
+            if (health == 1000)
             {
-                pos = goal;
+                damage = rnd.Next(10, 20);
             }
-        }
-
-        public Vector2 GenerateRandomPoint()
-        {
-            return randomTargetPos = new Vector2(rnd.Next(0, GlobalConstants.ScreenWidth), rnd.Next(0, GlobalConstants.ScreenHeight));
         }
 
         public Vector2 GetPosition()
@@ -69,11 +51,6 @@ namespace SpaceGame.Scenes.Planet
         public Rectangle MeleeRange()
         {
             return new Rectangle((int)GetPosition().X - 75, (int)GetPosition().Y - 75, GetCurrentSprite().Width + 150, GetCurrentSprite().Height + 150);
-        }
-
-        public Rectangle fieldOfView()
-        {
-            return new Rectangle((int)GetPosition().X - 300, (int)GetPosition().Y - 300, GetCurrentSprite().Width + 600, currentSprite.Height + 600);
         }
 
         public Bullet Shoot(Vector2 playerPos)
@@ -119,7 +96,7 @@ namespace SpaceGame.Scenes.Planet
 
         private int UpdatedHealthBarWidth()
         {
-            double value = HealthBarWidth * health / MaxHealth;
+            double value = HealthBarWidth * health / maxHealth;
             return (int)value;
         }
 
@@ -127,7 +104,7 @@ namespace SpaceGame.Scenes.Planet
         {
             GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, HealthBarWidth, HealthBarHeight), Color.Gray);
 
-            if (health <= MaxHealth * criticalHealth)
+            if (health <= maxHealth * criticalHealth)
             {
                 GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, UpdatedHealthBarWidth(), HealthBarHeight), Color.Red);
             }
@@ -138,21 +115,9 @@ namespace SpaceGame.Scenes.Planet
             }
         }
 
-        public void ChangeToWanderingSpeed()
-        {
-            speed = new Vector2(1.5f, 1.5f);
-        }
-
-        public void ChangeToChasingSpeed()
-        {
-            speed = new Vector2(2.5f, 2.5f);
-        }
-
         public int GetDamage()
         {
             return damage;
         }
-
-        #endregion
     }
 }

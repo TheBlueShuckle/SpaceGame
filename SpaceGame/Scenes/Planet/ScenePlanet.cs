@@ -6,9 +6,11 @@ using SharpDX.XAudio2;
 using SpaceGame.Main;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
@@ -27,11 +29,13 @@ namespace SpaceGame.Scenes.Planet
         Random rnd = new Random();
 
         Player player = new Player();
+        Boss boss;
 
         DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500), enemyIdleTime, levelBeatenCooldown;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
+        List<Bullet> bossBullets = new List<Bullet>();
         List<HealthPack> healthPacks = new List<HealthPack>();
 
         #endregion
@@ -51,28 +55,12 @@ namespace SpaceGame.Scenes.Planet
                 scene = GlobalConstants.InSpace;
             }
 
-            player.CheckMove();
-            CheckShooting();
+            MoveMobs();
+            Shoot();
+            CheckHealth();
+            CheckBounds();
 
-            CheckEnemyShooting();
-
-            MoveBullets(bullets);
-            MoveBullets(enemyBullets);
-
-            CheckIfMoveEnemy();
-            UpdateHealthBarPos();
-
-            CheckPlayerDamage();
-
-            CheckIfBulletHitsEnemies();
-            CheckCollisionHealthPack();
-
-            player.ChangeSprite();
-            player.CheckBounds();
-
-            CheckBulletBounds();
-
-            if(enemies.Count == 0)
+            if (enemies.Count == 0 && boss == null)
             {
                 if(levelBeatenCooldown == DateTime.MinValue)
                 {
@@ -122,13 +110,62 @@ namespace SpaceGame.Scenes.Planet
             {
                 enemies.Add(new Enemy());
             }
+
+            if (GlobalConstants.LevelsBeaten == 5)
+            {
+                boss = new Boss();
+            }
         }
 
-        private void MoveBullets(List<Bullet> bullets)
+        private void MoveMobs()
+        {
+            player.CheckMove();
+            player.ChangeSprite();
+
+            MoveBullets();
+            CheckIfMoveEnemy();
+            UpdateHealthBarPos();
+        }
+
+        private void Shoot()
+        {
+            CheckShooting();
+            CheckEnemyShooting();
+            if(boss != null)
+            {
+                bossBullets.Add(boss.Shoot(player.pos));
+            }
+        }
+
+        private void CheckHealth()
+        {
+            CheckPlayerDamage();
+
+            CheckIfBulletHitsEnemies();
+            CheckCollisionHealthPack();
+        }
+
+        private void CheckBounds()
+        {
+            player.CheckBounds();
+            CheckBulletBounds();
+        }
+
+        private void MoveBullets()
         {
             foreach (Bullet bullet in bullets)
             {
                 bullet.Move();
+            }
+
+            foreach (Bullet enemyBullets in enemyBullets)
+            {
+                enemyBullets.Move();
+            }
+
+            foreach (Bullet bosBulletss in bossBullets)
+            {
+                bosBulletss.Move();
             }
         }
 
@@ -200,7 +237,7 @@ namespace SpaceGame.Scenes.Planet
                 if (bullet.GetRectangle().Intersects(player.GetHitBox()))
                 {
                     enemyBullets.Remove(bullet);
-                    player.DamageTaken();
+                    player.DamageTaken(20);
 
                     CheckIfPlayerIsDead();
                 }
@@ -231,7 +268,7 @@ namespace SpaceGame.Scenes.Planet
             if (GlobalMethods.CheckPointIntersects(enemy.GetHitbox(), GlobalMethods.GetCenter(bullet.GetPos(), GlobalConstants.Bullet.Width, GlobalConstants.Bullet.Height)))
             {
                 bullets.Remove(bullet);
-                enemy.ChangeHealth();
+                enemy.ChangeHealth(player.GetDamage());
 
                 if (enemy.GetHealth() < 1)
                 {
@@ -305,7 +342,7 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (enemy.GetHitbox().Intersects(player.GetHitBox()))
                 {
-                    player.DamageTaken();
+                    player.DamageTaken(enemy.GetDamage());
                     CheckIfPlayerIsDead();
                 }
             }
