@@ -42,7 +42,7 @@ namespace SpaceGame.Scenes.Space
         {
             Texture2D[] planetSizes = new Texture2D[2] { smallPlanet, bigPlanet };
             Random rnd = new Random();
-            int randomSize = rnd.Next(1, planetSizes.Length);
+            int randomSize = rnd.Next(0, planetSizes.Length);
 
             size = planetSizes[randomSize];
         }
@@ -51,7 +51,7 @@ namespace SpaceGame.Scenes.Space
         {
             Color[] colors = new Color[9] { Color.SandyBrown, Color.Aquamarine, Color.CornflowerBlue, Color.Crimson, Color.Beige, Color.Green, Color.Coral, Color.GreenYellow, Color.RoyalBlue };
             Random rnd = new Random();
-            int randomColor = rnd.Next(1, colors.Length);
+            int randomColor = rnd.Next(0, colors.Length);
 
             planetColor = colors[randomColor];
         }

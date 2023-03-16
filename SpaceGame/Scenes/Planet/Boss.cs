@@ -11,12 +11,12 @@ namespace SpaceGame.Scenes.Planet
 {
     internal class Boss
     {
-        const int HealthBarWidth = 50, HealthBarHeight = 10;
+        const int HealthBarWidth = 500, HealthBarHeight = 20;
         const float criticalHealth = 0.2f;
 
         public int enemystate, maxHealth;
         public Vector2 randomTargetPos;
-        Vector2 pos, healthBarPos;
+        Vector2 pos = new Vector2(GlobalConstants.ScreenWidth / 2, GlobalConstants.ScreenHeight / 2), healthBarPos = new Vector2(GlobalConstants.ScreenWidth/2 - 250, 30);
         Texture2D currentSprite;
         Random rnd = new Random();
         int health, damage;
@@ -56,7 +56,7 @@ namespace SpaceGame.Scenes.Planet
         public Bullet Shoot(Vector2 playerPos)
         {
             shootCooldown = DateTime.Now.AddMilliseconds(1000);
-            return new Bullet(new Vector2(pos.X + currentSprite.Width / 2, pos.Y + currentSprite.Height / 2), playerPos, damage);
+            return new Bullet(new Vector2(pos.X + currentSprite.Width, pos.Y + currentSprite.Height), playerPos, damage);
         }
 
         public bool ShootCooldown()
@@ -76,7 +76,7 @@ namespace SpaceGame.Scenes.Planet
 
         public Rectangle GetHitbox()
         {
-            return new Rectangle((int)pos.X, (int)pos.Y, currentSprite.Width, currentSprite.Height);
+            return new Rectangle((int)pos.X, (int)pos.Y, currentSprite.Width * 2, currentSprite.Height * 2);
         }
 
         public void ChangeHealth(int damageTaken)
@@ -89,15 +89,19 @@ namespace SpaceGame.Scenes.Planet
             return health;
         }
 
-        public void UpdateHealthBarPos()
-        {
-            healthBarPos = new Vector2(pos.X + currentSprite.Width / 2 - HealthBarWidth / 2, pos.Y - HealthBarHeight - 5);
-        }
-
         private int UpdatedHealthBarWidth()
         {
             double value = HealthBarWidth * health / maxHealth;
             return (int)value;
+        }
+
+        public void Draw()
+        {
+            GlobalConstants.SpriteBatch.Draw(
+                GetCurrentSprite(),
+                GetHitbox(),
+                new Rectangle(0, 0, GetCurrentSprite().Width, GetCurrentSprite().Height),
+                Color.Blue);
         }
 
         public void DrawHealthBar()
@@ -113,11 +117,6 @@ namespace SpaceGame.Scenes.Planet
             {
                 GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, UpdatedHealthBarWidth(), HealthBarHeight), Color.Green);
             }
-        }
-
-        public int GetDamage()
-        {
-            return damage;
         }
     }
 }
