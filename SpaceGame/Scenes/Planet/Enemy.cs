@@ -18,7 +18,7 @@ namespace SpaceGame.Scenes.Planet
         Vector2 speed = new Vector2(2.5f, 2.5f);
         Texture2D currentSprite;
         Random rnd = new Random();
-        int health = MaxHealth, damage = 20;
+        int health = MaxHealth;
         DateTime shootCooldown;
 
         #endregion
@@ -79,7 +79,7 @@ namespace SpaceGame.Scenes.Planet
         public Bullet Shoot(Vector2 playerPos)
         {
             shootCooldown = DateTime.Now.AddMilliseconds(1000);
-            return new Bullet(new Vector2(pos.X + currentSprite.Width / 2, pos.Y + currentSprite.Height / 2), playerPos);
+            return new Bullet(new Vector2(pos.X + currentSprite.Width / 2, pos.Y + currentSprite.Height / 2), playerPos, 20);
         }
 
         public bool ShootCooldown()
@@ -146,11 +146,6 @@ namespace SpaceGame.Scenes.Planet
         public void ChangeToChasingSpeed()
         {
             speed = new Vector2(2.5f, 2.5f);
-        }
-
-        public int GetDamage()
-        {
-            return damage;
         }
 
         #endregion

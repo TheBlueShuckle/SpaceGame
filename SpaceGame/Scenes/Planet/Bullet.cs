@@ -18,15 +18,17 @@ namespace SpaceGame
         double totalSpeed = 10, angle;
         Rectangle rectangle;
         Vector2 origin;
+        int damage;
 
         #endregion
 
         #region Methods
 
-        public Bullet(Vector2 bulletStartPos, Vector2 bulletGoal)
+        public Bullet(Vector2 bulletStartPos, Vector2 bulletGoal, int damage)
         {
             pos = bulletStartPos;
             SetTrajectory(bulletStartPos, bulletGoal);
+            this.damage = damage;
         }
 
         public void Move()
@@ -78,6 +80,12 @@ namespace SpaceGame
         public Rectangle GetRectangle()
         {
             return rectangle;
+        }
+
+        public int Damage
+        {
+            get { return damage; }
+            set { damage = value; }
         }
 
         #endregion

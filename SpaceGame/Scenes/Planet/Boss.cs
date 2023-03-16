@@ -56,7 +56,7 @@ namespace SpaceGame.Scenes.Planet
         public Bullet Shoot(Vector2 playerPos)
         {
             shootCooldown = DateTime.Now.AddMilliseconds(1000);
-            return new Bullet(new Vector2(pos.X + currentSprite.Width / 2, pos.Y + currentSprite.Height / 2), playerPos);
+            return new Bullet(new Vector2(pos.X + currentSprite.Width / 2, pos.Y + currentSprite.Height / 2), playerPos, damage);
         }
 
         public bool ShootCooldown()

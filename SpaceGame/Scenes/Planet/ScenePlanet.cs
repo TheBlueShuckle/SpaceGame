@@ -31,11 +31,10 @@ namespace SpaceGame.Scenes.Planet
         Player player = new Player();
         Boss boss;
 
-        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500), enemyIdleTime, levelBeatenCooldown;
+        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown, enemyIdleTime, levelBeatenCooldown;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
-        List<Bullet> bossBullets = new List<Bullet>();
         List<HealthPack> healthPacks = new List<HealthPack>();
 
         #endregion
@@ -131,10 +130,6 @@ namespace SpaceGame.Scenes.Planet
         {
             CheckShooting();
             CheckEnemyShooting();
-            if(boss != null)
-            {
-                bossBullets.Add(boss.Shoot(player.pos));
-            }
         }
 
         private void CheckHealth()
@@ -153,19 +148,14 @@ namespace SpaceGame.Scenes.Planet
 
         private void MoveBullets()
         {
-            foreach (Bullet bullet in bullets)
+            foreach (Bullet playerBullets in bullets)
             {
-                bullet.Move();
+                playerBullets.Move();
             }
 
             foreach (Bullet enemyBullets in enemyBullets)
             {
                 enemyBullets.Move();
-            }
-
-            foreach (Bullet bosBulletss in bossBullets)
-            {
-                bosBulletss.Move();
             }
         }
 
@@ -214,7 +204,7 @@ namespace SpaceGame.Scenes.Planet
 
             if (mouseState.LeftButton == ButtonState.Pressed && bulletCooldown < DateTime.Now)
             {
-                bullets.Add(new Bullet(new Vector2(player.pos.X + player.GetSprite().Width / 2, player.pos.Y + player.GetSprite().Height / 2), new Vector2(mouseState.X, mouseState.Y)));
+                bullets.Add(new Bullet(new Vector2(player.pos.X + player.GetSprite().Width / 2, player.pos.Y + player.GetSprite().Height / 2), new Vector2(mouseState.X, mouseState.Y), player.GetDamage()));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
             }
         }
@@ -228,6 +218,11 @@ namespace SpaceGame.Scenes.Planet
                     enemyBullets.Add(enemy.Shoot(GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)));
                 }
             }
+
+            if (boss != null)
+            {
+                enemyBullets.Add(boss.Shoot(player.pos));
+            }
         }
 
         private void CheckIfBulletHitsPlayer()
@@ -236,8 +231,8 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (bullet.GetRectangle().Intersects(player.GetHitBox()))
                 {
+                    player.DamageTaken(bullet.Damage);
                     enemyBullets.Remove(bullet);
-                    player.DamageTaken(20);
 
                     CheckIfPlayerIsDead();
                 }
@@ -268,7 +263,7 @@ namespace SpaceGame.Scenes.Planet
             if (GlobalMethods.CheckPointIntersects(enemy.GetHitbox(), GlobalMethods.GetCenter(bullet.GetPos(), GlobalConstants.Bullet.Width, GlobalConstants.Bullet.Height)))
             {
                 bullets.Remove(bullet);
-                enemy.ChangeHealth(player.GetDamage());
+                enemy.ChangeHealth(bullet.Damage);
 
                 if (enemy.GetHealth() < 1)
                 {
@@ -332,7 +327,7 @@ namespace SpaceGame.Scenes.Planet
                 CheckIfBulletHitsPlayer();
                 CheckEnemyMelee();
 
-                damageCooldown = DateTime.Now.AddMilliseconds(500);
+                damageCooldown = DateTime.Now.AddMilliseconds(100);
             }
         }
 
@@ -342,7 +337,7 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (enemy.GetHitbox().Intersects(player.GetHitBox()))
                 {
-                    player.DamageTaken(enemy.GetDamage());
+                    player.DamageTaken(20);
                     CheckIfPlayerIsDead();
                 }
             }
