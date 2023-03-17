@@ -14,7 +14,6 @@ namespace SpaceGame.Main
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D myShipFrame1, myShipFrame2, bigPlanet, smallPlanet;
         int scene = GlobalConstants.InSpace;
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
@@ -43,7 +42,6 @@ namespace SpaceGame.Main
             GlobalConstants.ScreenHeight = Window.ClientBounds.Height;
 
             sceneSpace = new SceneSpace();
-            sceneSpace.Initialize();
 
             base.Initialize();
         }
@@ -54,11 +52,11 @@ namespace SpaceGame.Main
             GlobalConstants.SpriteBatch = _spriteBatch;
 
             // TODO: use this.Content to load your game content here
-            myShipFrame1 = Content.Load<Texture2D>("Sprites/myShipFrame1");
-            myShipFrame2 = Content.Load<Texture2D>("Sprites/myShipFrame2");
+            GlobalConstants.ShipSprites[0] = Content.Load<Texture2D>("Sprites/myShipFrame1");
+            GlobalConstants.ShipSprites[1] = Content.Load<Texture2D>("Sprites/myShipFrame2");
 
-            bigPlanet = Content.Load<Texture2D>("Sprites/bigPlanet");
-            smallPlanet = Content.Load<Texture2D>("Sprites/smallPlanet");
+            GlobalConstants.PlanetSprites[0] = Content.Load<Texture2D>("Sprites/bigPlanet");
+            GlobalConstants.PlanetSprites[1] = Content.Load<Texture2D>("Sprites/smallPlanet");
 
             GlobalConstants.PlayerSprites[0] = Content.Load<Texture2D>("Sprites/protagonistStandingLeft");
             GlobalConstants.PlayerSprites[1] = Content.Load<Texture2D>("Sprites/protagonistStandingRight");
@@ -81,7 +79,7 @@ namespace SpaceGame.Main
 
             GlobalConstants.GameFont = Content.Load<SpriteFont>("Print/GameFont");
 
-            sceneSpace.SetTextures(myShipFrame1, myShipFrame2, bigPlanet, smallPlanet);
+            sceneSpace.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
@@ -125,7 +123,7 @@ namespace SpaceGame.Main
                     break;
 
                 case GlobalConstants.OnPlanet:
-                    GraphicsDevice.Clear(sceneSpace.GetCollidedPlanet().GetPlanetColor());
+                    GraphicsDevice.Clear(sceneSpace.GetCollidedPlanet().GetColor());
                     break;
 
                 default:
