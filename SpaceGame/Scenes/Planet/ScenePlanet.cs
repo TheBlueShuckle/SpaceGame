@@ -6,9 +6,11 @@ using SharpDX.XAudio2;
 using SpaceGame.Main;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
@@ -24,10 +26,12 @@ namespace SpaceGame.Scenes.Planet
 
         int scene = GlobalConstants.OnPlanet;
         MouseState mouseState;
+        Random rnd = new Random();
 
         Player player = new Player();
+        Boss boss;
 
-        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500);
+        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500), enemyIdleTime, levelBeatenCooldown;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
@@ -40,6 +44,7 @@ namespace SpaceGame.Scenes.Planet
         public ScenePlanet()
         {
             leavePlanetCooldown = DateTime.Now.Add(new TimeSpan(0, 0, GlobalConstants.PlanetWaitSecondsMin));
+            SpawnEnemies();
         }
 
         public int Update()
@@ -49,28 +54,24 @@ namespace SpaceGame.Scenes.Planet
                 scene = GlobalConstants.InSpace;
             }
 
-            SpawnEnemies();
+            MoveMobs();
+            Shoot();
+            CheckHealth();
+            CheckBounds();
 
-            player.CheckMove();
-            CheckShooting();
+            if (enemies.Count == 0 && boss == null)
+            {
+                if(levelBeatenCooldown == DateTime.MinValue)
+                {
+                    levelBeatenCooldown = DateTime.Now.AddSeconds(3);
+                }
 
-            CheckEnemyShooting();
-
-            MoveBullets(bullets);
-            MoveBullets(enemyBullets);
-
-            CheckIfMoveEnemy();
-            UpdateHealthBarPos();
-
-            CheckPlayerDamage();
-
-            CheckIfBulletHitsEnemies();
-            CheckCollisionHealthPack();
-
-            player.ChangeSprite();
-            player.CheckBounds();
-
-            CheckBulletBounds();
+                if (levelBeatenCooldown <= DateTime.Now)
+                {
+                    scene = GlobalConstants.InSpace;
+                    GlobalConstants.LevelsBeaten++;
+                }
+            }
 
             return scene;
         }
@@ -104,17 +105,57 @@ namespace SpaceGame.Scenes.Planet
 
         private void SpawnEnemies()
         {
-            while (enemies.Count < 5)
+            for(int i = 0; i < rnd.Next(3, 3 + 2 * GlobalConstants.LevelsBeaten);  i++)
             {
                 enemies.Add(new Enemy());
             }
+
+            if (GlobalConstants.LevelsBeaten == 5)
+            {
+                boss = new Boss();
+            }
         }
 
-        private void MoveBullets(List<Bullet> bullets)
+        private void MoveMobs()
         {
-            foreach (Bullet bullet in bullets)
+            player.CheckMove();
+            player.ChangeSprite();
+
+            MoveBullets();
+            CheckIfMoveEnemy();
+            UpdateHealthBarPos();
+        }
+
+        private void Shoot()
+        {
+            CheckShooting();
+            CheckEnemyShooting();
+        }
+
+        private void CheckHealth()
+        {
+            CheckPlayerDamage();
+
+            CheckIfBulletHitsEnemies();
+            CheckCollisionHealthPack();
+        }
+
+        private void CheckBounds()
+        {
+            player.CheckBounds();
+            CheckBulletBounds();
+        }
+
+        private void MoveBullets()
+        {
+            foreach (Bullet playerBullets in bullets)
             {
-                bullet.Move();
+                playerBullets.Move();
+            }
+
+            foreach (Bullet enemyBullets in enemyBullets)
+            {
+                enemyBullets.Move();
             }
         }
 
@@ -124,21 +165,31 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (GlobalMethods.CheckPointIntersects(enemy.MeleeRange(), GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)))
                 {
+                    enemy.ChangeToChasingSpeed();
                     enemy.Move(player.pos);
                 }
 
                 else if (!enemy.fieldOfView().Intersects(player.GetHitBox()))
                 {
-                    MoveEnemy(enemy);
+                    enemy.ChangeToWanderingSpeed();
+                    MoveToRandomPos(enemy);
                 }
             }
         }
 
-        private void MoveEnemy(Enemy enemy)
+        private void MoveToRandomPos(Enemy enemy)
         {
             if (enemy.GetPosition() == enemy.randomTargetPos)
             {
-                enemy.Move(enemy.GenerateRandomPoint());
+                if (rnd.Next(1, 3) == 1 && enemyIdleTime <= DateTime.Now)
+                {
+                    enemy.Move(enemy.GenerateRandomPoint());
+                }
+
+                if (enemyIdleTime <= DateTime.Now)
+                {
+                    enemyIdleTime = DateTime.Now.AddMilliseconds(rnd.Next(1, 5) * 100);
+                }
             }
 
             else
@@ -151,9 +202,9 @@ namespace SpaceGame.Scenes.Planet
         {
             mouseState = Mouse.GetState();
 
-            if (mouseState.LeftButton == ButtonState.Pressed && bulletCooldown < DateTime.Now)
+            if (mouseState.LeftButton == ButtonState.Pressed && bulletCooldown <= DateTime.Now)
             {
-                bullets.Add(new Bullet(new Vector2(player.pos.X + player.GetSprite().Width / 2, player.pos.Y + player.GetSprite().Height / 2), new Vector2(mouseState.X, mouseState.Y)));
+                bullets.Add(new Bullet(new Vector2(player.pos.X + player.GetSprite().Width / 2, player.pos.Y + player.GetSprite().Height / 2), new Vector2(mouseState.X, mouseState.Y), player.GetDamage()));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
             }
         }
@@ -162,10 +213,15 @@ namespace SpaceGame.Scenes.Planet
         {
             foreach (Enemy enemy in enemies)
             {
-                if (player.GetHitBox().Intersects(enemy.fieldOfView()) && enemy.ShootCooldown())
+                if (player.GetHitBox().Intersects(enemy.fieldOfView()) && (enemy.ShootCooldown()))
                 {
                     enemyBullets.Add(enemy.Shoot(GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)));
                 }
+            }
+
+            if (boss != null && boss.ShootCooldown())
+            {
+                enemyBullets.Add(boss.Shoot(player.pos));
             }
         }
 
@@ -175,8 +231,8 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (bullet.GetRectangle().Intersects(player.GetHitBox()))
                 {
+                    player.DamageTaken(0);
                     enemyBullets.Remove(bullet);
-                    player.DamageTaken();
 
                     CheckIfPlayerIsDead();
                 }
@@ -190,6 +246,11 @@ namespace SpaceGame.Scenes.Planet
                 foreach (Enemy enemy in enemies.ToList())
                 {
                     IfBulletHit(enemy, bullet);
+                }
+
+                if(boss != null)
+                {
+                    IfBulletHitsBoss(bullet);
                 }
             }
         }
@@ -207,12 +268,26 @@ namespace SpaceGame.Scenes.Planet
             if (GlobalMethods.CheckPointIntersects(enemy.GetHitbox(), GlobalMethods.GetCenter(bullet.GetPos(), GlobalConstants.Bullet.Width, GlobalConstants.Bullet.Height)))
             {
                 bullets.Remove(bullet);
-                enemy.ChangeHealth();
+                enemy.ChangeHealth(bullet.Damage);
 
                 if (enemy.GetHealth() < 1)
                 {
                     enemies.Remove(enemy);
                     GenerateHealthPack(enemy);
+                }
+            }
+        }
+
+        private void IfBulletHitsBoss(Bullet bullet)
+        {
+            if (GlobalMethods.CheckPointIntersects(boss.GetHitbox(), GlobalMethods.GetCenter(bullet.GetPos(), GlobalConstants.Bullet.Width, GlobalConstants.Bullet.Height)))
+            {
+                bullets.Remove(bullet);
+                boss.ChangeHealth(bullet.Damage);
+
+                if (boss.GetHealth() < 1)
+                {
+                    boss = null;
                 }
             }
         }
@@ -271,7 +346,7 @@ namespace SpaceGame.Scenes.Planet
                 CheckIfBulletHitsPlayer();
                 CheckEnemyMelee();
 
-                damageCooldown = DateTime.Now.AddMilliseconds(500);
+                damageCooldown = DateTime.Now.AddMilliseconds(100);
             }
         }
 
@@ -281,7 +356,7 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (enemy.GetHitbox().Intersects(player.GetHitBox()))
                 {
-                    player.DamageTaken();
+                    player.DamageTaken(20);
                     CheckIfPlayerIsDead();
                 }
             }
@@ -302,6 +377,11 @@ namespace SpaceGame.Scenes.Planet
             foreach (Enemy enemy in enemies)
             {
                 GlobalConstants.SpriteBatch.Draw(enemy.GetCurrentSprite(), enemy.GetPosition(), Color.Green);
+            }
+
+            if (boss != null)
+            {
+                boss.Draw();
             }
         }
 
@@ -336,6 +416,11 @@ namespace SpaceGame.Scenes.Planet
             foreach (Enemy enemy in enemies)
             {
                 enemy.DrawHealthBar();
+            }
+
+            if(boss != null)
+            {
+                boss.DrawHealthBar();
             }
         }
 

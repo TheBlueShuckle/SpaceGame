@@ -23,7 +23,7 @@ namespace SpaceGame.Scenes.Planet
         Vector2 speed, healthBarPos;
         MouseState mouseState;
         public Vector2 pos;
-        int health = MaxHealth;
+        int health = MaxHealth, damage = 20;
 
         #endregion
 
@@ -107,8 +107,6 @@ namespace SpaceGame.Scenes.Planet
                     currentSprite = GlobalConstants.PlayerSprites[0];
                 }
             }
-
-//            pos = new Vector2((int)pos.X, (int)pos.Y);
         }
 
         public void CheckBounds()
@@ -176,9 +174,9 @@ namespace SpaceGame.Scenes.Planet
             }
         }
 
-        public void DamageTaken()
+        public void DamageTaken(int damageTaken)
         {
-            health -= 0;
+            health -= damageTaken;
         }
             
         public int GetHealth()
@@ -210,6 +208,11 @@ namespace SpaceGame.Scenes.Planet
             {
                 GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, UpdatedHealthBarWidth(), HealthBarHeight), Color.Green);
             }
+        }
+
+        public int GetDamage()
+        {
+            return damage;
         }
 
         #endregion

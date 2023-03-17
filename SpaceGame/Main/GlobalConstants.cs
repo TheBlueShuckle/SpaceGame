@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,17 +18,17 @@ namespace SpaceGame
         public const int InSpace = 1, OnPlanet = 2;
         public const int PlanetWaitSecondsMin = 5, PlanetWaitSecondsMax = 20, PlanetMinSpeed = 10, PlanetMaxSpeed = 45;
         public const int PlayerSpeed = 5;
-        public const float MyShipSpeed = 2.5f;
 
         #endregion
 
         #region GettersSetters
 
-        private static int screenWidth, screenHeight;
-        private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4];
+        private static int screenWidth, screenHeight, levelsBeaten = 0;
+        private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4], shipSprites = new Texture2D[2], planetSprites = new Texture2D[2];
         private static Texture2D bullet, enemyMeleeRange, healthPack, healthBar;
         private static SpriteBatch spriteBatch;
         private static SpriteFont gameFont;
+        private static Vector2 shipSpeed = new Vector2(2.5f, 2.5f);
 
         public static int ScreenWidth
         {
@@ -40,6 +40,24 @@ namespace SpaceGame
         {
             get { return screenHeight; }
             set { screenHeight = value; }
+        }
+
+        public static int LevelsBeaten
+        {
+            get { return levelsBeaten; }
+            set { levelsBeaten = value; }
+        }
+
+        public static Texture2D[] ShipSprites
+        {
+            get { return shipSprites; }
+            set { shipSprites = value; }
+        }
+
+        public static Texture2D[] PlanetSprites
+        {
+            get { return planetSprites; }
+            set { planetSprites = value; }
         }
 
         public static Texture2D[] PlayerSprites
@@ -88,6 +106,11 @@ namespace SpaceGame
         {
             get { return gameFont; }
             set { gameFont = value; }
+        }
+
+        public static Vector2 ShipSpeed
+        {
+            get { return shipSpeed; }
         }
 
         #endregion
