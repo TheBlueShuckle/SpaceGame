@@ -1,22 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using SharpDX.Direct2D1;
-using SharpDX.XAudio2;
 using SpaceGame.Main;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Security.Cryptography;
-using System.Windows.Forms;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
-using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame.Scenes.Planet
 {
@@ -31,7 +22,7 @@ namespace SpaceGame.Scenes.Planet
         Player player = new Player();
         Boss boss;
 
-        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500), enemyIdleTime, levelBeatenCooldown;
+        DateTime leavePlanetCooldown, bulletCooldown, damageCooldown = DateTime.Now.AddMilliseconds(500), bossMeleeCooldown, enemyIdleTime, levelBeatenCooldown;
         List<Enemy> enemies = new List<Enemy>();
         List<Bullet> bullets = new List<Bullet>();
         List<Bullet> enemyBullets = new List<Bullet>();
@@ -61,7 +52,7 @@ namespace SpaceGame.Scenes.Planet
 
             if (enemies.Count == 0 && boss == null)
             {
-                if(levelBeatenCooldown == DateTime.MinValue)
+                if (levelBeatenCooldown == DateTime.MinValue)
                 {
                     levelBeatenCooldown = DateTime.Now.AddSeconds(3);
                 }
@@ -78,23 +69,27 @@ namespace SpaceGame.Scenes.Planet
 
         public void Draw()
         {
+            /*
             foreach (Enemy enemy in enemies)
             {
                 GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, enemy.fieldOfView(), Color.White);
             }
 
             DrawEnemyMeleeRange();
-
+            */
+            
             DrawEnemies();
             DrawBullets(bullets);
             DrawBullets(enemyBullets);
             DrawHealthPacks(healthPacks);
             DrawHealthBars();
 
+            /*
             foreach (Enemy enemy in enemies)
             {
                 GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
             }
+            */
 
             GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
         }
@@ -105,12 +100,12 @@ namespace SpaceGame.Scenes.Planet
 
         private void SpawnEnemies()
         {
-            for(int i = 0; i < rnd.Next(3, 3 + 2 * GlobalConstants.LevelsBeaten);  i++)
+            for (int i = 0; i < rnd.Next(3, 3 + 2 * GlobalConstants.LevelsBeaten); i++)
             {
                 enemies.Add(new Enemy());
             }
 
-            if (GlobalConstants.LevelsBeaten == 5)
+            if (GlobalConstants.LevelsBeaten == 3)
             {
                 boss = new Boss();
             }
@@ -135,6 +130,7 @@ namespace SpaceGame.Scenes.Planet
         private void CheckHealth()
         {
             CheckPlayerDamage();
+            CheckIfPlayerIsDead();
 
             CheckIfBulletHitsEnemies();
             CheckCollisionHealthPack();
@@ -233,8 +229,6 @@ namespace SpaceGame.Scenes.Planet
                 {
                     player.DamageTaken(0);
                     enemyBullets.Remove(bullet);
-
-                    CheckIfPlayerIsDead();
                 }
             }
         }
@@ -248,10 +242,19 @@ namespace SpaceGame.Scenes.Planet
                     IfBulletHit(enemy, bullet);
                 }
 
-                if(boss != null)
+                if (boss != null)
                 {
                     IfBulletHitsBoss(bullet);
                 }
+            }
+        }
+
+        private void BossMeleeAttack()
+        {
+            if (player.GetHitBox().Intersects(boss.MeleeRange()) && bossMeleeCooldown <= DateTime.Now)
+            {
+                player.DamageTaken(boss.GetMeleeDamage());
+                bossMeleeCooldown = DateTime.Now.AddSeconds(1);
             }
         }
 
@@ -343,6 +346,11 @@ namespace SpaceGame.Scenes.Planet
         {
             if (damageCooldown <= DateTime.Now)
             {
+                if (boss != null)
+                {
+                    BossMeleeAttack();
+                }
+
                 CheckIfBulletHitsPlayer();
                 CheckEnemyMelee();
 
@@ -418,7 +426,7 @@ namespace SpaceGame.Scenes.Planet
                 enemy.DrawHealthBar();
             }
 
-            if(boss != null)
+            if (boss != null)
             {
                 boss.DrawHealthBar();
             }
