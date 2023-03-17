@@ -31,7 +31,7 @@ namespace SpaceGame.Scenes.Planet
 
         public Player()
         {
-            pos.Y = (GlobalConstants.ScreenHeight - currentSprite.Height) / 2;
+            pos.Y = GlobalConstants.ScreenHeight - GlobalConstants.ScreenHeight/4;
             pos.X = (GlobalConstants.ScreenWidth - currentSprite.Width) / 2;
 
             speed.X = GlobalConstants.PlayerSpeed;

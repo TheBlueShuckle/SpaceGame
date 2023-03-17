@@ -19,7 +19,7 @@ namespace SpaceGame.Scenes.Planet
         Vector2 pos = new Vector2(GlobalConstants.ScreenWidth / 2, GlobalConstants.ScreenHeight / 2), healthBarPos = new Vector2(GlobalConstants.ScreenWidth/2 - 250, 30);
         Texture2D currentSprite;
         Random rnd = new Random();
-        int health, damage;
+        int health, damage, meleeDamage = 50;
         DateTime shootCooldown;
 
         public Boss()
@@ -50,7 +50,7 @@ namespace SpaceGame.Scenes.Planet
 
         public Rectangle MeleeRange()
         {
-            return new Rectangle((int)GetPosition().X - 75, (int)GetPosition().Y - 75, GetCurrentSprite().Width + 150, GetCurrentSprite().Height + 150);
+            return new Rectangle((int)GetPosition().X - 150, (int)GetPosition().Y - 150, GetCurrentSprite().Width + 300, GetCurrentSprite().Height + 300);
         }
 
         public Bullet Shoot(Vector2 playerPos)
@@ -87,6 +87,11 @@ namespace SpaceGame.Scenes.Planet
         public int GetHealth()
         {
             return health;
+        }
+
+        public int GetMeleeDamage()
+        {
+            return meleeDamage;
         }
 
         private int UpdatedHealthBarWidth()
