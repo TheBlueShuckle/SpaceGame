@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using SpaceGame.Scenes.Planet;
 using SpaceGame.Scenes.Space;
 using System;
+using System.Drawing.Printing;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace SpaceGame.Main
@@ -12,9 +13,10 @@ namespace SpaceGame.Main
     {
         #region Variables
 
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
         int scene = GlobalConstants.InSpace;
+        DateTime buttonCooldown = new DateTime();
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
 
@@ -24,7 +26,7 @@ namespace SpaceGame.Main
 
         public Main()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -33,10 +35,10 @@ namespace SpaceGame.Main
         {
             // TODO: Add your initialization logic here
 
-            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            _graphics.IsFullScreen = true;
-            _graphics.ApplyChanges();
+            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
 
             GlobalConstants.ScreenWidth = Window.ClientBounds.Width;
             GlobalConstants.ScreenHeight = Window.ClientBounds.Height;
@@ -48,8 +50,8 @@ namespace SpaceGame.Main
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            GlobalConstants.SpriteBatch = _spriteBatch;
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            GlobalConstants.SpriteBatch = spriteBatch;
 
             // TODO: use this.Content to load your game content here
             GlobalConstants.ShipSprites[0] = Content.Load<Texture2D>("Sprites/myShipFrame1");
@@ -90,6 +92,8 @@ namespace SpaceGame.Main
             }
 
             // TODO: Add your update logic here
+
+            ToggleDebugMode();
 
             switch (scene)
             {
@@ -132,7 +136,7 @@ namespace SpaceGame.Main
 
             // TODO: Add your drawing code herex
 
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
 
             switch (scene)
@@ -149,11 +153,36 @@ namespace SpaceGame.Main
                     break;
             }
 
-            GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "" + GlobalConstants.LevelsBeaten, new Vector2(0, 0), Color.White);
+            if (GlobalConstants.DebugMode)
+            {
+                GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "" + GlobalConstants.LevelsBeaten, new Vector2(0, 0), Color.White);
+            }
 
-            _spriteBatch.End();
+            spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void ToggleDebugMode()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.F3) && buttonCooldown <= DateTime.Now)
+            {
+                if (GlobalConstants.DebugMode)
+                {
+                    GlobalConstants.DebugMode = false;
+                }
+
+                else
+                {
+                    GlobalConstants.DebugMode = true;
+                }
+
+                buttonCooldown = DateTime.Now.AddMilliseconds(250);
+            }
         }
 
         #endregion

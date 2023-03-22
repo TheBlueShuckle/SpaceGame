@@ -24,6 +24,7 @@ namespace SpaceGame
         #region GettersSetters
 
         private static int screenWidth, screenHeight, levelsBeaten = 0;
+        private static bool debugMode = false;
         private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4], shipSprites = new Texture2D[2], planetSprites = new Texture2D[2];
         private static Texture2D bullet, enemyMeleeRange, healthPack, healthBar;
         private static SpriteBatch spriteBatch;
@@ -46,6 +47,12 @@ namespace SpaceGame
         {
             get { return levelsBeaten; }
             set { levelsBeaten = value; }
+        }
+
+        public static bool DebugMode
+        {
+            get { return debugMode; }
+            set { debugMode = value; }
         }
 
         public static Texture2D[] ShipSprites
