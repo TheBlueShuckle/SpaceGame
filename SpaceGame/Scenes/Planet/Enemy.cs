@@ -68,7 +68,7 @@ namespace SpaceGame.Scenes.Planet
 
         public Rectangle MeleeRange()
         {
-            return new Rectangle((int)GetPosition().X - 75, (int)GetPosition().Y - 75, GetCurrentSprite().Width + 150, GetCurrentSprite().Height + 150);
+            return new Rectangle((int)GetPosition().X - 100, (int)GetPosition().Y - 100, GetCurrentSprite().Width + 200, GetCurrentSprite().Height + 200);
         }
 
         public Rectangle fieldOfView()
@@ -147,7 +147,7 @@ namespace SpaceGame.Scenes.Planet
 
         public void ChangeToChasingSpeed()
         {
-            speed = new Vector2(2.5f, 2.5f);
+            speed = new Vector2(4f, 4f);
         }
 
         #endregion
