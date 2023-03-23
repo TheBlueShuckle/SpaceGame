@@ -220,7 +220,7 @@ namespace SpaceGame.Scenes.Planet
 
             if (boss != null && boss.ShootCooldown())
             {
-                enemyBullets.Add(boss.Shoot(player.pos));
+                enemyBullets.Add(boss.Shoot(GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)));
             }
         }
 
