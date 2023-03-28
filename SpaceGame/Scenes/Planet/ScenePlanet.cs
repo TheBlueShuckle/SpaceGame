@@ -108,7 +108,7 @@ namespace SpaceGame.Scenes.Planet
                 enemies.Add(new Enemy());
             }
 
-            if (GlobalConstants.LevelsBeaten % 3 == 0)
+            if (GlobalConstants.LevelsBeaten % 3 == 0 && GlobalConstants.LevelsBeaten > 0)
             {
                 boss = new Boss();
             }
