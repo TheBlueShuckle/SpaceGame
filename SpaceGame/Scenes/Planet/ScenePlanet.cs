@@ -387,13 +387,10 @@ namespace SpaceGame.Scenes.Planet
         {
             foreach (Enemy enemy in enemies)
             {
-                GlobalConstants.SpriteBatch.Draw(enemy.GetCurrentSprite(), enemy.GetPosition(), Color.Green);
+                enemy.Draw();
             }
 
-            if (boss != null)
-            {
-                boss.Draw();
-            }
+            boss?.Draw();
         }
 
         private void DrawEnemyMeleeRange()
