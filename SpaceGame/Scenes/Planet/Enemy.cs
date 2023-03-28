@@ -128,6 +128,11 @@ namespace SpaceGame.Scenes.Planet
             GlobalConstants.SpriteBatch.Draw(GetCurrentSprite(), GetPosition(), Color.Green);
         }
 
+        public void DrawMeleeRange()
+        {
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, MeleeRange(), Color.White);
+        }
+
         public void DrawHealthBar()
         {
             GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X - 1, (int)healthBarPos.Y - 1, HealthBarWidth + 2, HealthBarHeight + 2), Color.Black);

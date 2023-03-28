@@ -397,16 +397,13 @@ namespace SpaceGame.Scenes.Planet
         {
             foreach (Enemy enemy in enemies)
             {
-                GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, enemy.MeleeRange(), Color.White);
+                enemy.DrawMeleeRange();
             }
         }
 
         private void DrawBossMeleeRange()
         {
-            if (boss != null)
-            {
-                GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, boss.MeleeRange(), Color.White);
-            }
+            boss?.DrawMeleeRange();
         }
 
         private void DrawBullets(List<Bullet> bullets)
