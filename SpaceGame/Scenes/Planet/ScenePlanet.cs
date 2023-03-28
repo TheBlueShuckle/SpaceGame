@@ -390,7 +390,10 @@ namespace SpaceGame.Scenes.Planet
                 enemy.Draw();
             }
 
-            boss?.Draw();
+            if (boss != null)
+            {
+                boss.Draw();
+            }
         }
 
         private void DrawEnemyMeleeRange()
@@ -403,7 +406,10 @@ namespace SpaceGame.Scenes.Planet
 
         private void DrawBossMeleeRange()
         {
-            boss?.DrawMeleeRange();
+            if (boss != null)
+            {
+                boss.DrawMeleeRange();
+            }
         }
 
         private void DrawBullets(List<Bullet> bullets)
