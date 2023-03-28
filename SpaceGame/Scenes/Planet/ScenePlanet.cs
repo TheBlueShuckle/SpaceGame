@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceGame.Main;
 using System;
@@ -69,27 +69,30 @@ namespace SpaceGame.Scenes.Planet
 
         public void Draw()
         {
-            /*
-            foreach (Enemy enemy in enemies)
+            if (GlobalConstants.DebugMode)
             {
-                GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, enemy.fieldOfView(), Color.White);
+                foreach (Enemy enemy in enemies)
+                {
+                    GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, enemy.fieldOfView(), Color.White);
+                }
+
+                DrawEnemyMeleeRange();
+                DrawBossMeleeRange();
             }
 
-            DrawEnemyMeleeRange();
-            */
-            
             DrawEnemies();
             DrawBullets(bullets);
             DrawBullets(enemyBullets);
             DrawHealthPacks(healthPacks);
             DrawHealthBars();
 
-            /*
-            foreach (Enemy enemy in enemies)
+            if (GlobalConstants.DebugMode)
             {
-                GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
+                foreach (Enemy enemy in enemies)
+                {
+                    GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
+                }
             }
-            */
 
             GlobalConstants.SpriteBatch.Draw(player.GetSprite(), player.pos, Color.White);
         }
@@ -105,7 +108,7 @@ namespace SpaceGame.Scenes.Planet
                 enemies.Add(new Enemy());
             }
 
-            if (GlobalConstants.LevelsBeaten == 3)
+            if (GlobalConstants.LevelsBeaten % 3 == 0 && GlobalConstants.LevelsBeaten > 0)
             {
                 boss = new Boss();
             }
@@ -217,7 +220,7 @@ namespace SpaceGame.Scenes.Planet
 
             if (boss != null && boss.ShootCooldown())
             {
-                enemyBullets.Add(boss.Shoot(GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height))));
+                enemyBullets.Add(boss.Shoot(GlobalMethods.GetCenter(player.pos, player.GetSprite().Width, player.GetSprite().Height)));
             }
         }
 
@@ -354,7 +357,7 @@ namespace SpaceGame.Scenes.Planet
                 CheckIfBulletHitsPlayer();
                 CheckEnemyMelee();
 
-                damageCooldown = DateTime.Now.AddMilliseconds(100);
+                damageCooldown = DateTime.Now.AddMilliseconds(500);
             }
         }
 
@@ -384,7 +387,7 @@ namespace SpaceGame.Scenes.Planet
         {
             foreach (Enemy enemy in enemies)
             {
-                GlobalConstants.SpriteBatch.Draw(enemy.GetCurrentSprite(), enemy.GetPosition(), Color.Green);
+                enemy.Draw();
             }
 
             if (boss != null)
@@ -397,7 +400,15 @@ namespace SpaceGame.Scenes.Planet
         {
             foreach (Enemy enemy in enemies)
             {
-                GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, enemy.MeleeRange(), Color.White);
+                enemy.DrawMeleeRange();
+            }
+        }
+
+        private void DrawBossMeleeRange()
+        {
+            if (boss != null)
+            {
+                boss.DrawMeleeRange();
             }
         }
 

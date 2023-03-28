@@ -111,6 +111,8 @@ namespace SpaceGame.Scenes.Planet
 
         public void DrawHealthBar()
         {
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X - 1, (int)healthBarPos.Y - 1, HealthBarWidth + 2, HealthBarHeight + 2), Color.Black);
+
             GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, HealthBarWidth, HealthBarHeight), Color.Gray);
 
             if (health <= maxHealth * criticalHealth)
@@ -122,6 +124,11 @@ namespace SpaceGame.Scenes.Planet
             {
                 GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, UpdatedHealthBarWidth(), HealthBarHeight), Color.Green);
             }
+        }
+
+        public void DrawMeleeRange()
+        {
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.EnemyMeleeRange, MeleeRange(), Color.White);
         }
     }
 }
