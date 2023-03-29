@@ -56,7 +56,7 @@ namespace SpaceGame.Scenes.Planet
                 {
                     levelBeatenCooldown = DateTime.Now.AddSeconds(3);
                 }
-
+ 
                 if (levelBeatenCooldown <= DateTime.Now)
                 {
                     scene = GlobalConstants.InSpace;
