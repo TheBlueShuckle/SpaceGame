@@ -15,7 +15,7 @@ namespace SpaceGame
     {
         #region Constants
 
-        public const int InSpace = 1, OnPlanet = 2;
+        public const int InMenu = 0, InSpace = 1, OnPlanet = 2;
         public const int PlanetWaitSecondsMin = 5, PlanetWaitSecondsMax = 20, PlanetMinSpeed = 10, PlanetMaxSpeed = 45;
         public const int PlayerSpeed = 5;
 

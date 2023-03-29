@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceGame.Scenes.Menu;
 using SpaceGame.Scenes.Planet;
 using SpaceGame.Scenes.Space;
 using System;
@@ -15,10 +16,11 @@ namespace SpaceGame.Main
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        int scene = GlobalConstants.InSpace;
+        int scene = GlobalConstants.InMenu;
         DateTime buttonCooldown = new DateTime();
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
+        Menu menu = new Menu();
 
         #endregion
 
@@ -97,6 +99,11 @@ namespace SpaceGame.Main
 
             switch (scene)
             {
+                case GlobalConstants.InMenu:
+                    scene = menu.Update();
+
+                    break;
+
                 case GlobalConstants.InSpace:
                     scene = sceneSpace.Update();
 
@@ -122,6 +129,10 @@ namespace SpaceGame.Main
         {
             switch (scene)
             {
+                case GlobalConstants.InMenu:
+                    GraphicsDevice.Clear(Color.Black);
+                    break;
+
                 case GlobalConstants.InSpace:
                     GraphicsDevice.Clear(Color.Black);
                     break;
@@ -141,6 +152,10 @@ namespace SpaceGame.Main
 
             switch (scene)
             {
+                case GlobalConstants.InMenu:
+                    menu.Draw();
+                    break;
+
                 case GlobalConstants.InSpace:
                     sceneSpace.Draw();
                     break;
