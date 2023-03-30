@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceGame.Main;
 using System;
@@ -30,7 +31,7 @@ namespace SpaceGame.Scenes.Menu
         {
             foreach(Button button in buttons)
             {
-                if (GlobalMethods.CheckPointIntersects(button.GetHitBox(), new Vector2 (Mouse.GetState().Position.X, Mouse.GetState().Position.Y)))
+                if (GlobalMethods.CheckPointIntersects(button.GetHitBox(), new Vector2 (Mouse.GetState().Position.X, Mouse.GetState().Position.Y - 30)))
                 {
                     button.DrawSelectedButton();
                 }
@@ -40,6 +41,8 @@ namespace SpaceGame.Scenes.Menu
                     button.DrawButton();
                 }
             }
+
+            GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "" + new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y - 30), new Vector2(0, 0), Color.White);
         }
     }
 }
