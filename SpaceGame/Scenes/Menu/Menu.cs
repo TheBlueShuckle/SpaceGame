@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using SpaceGame.Main;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -14,33 +15,48 @@ namespace SpaceGame.Scenes.Menu
 {
     internal class Menu
     {
-        List<Button> buttons = new List<Button>();
+        Button resume, quit;
+        int scene = GlobalConstants.InMenu;
+        DateTime escCooldown = new DateTime();
 
         public Menu()
         {
-            buttons.Add(new Button(new Vector2(50, 100), "Resume"));
-            buttons.Add(new Button(new Vector2(200, 100), "Quit"));
+            resume = new Button(new Vector2(50, 100), "Resume");
+            quit = new Button(new Vector2(200, 100), "Quit");
         }
 
         public int Update()
         {
-            return 0;
+            scene = GlobalConstants.InMenu;
+
+            if (resume.CheckIfClicked() || (Keyboard.GetState().IsKeyDown(Keys.Escape) && escCooldown <= DateTime.Now))
+            {
+                scene = GlobalConstants.LastScene;
+                AddEscCooldown();
+            }
+
+            if (quit.CheckIfClicked())
+            {
+                scene = -1;
+            }
+
+            return scene;
+        }
+
+        public void AddEscCooldown()
+        {
+            escCooldown = DateTime.Now.AddMilliseconds(250);
+        }
+
+        public DateTime GetEscCooldown()
+        {
+            return escCooldown;
         }
 
         public void Draw()
         {
-            foreach(Button button in buttons)
-            {
-                if (GlobalMethods.CheckPointIntersects(button.GetHitBox(), new Vector2 (Mouse.GetState().Position.X, Mouse.GetState().Position.Y - 30)))
-                {
-                    button.DrawSelectedButton();
-                }
-
-                else
-                {
-                    button.DrawButton();
-                }
-            }
+            resume.Draw();
+            quit.Draw();
 
             GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "" + new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y - 30), new Vector2(0, 0), Color.White);
         }

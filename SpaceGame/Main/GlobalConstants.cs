@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SpaceGame
 {
@@ -23,7 +24,7 @@ namespace SpaceGame
 
         #region GettersSetters
 
-        private static int screenWidth, screenHeight, levelsBeaten = 0;
+        private static int screenWidth, screenHeight, levelsBeaten = 0, lastScene;
         private static bool debugMode = false;
         private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4], shipSprites = new Texture2D[2], planetSprites = new Texture2D[2];
         private static Texture2D bullet, enemyMeleeRange, healthPack, healthBar;
@@ -47,6 +48,12 @@ namespace SpaceGame
         {
             get { return levelsBeaten; }
             set { levelsBeaten = value; }
+        }
+
+        public static int LastScene
+        {
+            get { return lastScene; }
+            set { lastScene = value; }
         }
 
         public static bool DebugMode

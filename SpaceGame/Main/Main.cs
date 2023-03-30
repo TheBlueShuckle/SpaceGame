@@ -17,7 +17,7 @@ namespace SpaceGame.Main
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         int scene = GlobalConstants.InMenu;
-        DateTime buttonCooldown = new DateTime();
+        DateTime buttonCooldown = new DateTime(), menuCooldown = new DateTime();
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
         Menu menu = new Menu();
@@ -46,6 +46,7 @@ namespace SpaceGame.Main
             GlobalConstants.ScreenHeight = Window.ClientBounds.Height;
 
             sceneSpace = new SceneSpace();
+            GlobalConstants.LastScene = GlobalConstants.InSpace;
 
             base.Initialize();
         }
@@ -88,23 +89,23 @@ namespace SpaceGame.Main
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                Exit();
-            }
-
             // TODO: Add your update logic here
 
             ToggleDebugMode();
 
             switch (scene)
             {
+                case -1:
+                    Exit();
+                    break;
+
                 case GlobalConstants.InMenu:
                     scene = menu.Update();
 
                     break;
 
                 case GlobalConstants.InSpace:
+                    GlobalConstants.LastScene = GlobalConstants.InSpace;
                     scene = sceneSpace.Update();
 
                     if (sceneSpace.GetEnteringPlanet())
@@ -112,10 +113,15 @@ namespace SpaceGame.Main
                         scenePlanet = new ScenePlanet();
                     }
 
+                    CheckIfOpenMenu();
+
                     break;
 
                 case GlobalConstants.OnPlanet:
+                    GlobalConstants.LastScene = GlobalConstants.OnPlanet;
                     scene = scenePlanet.Update();
+                    CheckIfOpenMenu();
+
                     break;
 
                 default:
@@ -197,6 +203,15 @@ namespace SpaceGame.Main
                 }
 
                 buttonCooldown = DateTime.Now.AddMilliseconds(250);
+            }
+        }
+
+        private void CheckIfOpenMenu()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && menu.GetEscCooldown() <= DateTime.Now)
+            {
+                scene = GlobalConstants.InMenu;
+                menu.AddEscCooldown();
             }
         }
 

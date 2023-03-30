@@ -199,11 +199,9 @@ namespace SpaceGame.Scenes.Planet
 
         private void CheckShooting()
         {
-            mouseState = Mouse.GetState();
-
-            if (mouseState.LeftButton == ButtonState.Pressed && bulletCooldown <= DateTime.Now)
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && bulletCooldown <= DateTime.Now)
             {
-                bullets.Add(new Bullet(new Vector2(player.pos.X + player.GetSprite().Width / 2, player.pos.Y + player.GetSprite().Height / 2), new Vector2(mouseState.X, mouseState.Y), player.GetDamage()));
+                bullets.Add(new Bullet(new Vector2(player.pos.X + player.GetSprite().Width / 2, player.pos.Y + player.GetSprite().Height / 2), new Vector2(Mouse.GetState().X, Mouse.GetState().Y), player.GetDamage()));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
             }
         }
