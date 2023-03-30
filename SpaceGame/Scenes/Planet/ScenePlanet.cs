@@ -355,7 +355,7 @@ namespace SpaceGame.Scenes.Planet
                 CheckIfBulletHitsPlayer();
                 CheckEnemyMelee();
 
-                damageCooldown = DateTime.Now.AddMilliseconds(500);
+                damageCooldown = DateTime.Now.AddSeconds(1);
             }
         }
 
