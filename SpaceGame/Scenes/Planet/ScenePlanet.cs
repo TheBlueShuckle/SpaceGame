@@ -183,6 +183,8 @@ namespace SpaceGame.Scenes.Planet
                 if (rnd.Next(1, 3) == 1 && enemyIdleTime <= DateTime.Now)
                 {
                     enemy.Move(enemy.GenerateRandomPoint());
+
+                    enemyIdleTime.AddMilliseconds(rnd.Next(500, 1500));
                 }
 
                 if (enemyIdleTime <= DateTime.Now)
