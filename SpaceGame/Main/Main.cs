@@ -20,7 +20,7 @@ namespace SpaceGame.Main
         DateTime buttonCooldown = new DateTime(), menuCooldown = new DateTime();
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
-        Menu menu = new Menu();
+        Menu menu;
 
         #endregion
 
@@ -82,8 +82,9 @@ namespace SpaceGame.Main
             GlobalConstants.HealthBar = new Texture2D(GraphicsDevice, 1, 1);
             GlobalConstants.HealthBar.SetData(new Color[] { Color.White });
 
-            GlobalConstants.GameFont = Content.Load<SpriteFont>("Print/GameFont");
+            GlobalConstants.Font = Content.Load<SpriteFont>("Print/GameFont");
 
+            menu = new Menu();
             sceneSpace.LoadContent();
         }
 
@@ -176,7 +177,7 @@ namespace SpaceGame.Main
 
             if (GlobalConstants.DebugMode)
             {
-                GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "" + GlobalConstants.LevelsBeaten, new Vector2(0, 0), Color.White);
+                GlobalConstants.SpriteBatch.DrawString(GlobalConstants.Font, "" + GlobalConstants.LevelsBeaten, new Vector2(0, 0), Color.White);
             }
 
             spriteBatch.End();

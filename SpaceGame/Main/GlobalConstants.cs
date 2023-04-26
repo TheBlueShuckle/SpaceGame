@@ -29,7 +29,7 @@ namespace SpaceGame
         private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4], shipSprites = new Texture2D[2], planetSprites = new Texture2D[2];
         private static Texture2D bullet, enemyMeleeRange, healthPack, healthBar;
         private static SpriteBatch spriteBatch;
-        private static SpriteFont gameFont;
+        private static SpriteFont font;
         private static Vector2 shipSpeed = new Vector2(2.5f, 2.5f);
 
         public static int ScreenWidth
@@ -116,10 +116,10 @@ namespace SpaceGame
             set { spriteBatch = value; }
         }
 
-        public static SpriteFont GameFont
+        public static SpriteFont Font
         {
-            get { return gameFont; }
-            set { gameFont = value; }
+            get { return font; }
+            set { font = value; }
         }
 
         public static Vector2 ShipSpeed

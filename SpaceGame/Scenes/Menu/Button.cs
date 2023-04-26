@@ -19,17 +19,19 @@ namespace SpaceGame.Scenes.Menu
 {
     internal class Button
     {
-        const int Width = 128, Height = 64;
-        Vector2 pos;
+        const int Width = 100 * PixelSize, Height = 24 * PixelSize, PixelSize = 4;
+        Vector2 center, pos, textPos;
         Rectangle size;
         string text;
 
-        public Button(Vector2 pos, string text)
+        public Button(Vector2 center, string text)
         {
-            this.pos = pos;
+            this.center = center;
             this.text = text;
 
-            size = new Rectangle((int)pos.X, (int)pos.Y, Width, Height);
+            GetTruePosition();
+            GetTruePositionOfString();
+            size = new Rectangle((int)pos.X, (int)pos.Y, Width, Height);;
         }
 
         public bool CheckIfClicked()
@@ -58,17 +60,30 @@ namespace SpaceGame.Scenes.Menu
         private void DrawUnselectedButton()
         {
             GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, size, Color.White);
-            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X + 4, (int)pos.Y + 4, Width - 8, Height - 8), Color.Black);
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X + PixelSize, (int)pos.Y + PixelSize, Width - 2 * PixelSize, Height - 2 * PixelSize), Color.Black);
 
-            GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, text, pos, Color.White, 0, new Vector2(0, 0), new Vector2(2, 2), SpriteEffects.None, 0);
+            GlobalConstants.SpriteBatch.DrawString(GlobalConstants.Font, text, textPos, Color.White, 0, new Vector2(0, 0), new Vector2(2, 2), SpriteEffects.None, 0);
         }
 
         private void DrawSelectedButton()
         {
             GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, size, Color.LightGray);
-            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X + 4, (int)pos.Y + 4, Width - 8, Height - 8), Color.Gray);
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)pos.X + PixelSize, (int)pos.Y + PixelSize, Width - 2 * PixelSize, Height - 2 * PixelSize), Color.Gray);
 
-            GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, text, pos, Color.LightGray, 0, new Vector2(0, 0), new Vector2(2, 2), SpriteEffects.None, 0);
+            GlobalConstants.SpriteBatch.DrawString(GlobalConstants.Font, text, textPos, Color.LightGray, 0, new Vector2(0, 0), new Vector2(2, 2), SpriteEffects.None, 0);
+        }
+
+        private void GetTruePosition()
+        {
+            pos = new Vector2(center.X - Width / 2, center.Y - Height / 2);
+        }
+
+        private void GetTruePositionOfString()
+        {
+            Vector2 textSize;
+
+            textSize = GlobalConstants.Font.MeasureString(text) * 2;
+            textPos = new Vector2(center.X - (textSize.X / 2), center.Y - (textSize.Y / 2));
         }
     }
 }

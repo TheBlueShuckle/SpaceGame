@@ -90,7 +90,7 @@ namespace SpaceGame.Scenes.Planet
             {
                 foreach (Enemy enemy in enemies)
                 {
-                    GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
+                    GlobalConstants.SpriteBatch.DrawString(GlobalConstants.Font, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
                 }
             }
 
@@ -199,9 +199,11 @@ namespace SpaceGame.Scenes.Planet
 
         private void CheckShooting()
         {
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && bulletCooldown <= DateTime.Now)
+            mouseState = Mouse.GetState();
+
+            if (mouseState.LeftButton == ButtonState.Pressed && bulletCooldown <= DateTime.Now)
             {
-                bullets.Add(new Bullet(new Vector2(player.pos.X + player.GetSprite().Width / 2, player.pos.Y + player.GetSprite().Height / 2), new Vector2(Mouse.GetState().X, Mouse.GetState().Y), player.GetDamage()));
+                bullets.Add(new Bullet(new Vector2(player.pos.X + player.GetSprite().Width / 2, player.pos.Y + player.GetSprite().Height / 2), new Vector2(mouseState.X, mouseState.Y), player.GetDamage()));
                 bulletCooldown = DateTime.Now.AddMilliseconds(500);
             }
         }
@@ -222,15 +224,21 @@ namespace SpaceGame.Scenes.Planet
             }
         }
 
-        private void CheckIfBulletHitsPlayer()
+        private void BossMeleeAttack()
         {
-            foreach (Bullet bullet in enemyBullets.ToList())
+            if (player.GetHitBox().Intersects(boss.MeleeRange()) && bossMeleeCooldown <= DateTime.Now)
             {
-                if (bullet.GetRectangle().Intersects(player.GetHitBox()))
-                {
-                    player.DamageTaken(0);
-                    enemyBullets.Remove(bullet);
-                }
+                player.DamageTaken(boss.GetMeleeDamage());
+                bossMeleeCooldown = DateTime.Now.AddSeconds(1);
+            }
+        }
+
+        private void CheckIfPlayerIsDead()
+        {
+            if (player.GetHealth() < 1)
+            {
+                GlobalConstants.LevelsBeaten = 0;
+                scene = GlobalConstants.InSpace;
             }
         }
 
@@ -247,23 +255,6 @@ namespace SpaceGame.Scenes.Planet
                 {
                     IfBulletHitsBoss(bullet);
                 }
-            }
-        }
-
-        private void BossMeleeAttack()
-        {
-            if (player.GetHitBox().Intersects(boss.MeleeRange()) && bossMeleeCooldown <= DateTime.Now)
-            {
-                player.DamageTaken(boss.GetMeleeDamage());
-                bossMeleeCooldown = DateTime.Now.AddSeconds(1);
-            }
-        }
-
-        private void CheckIfPlayerIsDead()
-        {
-            if (player.GetHealth() < 1)
-            {
-                scene = GlobalConstants.InSpace;
             }
         }
 
@@ -354,8 +345,20 @@ namespace SpaceGame.Scenes.Planet
 
                 CheckIfBulletHitsPlayer();
                 CheckEnemyMelee();
+            }
+        }
 
-                damageCooldown = DateTime.Now.AddSeconds(1);
+        private void CheckIfBulletHitsPlayer()
+        {
+            foreach (Bullet bullet in enemyBullets.ToList())
+            {
+                if (bullet.GetRectangle().Intersects(player.GetHitBox()))
+                {
+                    player.DamageTaken(bullet.Damage);
+                    enemyBullets.Remove(bullet);
+
+                    damageCooldown = DateTime.Now.AddMilliseconds(500);
+                }
             }
         }
 
@@ -367,6 +370,8 @@ namespace SpaceGame.Scenes.Planet
                 {
                     player.DamageTaken(20);
                     CheckIfPlayerIsDead();
+
+                    damageCooldown = DateTime.Now.AddMilliseconds(500);
                 }
             }
         }
