@@ -11,7 +11,7 @@ namespace SpaceGame.Scenes.Planet
 {
     internal class Boss
     {
-        const int HealthBarWidth = 500, HealthBarHeight = 20;
+        const int HealthBarWidth = 125 * PixelSize, HealthBarHeight = 5 * PixelSize, PixelSize = 3;
         const float criticalHealth = 0.2f;
 
         public int enemystate, maxHealth;
@@ -56,7 +56,15 @@ namespace SpaceGame.Scenes.Planet
         public Bullet Shoot(Vector2 playerPos)
         {
             shootCooldown = DateTime.Now.AddMilliseconds(1000);
-            return new Bullet(new Vector2(pos.X + currentSprite.Width, pos.Y + currentSprite.Height), playerPos, damage);
+            if (GlobalConstants.CheatMode)
+            {
+                return new Bullet(new Vector2(pos.X + currentSprite.Width, pos.Y + currentSprite.Height), playerPos, 0);
+            }
+
+            else
+            {
+                return new Bullet(new Vector2(pos.X + currentSprite.Width, pos.Y + currentSprite.Height), playerPos, damage);
+            }
         }
 
         public bool ShootCooldown()
@@ -111,7 +119,7 @@ namespace SpaceGame.Scenes.Planet
 
         public void DrawHealthBar()
         {
-            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X - 1, (int)healthBarPos.Y - 1, HealthBarWidth + 2, HealthBarHeight + 2), Color.Black);
+            GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X - PixelSize, (int)healthBarPos.Y - PixelSize, HealthBarWidth + 2 * PixelSize, HealthBarHeight + 2 * PixelSize), Color.Black);
 
             GlobalConstants.SpriteBatch.Draw(GlobalConstants.HealthBar, new Rectangle((int)healthBarPos.X, (int)healthBarPos.Y, HealthBarWidth, HealthBarHeight), Color.Gray);
 

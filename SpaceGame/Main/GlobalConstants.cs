@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SpaceGame
 {
@@ -15,7 +16,7 @@ namespace SpaceGame
     {
         #region Constants
 
-        public const int InSpace = 1, OnPlanet = 2;
+        public const int InMenu = 0, InSpace = 1, OnPlanet = 2;
         public const int PlanetWaitSecondsMin = 5, PlanetWaitSecondsMax = 20, PlanetMinSpeed = 10, PlanetMaxSpeed = 45;
         public const int PlayerSpeed = 5;
 
@@ -23,12 +24,12 @@ namespace SpaceGame
 
         #region GettersSetters
 
-        private static int screenWidth, screenHeight, levelsBeaten = 0;
+        private static int screenWidth, screenHeight, levelsBeaten = 0, lastScene;
         private static bool debugMode = false;
         private static Texture2D[] playerSprites = new Texture2D[4], enemySprites = new Texture2D[4], shipSprites = new Texture2D[2], planetSprites = new Texture2D[2];
         private static Texture2D bullet, enemyMeleeRange, healthPack, healthBar;
         private static SpriteBatch spriteBatch;
-        private static SpriteFont gameFont;
+        private static SpriteFont font;
         private static Vector2 shipSpeed = new Vector2(2.5f, 2.5f);
 
         public static int ScreenWidth
@@ -49,7 +50,13 @@ namespace SpaceGame
             set { levelsBeaten = value; }
         }
 
-        public static bool DebugMode
+        public static int LastScene
+        {
+            get { return lastScene; }
+            set { lastScene = value; }
+        }
+
+        public static bool CheatMode
         {
             get { return debugMode; }
             set { debugMode = value; }
@@ -109,10 +116,10 @@ namespace SpaceGame
             set { spriteBatch = value; }
         }
 
-        public static SpriteFont GameFont
+        public static SpriteFont Font
         {
-            get { return gameFont; }
-            set { gameFont = value; }
+            get { return font; }
+            set { font = value; }
         }
 
         public static Vector2 ShipSpeed

@@ -85,6 +85,7 @@ namespace SpaceGame.Scenes.Space
 
                 shipSpeed.Y = 0;
             }
+
             else
             {
                 shipSpeed.Y = GlobalConstants.ShipSpeed.Y;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceGame.Scenes.Menu;
 using SpaceGame.Scenes.Planet;
 using SpaceGame.Scenes.Space;
 using System;
@@ -15,10 +16,11 @@ namespace SpaceGame.Main
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        int scene = GlobalConstants.InSpace;
-        DateTime buttonCooldown = new DateTime();
+        int scene = GlobalConstants.InMenu;
+        DateTime buttonCooldown = new DateTime(), menuCooldown = new DateTime();
         ScenePlanet scenePlanet;
         SceneSpace sceneSpace;
+        Menu menu;
 
         #endregion
 
@@ -44,6 +46,7 @@ namespace SpaceGame.Main
             GlobalConstants.ScreenHeight = Window.ClientBounds.Height;
 
             sceneSpace = new SceneSpace();
+            GlobalConstants.LastScene = GlobalConstants.InSpace;
 
             base.Initialize();
         }
@@ -79,25 +82,31 @@ namespace SpaceGame.Main
             GlobalConstants.HealthBar = new Texture2D(GraphicsDevice, 1, 1);
             GlobalConstants.HealthBar.SetData(new Color[] { Color.White });
 
-            GlobalConstants.GameFont = Content.Load<SpriteFont>("Print/GameFont");
+            GlobalConstants.Font = Content.Load<SpriteFont>("Print/GameFont");
 
+            menu = new Menu();
             sceneSpace.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                Exit();
-            }
-
             // TODO: Add your update logic here
 
             ToggleDebugMode();
 
             switch (scene)
             {
+                case -1:
+                    Exit();
+                    break;
+
+                case GlobalConstants.InMenu:
+                    scene = menu.Update();
+
+                    break;
+
                 case GlobalConstants.InSpace:
+                    GlobalConstants.LastScene = GlobalConstants.InSpace;
                     scene = sceneSpace.Update();
 
                     if (sceneSpace.GetEnteringPlanet())
@@ -105,10 +114,15 @@ namespace SpaceGame.Main
                         scenePlanet = new ScenePlanet();
                     }
 
+                    CheckIfOpenMenu();
+
                     break;
 
                 case GlobalConstants.OnPlanet:
+                    GlobalConstants.LastScene = GlobalConstants.OnPlanet;
                     scene = scenePlanet.Update();
+                    CheckIfOpenMenu();
+
                     break;
 
                 default:
@@ -122,6 +136,10 @@ namespace SpaceGame.Main
         {
             switch (scene)
             {
+                case GlobalConstants.InMenu:
+                    GraphicsDevice.Clear(Color.Black);
+                    break;
+
                 case GlobalConstants.InSpace:
                     GraphicsDevice.Clear(Color.Black);
                     break;
@@ -141,6 +159,10 @@ namespace SpaceGame.Main
 
             switch (scene)
             {
+                case GlobalConstants.InMenu:
+                    menu.Draw();
+                    break;
+
                 case GlobalConstants.InSpace:
                     sceneSpace.Draw();
                     break;
@@ -153,9 +175,9 @@ namespace SpaceGame.Main
                     break;
             }
 
-            if (GlobalConstants.DebugMode)
+            if (GlobalConstants.CheatMode)
             {
-                GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "" + GlobalConstants.LevelsBeaten, new Vector2(0, 0), Color.White);
+                GlobalConstants.SpriteBatch.DrawString(GlobalConstants.Font, "" + GlobalConstants.LevelsBeaten, new Vector2(0, 0), Color.White);
             }
 
             spriteBatch.End();
@@ -171,17 +193,26 @@ namespace SpaceGame.Main
         {
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && buttonCooldown <= DateTime.Now)
             {
-                if (GlobalConstants.DebugMode)
+                if (GlobalConstants.CheatMode)
                 {
-                    GlobalConstants.DebugMode = false;
+                    GlobalConstants.CheatMode = false;
                 }
 
                 else
                 {
-                    GlobalConstants.DebugMode = true;
+                    GlobalConstants.CheatMode = true;
                 }
 
                 buttonCooldown = DateTime.Now.AddMilliseconds(250);
+            }
+        }
+
+        private void CheckIfOpenMenu()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && menu.GetEscCooldown() <= DateTime.Now)
+            {
+                scene = GlobalConstants.InMenu;
+                menu.AddEscCooldown();
             }
         }
 

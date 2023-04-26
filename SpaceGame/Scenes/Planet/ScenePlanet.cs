@@ -69,7 +69,7 @@ namespace SpaceGame.Scenes.Planet
 
         public void Draw()
         {
-            if (GlobalConstants.DebugMode)
+            if (GlobalConstants.CheatMode)
             {
                 foreach (Enemy enemy in enemies)
                 {
@@ -86,11 +86,11 @@ namespace SpaceGame.Scenes.Planet
             DrawHealthPacks(healthPacks);
             DrawHealthBars();
 
-            if (GlobalConstants.DebugMode)
+            if (GlobalConstants.CheatMode)
             {
                 foreach (Enemy enemy in enemies)
                 {
-                    GlobalConstants.SpriteBatch.DrawString(GlobalConstants.GameFont, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
+                    GlobalConstants.SpriteBatch.DrawString(GlobalConstants.Font, "X = " + Math.Round(enemy.GetPosition().X, 0) + " Y = " + Math.Round(enemy.GetPosition().Y, 0), new Vector2(10, 15 * enemies.IndexOf(enemy)), Color.Black);
                 }
             }
 
@@ -183,6 +183,8 @@ namespace SpaceGame.Scenes.Planet
                 if (rnd.Next(1, 3) == 1 && enemyIdleTime <= DateTime.Now)
                 {
                     enemy.Move(enemy.GenerateRandomPoint());
+
+                    enemyIdleTime.AddMilliseconds(rnd.Next(500, 1500));
                 }
 
                 if (enemyIdleTime <= DateTime.Now)
@@ -224,15 +226,33 @@ namespace SpaceGame.Scenes.Planet
             }
         }
 
-        private void CheckIfBulletHitsPlayer()
+        private void BossMeleeAttack()
         {
-            foreach (Bullet bullet in enemyBullets.ToList())
+            if (GlobalConstants.CheatMode)
             {
-                if (bullet.GetRectangle().Intersects(player.GetHitBox()))
+                if (player.GetHitBox().Intersects(boss.MeleeRange()) && bossMeleeCooldown <= DateTime.Now)
                 {
                     player.DamageTaken(0);
-                    enemyBullets.Remove(bullet);
+                    bossMeleeCooldown = DateTime.Now.AddSeconds(1);
                 }
+            }
+
+            else
+            {
+                if (player.GetHitBox().Intersects(boss.MeleeRange()) && bossMeleeCooldown <= DateTime.Now)
+                {
+                    player.DamageTaken(boss.GetMeleeDamage());
+                    bossMeleeCooldown = DateTime.Now.AddSeconds(1);
+                }
+            }
+        }
+
+        private void CheckIfPlayerIsDead()
+        {
+            if (player.GetHealth() < 1)
+            {
+                GlobalConstants.LevelsBeaten = 0;
+                scene = GlobalConstants.InSpace;
             }
         }
 
@@ -249,23 +269,6 @@ namespace SpaceGame.Scenes.Planet
                 {
                     IfBulletHitsBoss(bullet);
                 }
-            }
-        }
-
-        private void BossMeleeAttack()
-        {
-            if (player.GetHitBox().Intersects(boss.MeleeRange()) && bossMeleeCooldown <= DateTime.Now)
-            {
-                player.DamageTaken(boss.GetMeleeDamage());
-                bossMeleeCooldown = DateTime.Now.AddSeconds(1);
-            }
-        }
-
-        private void CheckIfPlayerIsDead()
-        {
-            if (player.GetHealth() < 1)
-            {
-                scene = GlobalConstants.InSpace;
             }
         }
 
@@ -356,8 +359,20 @@ namespace SpaceGame.Scenes.Planet
 
                 CheckIfBulletHitsPlayer();
                 CheckEnemyMelee();
+            }
+        }
 
-                damageCooldown = DateTime.Now.AddMilliseconds(500);
+        private void CheckIfBulletHitsPlayer()
+        {
+            foreach (Bullet bullet in enemyBullets.ToList())
+            {
+                if (bullet.GetRectangle().Intersects(player.GetHitBox()))
+                {
+                    player.DamageTaken(bullet.Damage);
+                    enemyBullets.Remove(bullet);
+
+                    damageCooldown = DateTime.Now.AddMilliseconds(500);
+                }
             }
         }
 
@@ -367,8 +382,17 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (enemy.GetHitbox().Intersects(player.GetHitBox()))
                 {
-                    player.DamageTaken(20);
-                    CheckIfPlayerIsDead();
+                    if (GlobalConstants.CheatMode)
+                    {
+                        player.DamageTaken(0);
+                    }
+
+                    else
+                    {
+                        player.DamageTaken(20);
+                    }
+
+                    damageCooldown = DateTime.Now.AddMilliseconds(500);
                 }
             }
         }
