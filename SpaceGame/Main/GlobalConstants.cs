@@ -56,7 +56,7 @@ namespace SpaceGame
             set { lastScene = value; }
         }
 
-        public static bool DebugMode
+        public static bool CheatMode
         {
             get { return debugMode; }
             set { debugMode = value; }

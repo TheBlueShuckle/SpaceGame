@@ -69,7 +69,7 @@ namespace SpaceGame.Scenes.Planet
 
         public void Draw()
         {
-            if (GlobalConstants.DebugMode)
+            if (GlobalConstants.CheatMode)
             {
                 foreach (Enemy enemy in enemies)
                 {
@@ -86,7 +86,7 @@ namespace SpaceGame.Scenes.Planet
             DrawHealthPacks(healthPacks);
             DrawHealthBars();
 
-            if (GlobalConstants.DebugMode)
+            if (GlobalConstants.CheatMode)
             {
                 foreach (Enemy enemy in enemies)
                 {
@@ -226,10 +226,22 @@ namespace SpaceGame.Scenes.Planet
 
         private void BossMeleeAttack()
         {
-            if (player.GetHitBox().Intersects(boss.MeleeRange()) && bossMeleeCooldown <= DateTime.Now)
+            if (GlobalConstants.CheatMode)
             {
-                player.DamageTaken(boss.GetMeleeDamage());
-                bossMeleeCooldown = DateTime.Now.AddSeconds(1);
+                if (player.GetHitBox().Intersects(boss.MeleeRange()) && bossMeleeCooldown <= DateTime.Now)
+                {
+                    player.DamageTaken(0);
+                    bossMeleeCooldown = DateTime.Now.AddSeconds(1);
+                }
+            }
+
+            else
+            {
+                if (player.GetHitBox().Intersects(boss.MeleeRange()) && bossMeleeCooldown <= DateTime.Now)
+                {
+                    player.DamageTaken(boss.GetMeleeDamage());
+                    bossMeleeCooldown = DateTime.Now.AddSeconds(1);
+                }
             }
         }
 
@@ -368,8 +380,15 @@ namespace SpaceGame.Scenes.Planet
             {
                 if (enemy.GetHitbox().Intersects(player.GetHitBox()))
                 {
-                    player.DamageTaken(20);
-                    CheckIfPlayerIsDead();
+                    if (GlobalConstants.CheatMode)
+                    {
+                        player.DamageTaken(0);
+                    }
+
+                    else
+                    {
+                        player.DamageTaken(20);
+                    }
 
                     damageCooldown = DateTime.Now.AddMilliseconds(500);
                 }

@@ -175,7 +175,7 @@ namespace SpaceGame.Main
                     break;
             }
 
-            if (GlobalConstants.DebugMode)
+            if (GlobalConstants.CheatMode)
             {
                 GlobalConstants.SpriteBatch.DrawString(GlobalConstants.Font, "" + GlobalConstants.LevelsBeaten, new Vector2(0, 0), Color.White);
             }
@@ -193,14 +193,14 @@ namespace SpaceGame.Main
         {
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && buttonCooldown <= DateTime.Now)
             {
-                if (GlobalConstants.DebugMode)
+                if (GlobalConstants.CheatMode)
                 {
-                    GlobalConstants.DebugMode = false;
+                    GlobalConstants.CheatMode = false;
                 }
 
                 else
                 {
-                    GlobalConstants.DebugMode = true;
+                    GlobalConstants.CheatMode = true;
                 }
 
                 buttonCooldown = DateTime.Now.AddMilliseconds(250);
